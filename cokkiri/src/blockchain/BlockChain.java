@@ -123,7 +123,9 @@ public class BlockChain {
 		//outputs - inputs = utxo
 		Iterator<TransactionOutput> itInput = usedTxOutput.iterator();
 		while(itInput.hasNext()) {
-			txOutput.remove(itInput.next().id);
+			TransactionOutput test=itInput.next();
+			txOutput.remove(test.id);
+			System.out.println("chek ..   "+test.toJSONObject());
 		}
 		
 		Iterator<String> keys = txOutput.keySet().iterator();

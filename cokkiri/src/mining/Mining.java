@@ -1,5 +1,8 @@
 package mining;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import blockchain.Block;
 import client.Client;
 import coin.Coin;
@@ -14,12 +17,17 @@ public class Mining {
 		Block block=new Block(Coin.blockchain.getPreviousBlockHash(), address); 
 		int size=Coin.blockchain.transactionPool.size();
 		System.out.println("size : "+String.valueOf(size));
+		
+		ArrayList<Transaction> miningTx=new ArrayList<Transaction>();
+
 		for(int k=0;k<size;k++){
 			Transaction t = Coin.blockchain.transactionPool.get(k);
 			
 			//		Coin.blockchain.transactionPool.get();
 			System.out.println("transaction added...");
 			System.out.println(t.toJSONObject());
+			miningTx.add(t);
+
 			block.addTx(t);
 		}
 		System.out.println("before add this block..");
@@ -37,6 +45,10 @@ public class Mining {
 				}
 			}.start();
 			//----------------------------------------------//
+			Iterator<Transaction> it = miningTx.iterator();
+			while(it.hasNext()) {
+				Coin.blockchain.transactionPool.remove(it.next());
+			}
 			return block;
 		}
 		else {
