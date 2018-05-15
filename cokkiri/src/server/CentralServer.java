@@ -21,8 +21,8 @@ public class CentralServer {
 	
 	//putPeerList
 	private static void putPeerList() {
-//		peerList.put("1000",new Peer("1000","192.168.10.4",3333));
-		peerList.put("1001",new Peer("1001","192.168.10.5",3333));
+		peerList.put("1000",new Peer("1000","192.168.10.4",3333));
+		//peerList.put("1001",new Peer("1001","192.168.10.5",3333));
 		peerList.put("1002",new Peer("1002","192.168.10.6",3333));
 	}
 	

@@ -22,6 +22,7 @@ public class Mining {
 			System.out.println(t.toJSONObject());
 			block.addTx(t);
 		}
+		
 		System.out.println("before add this block..");
 		System.out.println(block.toJSONObject());
 		Coin.blockchain.addBlock(block);

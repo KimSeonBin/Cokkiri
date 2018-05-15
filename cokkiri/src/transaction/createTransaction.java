@@ -75,6 +75,7 @@ public class createTransaction {
 			for(TransactionInput input: inputs){
 				//System.out.println("remove : "+ UTXOs.get(input.txOutputId).value); //È®ÀÎ¿ë
 				//removeUTXOs.put(input.txOutputId, UTXOs.get(input.txOutputId));
+				
 				Coin.blockchain.UTXOs.remove(input.txOutputId);
 			}
 			return newTransaction;

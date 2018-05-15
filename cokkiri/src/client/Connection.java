@@ -53,6 +53,10 @@ public class Connection extends Thread{
 		
 		//server로부터 server에게 기존노드인지 새로운노드인지 메시지 받음
 		serverMsg = readMessage();
+		if(serverMsg == null) {
+			System.out.println("err");
+			return;
+		}
 		System.out.println("[Client Debug] serverMsg : " +serverMsg);
 		if(serverMsg.equals(MsgType.NEWNODE_MSG)) {//새로운 노드이면
 			System.out.println("[client] I have to send authentication message");

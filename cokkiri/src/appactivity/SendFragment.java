@@ -41,16 +41,13 @@ public class SendFragment {
 		public void actionPerformed(ActionEvent e) {
 		
 
-			/*
+			
 			String receiver=publickeytext.getText();
 			float value=Float.valueOf(coin_valuetext.getText());
 			String password=String.valueOf(passwordtext.getPassword());
-			*/
 			
-			String receiver= "dddddddd";
-			float value = 1;
-			String password ="1234512345123456";
 			
+
 			//receiver, value, password 검증 내용
 			
 			Coin.wallet = new Wallet(Coin.id+password, false);
@@ -72,6 +69,7 @@ public class SendFragment {
 				}.start();
 				//--------------------------------//
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
+				
 				Coin.blockchain.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 			}else {
