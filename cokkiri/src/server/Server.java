@@ -130,7 +130,6 @@ public class Server extends Thread {
 			
 		}
 		else if(clientMsg.equals(MsgType.BLOCK_TRANSFER_MSG)) {
-			
 			System.out.println("[server] received block\r\n =>");
 			
 			String preBlockHash = readMessage();
@@ -141,29 +140,37 @@ public class Server extends Thread {
 				try {
 					blockStr = (JSONObject) new JSONParser().parse(readMessage());
 					System.out.println("[Server] BroadcastedBlock log Block Json : "+blockStr);
+					Block block = new Block();
+					block.convertClassObject(blockStr);
+					
+					System.out.println("[Server] : Broadcasted Block is  : "+ block.getString());
+				
+					if(checkBlock(block)) {
+						//-----------------------------NEW Block 유효성 검사---------------------------//
+						//--------------------------------------------------------------------------//
+						
+						Coin.blockchain.blockchain.add(block);	
+						
+						//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
+						//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
+						//---------------------------------------------------------------------------//
+					}
+					else {return;}
+				
+					
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				}
 				
-				Block block = new Block();
-				block.convertClassObject(blockStr);
-				
-				System.out.println("[Server] : Broadcasted Block is  : "+ block.getString());
-				
-				//-----------------------------NEW Block 처리부분 추가---------------------------//
-				//--------------------------------------------------------------------------//
-				
-				//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
-				//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
-				//---------------------------------------------------------------------------//
-			}
+
+			}else {return;}
 		}
 		else {
 			System.out.println("err");
 			return;
-		}
-			
+		}	
 	}
 	
 	public boolean checkTransaction(Transaction tx) {
@@ -175,6 +182,12 @@ public class Server extends Thread {
 		//preBlockHash 확인
 		return true;
 	}
+	
+	public boolean checkBlock(Block block) {
+		//Block 유효성검사
+		return true;
+	}
+	
 	
 	//새로운 노드일 경우 인증과정을 수행한다. 
 	public boolean peerAuthentication(Peer conPeer) {
