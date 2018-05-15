@@ -16,7 +16,7 @@ public class Mining {
 		System.out.println("size : "+String.valueOf(size));
 		for(int k=0;k<size;k++){
 			Transaction t = Coin.blockchain.transactionPool.get(k);
-					
+			
 			//		Coin.blockchain.transactionPool.get();
 			System.out.println("transaction added...");
 			System.out.println(t.toJSONObject());
@@ -26,6 +26,7 @@ public class Mining {
 		System.out.println(block.toJSONObject());
 		Coin.blockchain.addBlock(block);
 		if(Coin.blockchain.isChainValid()){
+			removeTransactionfromTransactionPool(size);
 			Coin.blockchain.storeBlock(block);
 			//---------------------블록 전파--------------------//
 			new Thread() {
@@ -42,6 +43,12 @@ public class Mining {
 			Logging.consoleLog("*error : the chain is not valid");
 			Coin.blockchain.remove(block);
 			return null;
+		}
+	}
+	
+	private static void removeTransactionfromTransactionPool(int size) {
+		for(int i = 0; i < size; i++) {
+			Coin.blockchain.transactionPool.remove(0);
 		}
 	}
 }

@@ -41,16 +41,16 @@ public class SendFragment {
 		public void actionPerformed(ActionEvent e) {
 		
 
-			/*
+			
 			String receiver=publickeytext.getText();
 			float value=Float.valueOf(coin_valuetext.getText());
 			String password=String.valueOf(passwordtext.getPassword());
-			*/
 			
-			String receiver= "dddddddd";
-			float value = 1;
-			String password ="1234512345123456";
 			
+//			String receiver= "dddddddd";
+//			float value = 1;
+//			String password ="1234512345123456";
+//			
 			//receiver, value, password 검증 내용
 			
 			Coin.wallet = new Wallet(Coin.id+password, false);
@@ -60,6 +60,7 @@ public class SendFragment {
 			Transaction t=createTransaction.createTx(Coin.wallet, receiverAdd, value);
 			
 			if(t!=null) {
+				flushText();
 				//-------------tx전파---------------//
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
 				
@@ -82,5 +83,11 @@ public class SendFragment {
 			
 			//////////////////////////////////////////////////////////////////////
 		}
+	}
+	
+	private void flushText() {
+		coin_valuetext.setValue(null);
+		publickeytext.setText(null);
+		passwordtext.setText(null);
 	}
 }
