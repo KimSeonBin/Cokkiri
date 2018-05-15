@@ -28,7 +28,13 @@ public class Mining {
 		if(Coin.blockchain.isChainValid()){
 			Coin.blockchain.storeBlock(block);
 			//---------------------블록 전파--------------------//
-			Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+block.getBlockHeader().getPreviousBlockHash()+" "+block.toJSONObject());
+			new Thread() {
+				public void run() {
+					try {
+						Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+block.getBlockHeader().getPreviousBlockHash()+" "+block.toJSONObject());
+					} catch (Exception e) {}
+				}
+			}.start();
 			//----------------------------------------------//
 			return block;
 		}

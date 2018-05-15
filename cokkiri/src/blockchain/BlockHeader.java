@@ -21,6 +21,10 @@ public class BlockHeader {
 	}
 
 	public BlockHeader() { }
+	public BlockHeader(long genesistime) { //for genesis block
+		timestamp=genesistime;
+		previousBlockHash="0";
+	}
 
 	public boolean printBlockHeader(){
 		//System.out.println("Block version : "+version);

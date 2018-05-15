@@ -62,7 +62,14 @@ public class SendFragment {
 			if(t!=null) {
 				//-------------tx전파---------------//
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
-				Client.broadcast(MsgType.TRANSACTION_MSG+t.toJSONObject());
+				
+				new Thread() {
+					public void run() {
+						try {
+							Client.broadcast(MsgType.TRANSACTION_MSG+t.toJSONObject());
+						} catch (Exception e) {}
+					}
+				}.start();
 				//--------------------------------//
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
 				Coin.blockchain.transactionPool.add(t);

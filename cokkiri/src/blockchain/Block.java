@@ -21,7 +21,10 @@ public class Block {
 	
 	
 	public Block() {}
-	
+	public Block(long genesistime) {
+		this.blockHeader=new BlockHeader(genesistime);
+		blockHash=calculateHash();
+	}
 	public Block(int blockSize, int transactionCount, String blockHash) {
 		this.blockSize = blockSize;
 		this.transactionCount = transactionCount;

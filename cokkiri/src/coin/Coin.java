@@ -83,8 +83,8 @@ public class Coin {
 		blockchain.loadFullBlock();
 		
 		if(blockchain.getSize() == 0) {		
-			Block genesisBlock=new Block("0", wallet.getAddress());
-			blockchain.addBlock(genesisBlock);
+			Block genesisBlock=new Block(3);
+			blockchain.blockchain.add(genesisBlock);
 			blockchain.storeBlock(genesisBlock);
 		}
 		
