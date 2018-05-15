@@ -2,6 +2,7 @@ package appactivity;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -10,6 +11,7 @@ import appview.MineView;
 import blockchain.Block;
 import coin.Coin;
 import mining.Mining;
+import wallet.Wallet;
 
 public class MineFragment {
 	private MineView mineview;
@@ -38,7 +40,13 @@ public class MineFragment {
 			if(button_text.equals("√§±º Ω√¿€")) {
 				Block minedBlock = Mining.mining(Coin.wallet.getAddress());
 				if(minedBlock==null) minearea.append("failed to mining\n"+"===========================================================\n");
-				else minearea.append(minedBlock.getString()+"===========================================================\n");
+				else {
+					minearea.append(minedBlock.getString()+"===========================================================\n");
+					
+					System.out.println("^^check utxos after mining ");
+					Wallet.printHashmap(Coin.blockchain.UTXOs);
+				
+				}
 				
 			}
 			else {

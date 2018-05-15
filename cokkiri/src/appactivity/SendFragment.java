@@ -41,15 +41,11 @@ public class SendFragment {
 		public void actionPerformed(ActionEvent e) {
 		
 
-			/*
+			
 			String receiver=publickeytext.getText();
 			float value=Float.valueOf(coin_valuetext.getText());
 			String password=String.valueOf(passwordtext.getPassword());
-			*/
 			
-			String receiver= "dddddddd";
-			float value = 1;
-			String password ="1234512345123456";
 			
 			//receiver, value, password 검증 내용
 			

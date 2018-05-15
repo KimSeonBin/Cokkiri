@@ -47,9 +47,7 @@ public class Transaction {
 
 	//Returns true if new transaction could be created.	
 	public boolean processTransaction() {
-		System.out.println("check22222222");
-		System.out.println(toJSONObject());
-		
+			
 		if(verifySignature() == false) {
 			System.out.println("#Transaction Signature failed to verify");
 			return false;
