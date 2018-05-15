@@ -1,0 +1,13 @@
+/bin/
+/gen
+
+*.class
+*.log
+*.ctx
+*.txt
+
+hs_err_pid*
+
+.mtj.tmp/
+
+BlockChain/
