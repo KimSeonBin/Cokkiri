@@ -1,5 +1,5 @@
-2018/05/15-22:30:30.000845 3fec Recovering log #5
-2018/05/15-22:30:30.000846 3fec Level-0 table #7: started
-2018/05/15-22:30:30.000850 3fec Level-0 table #7: 368 bytes OK
-2018/05/15-22:30:30.000859 3fec Delete type=0 #5
-2018/05/15-22:30:30.000859 3fec Delete type=3 #4
+2018/05/15-23:21:21.000295 47ac Recovering log #8
+2018/05/15-23:21:21.000295 47ac Level-0 table #10: started
+2018/05/15-23:21:21.000299 47ac Level-0 table #10: 784 bytes OK
+2018/05/15-23:21:21.000306 47ac Delete type=0 #8
+2018/05/15-23:21:21.000306 47ac Delete type=3 #6

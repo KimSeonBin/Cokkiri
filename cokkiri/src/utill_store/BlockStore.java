@@ -74,7 +74,7 @@ public class BlockStore {
 			Block block = new Block(((Number)json.get("blockSize")).intValue(), 
 					((Number)json.get("transactionCount")).intValue(), (String)json.get("blockHash"));
 			block.setBlockHeader(blockHeader);
-			
+			System.out.println(jsontx);
 			for(int i = 0; i < jsontx.size(); i++) {
 				Transaction tx = new Transaction();
 				tx.convertClassObject((JSONObject)jsontx.get(i));
