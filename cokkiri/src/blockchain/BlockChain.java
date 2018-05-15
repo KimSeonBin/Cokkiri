@@ -93,8 +93,11 @@ public class BlockChain {
 		
 		tmpAllTx.addAll(allTx);
 		
-		ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
-		ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
+		//ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
+		ArrayList<TransactionOutput> usedTxOutput = new ArrayList<TransactionOutput>();
+		HashMap<String, TransactionOutput>txOutput = new HashMap<String, TransactionOutput>();
+
+		//ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
 
 		Iterator<Transaction> itTx=tmpAllTx.iterator();
 		while(itTx.hasNext()) { //거래하나 확인
@@ -105,28 +108,30 @@ public class BlockChain {
 			if(tmp.inputs !=null) {
 				Iterator<TransactionInput> itInput = tmp.inputs.iterator();
 				while(itInput.hasNext()) {
-				    txInput.add(itInput.next());
+					usedTxOutput.add(itInput.next().UTXO);
+				    //txInput.add(itInput.next());
 				}
 			}
 			//extracts all outputs
 			Iterator<TransactionOutput> itOutput = tmp.outputs.iterator();
 			while(itOutput.hasNext()) {
-				TransactionOutput tmpOutput=itOutput.next();
-			  	txOutput.add(tmpOutput);
+				TransactionOutput txout=itOutput.next();
+				txOutput.put(txout.id, txout);
 			}
 		}
 			
 		//outputs - inputs = utxo
-		Iterator<TransactionInput> itInput = txInput.iterator();
+		Iterator<TransactionOutput> itInput = usedTxOutput.iterator();
 		while(itInput.hasNext()) {
-			txOutput.remove(itInput.next().txOutputId);
+			txOutput.remove(itInput.next().id);
 		}
-			
-		Iterator<TransactionOutput> itOutput = txOutput.iterator();
-		while(itOutput.hasNext()) {
-			TransactionOutput tmp = itOutput.next();
-			Logging.consoleLog("add UTXO~~ : "+tmp.toJSONObject());
-			UTXOs.put(tmp.id, tmp);
+		
+		Iterator<String> keys = txOutput.keySet().iterator();
+		while(keys.hasNext()) {
+			String tmpkey=keys.next();
+			UTXOs.put(tmpkey, txOutput.get(tmpkey));
+			Logging.consoleLog("add UTXO~~ : "+txOutput.get(tmpkey).toJSONObject());
+
 		}
 	}
 
