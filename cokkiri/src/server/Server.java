@@ -109,7 +109,9 @@ public class Server extends Thread {
 				tx.convertClassObject(txStr);
 				
 				if(checkTransaction(tx)) {
+					synchronized(Coin.blockchain.transactionPool) { //싱크 확인위해 잠시 추가
 					Coin.blockchain.transactionPool.add(tx);
+					}
 				}
 				
 			} catch (ParseException e) {
@@ -150,6 +152,8 @@ public class Server extends Thread {
 						//--------------------------------------------------------------------------//
 						
 						Coin.blockchain.blockchain.add(block);	
+						Coin.blockchain.removeTx(block);
+						
 						
 						//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
 						//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);

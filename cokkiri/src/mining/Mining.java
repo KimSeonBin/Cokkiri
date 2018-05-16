@@ -14,24 +14,24 @@ import wallet.Address;
 public class Mining {
 	public static Block mining(Address address) {
 		System.out.println("mining()");
-		Block block=new Block(Coin.blockchain.getPreviousBlockHash(), address); 
+		Block block=new Block(Coin.blockchain.getPreviousBlockHash(), Coin.blockchain.getPreviousBlockIndex(), address); 
+		ArrayList<Transaction> miningTx=new ArrayList<Transaction>();
+
 		int size=Coin.blockchain.transactionPool.size();
 		System.out.println("size : "+String.valueOf(size));
 		
-		ArrayList<Transaction> miningTx=new ArrayList<Transaction>();
 
 		for(int k=0;k<size;k++){
 			Transaction t = Coin.blockchain.transactionPool.get(k);
-					
-			//		Coin.blockchain.transactionPool.get();
-			System.out.println("transaction added...");
-			System.out.println(t.toJSONObject());
+			//System.out.println("transaction added...");
+			//System.out.println(t.toJSONObject());
+			
 			miningTx.add(t);
-
 			block.addTx(t);
 		}
-		System.out.println("before add this block..");
-		System.out.println(block.toJSONObject());
+
+		//System.out.println("before add this block..");
+		//System.out.println(block.toJSONObject());
 		Coin.blockchain.addBlock(block);
 		if(Coin.blockchain.isChainValid()){
 			Coin.blockchain.storeBlock(block);

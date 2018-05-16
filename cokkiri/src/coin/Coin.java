@@ -87,8 +87,6 @@ public class Coin {
 			blockchain.blockchain.add(genesisBlock);
 			blockchain.storeBlock(genesisBlock);
 		}
-		
-
 	}
 	
 }

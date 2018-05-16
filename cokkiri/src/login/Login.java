@@ -16,7 +16,7 @@ public class Login {
 		users.add(new userInfo("aaa", "aaa", "201520907"));
 		users.add(new userInfo("abc", "abc", "201520908"));
 		users.add(new userInfo("bbb", "bbb", "201520909"));
-		
+		users.add(new userInfo("xxx", "xxx", "201520000"));
 		
 		Iterator it = users.iterator();
 		

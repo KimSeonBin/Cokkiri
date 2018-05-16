@@ -11,8 +11,10 @@ import appactivity.*;
 import hash.Sha256;
 import transaction.*;
 import wallet.Address;
+import wallet.Wallet;
 
 public class Block {
+	private long index;
 	private int blockSize;
 	private BlockHeader blockHeader;
 	private int transactionCount;
@@ -24,27 +26,36 @@ public class Block {
 	public Block(long genesistime) {
 		this.blockHeader=new BlockHeader(genesistime);
 		blockHash=calculateHash();
+		index=0;
 	}
-	public Block(int blockSize, int transactionCount, String blockHash) {
+	public Block(long index, int blockSize, int transactionCount, String blockHash) {
+		this.index=index;
 		this.blockSize = blockSize;
 		this.transactionCount = transactionCount;
 		this.blockHash = blockHash;
 	}
 	
-	public Block(String prevBlockHash, Address minerAddress){
-		Transaction benefit = new Transaction(null, minerAddress, 10, null);
-		//genesisTransaction.generateSignature(coinbase.getPrivateKey());	 //signature 어떻게 해야할지 모르겠음
-		benefit.outputs.add(new TransactionOutput(benefit.receiver, benefit.value, benefit.TxId)); //manually add the Transactions Output
-		addTx(benefit);
-		Coin.blockchain.UTXOs.put(benefit.outputs.get(0).id, benefit.outputs.get(0)); //its important to store our first transaction in the UTXOs list.
-		//위에 문장 여기서 해줘야될지는 모르겟음 - 거래 유효성 인정 시점에 따라..
+	public Block(String prevBlockHash, long prevBlockIndex, Address minerAddress){
+		index=prevBlockIndex+1;
+		System.out.println("*&*& index : "+index);
+		if(index <1000) { // 채굴 보상 제한 1000개 블록으로
+			Address coinbase=new Address();
+			coinbase.setAddress(Coin.pathDir);
+			Transaction benefit = new Transaction(coinbase, minerAddress, 10, null);
+			//genesisTransaction.generateSignature(coinbase.getPrivateKey());	 //signature 어떻게 해야할지 모르겠음
+			benefit.inputs=new ArrayList<TransactionInput>();
+			benefit.outputs.add(new TransactionOutput(benefit.receiver, benefit.value, benefit.TxId)); //manually add the Transactions Output
+			addTx(benefit);
+			Coin.blockchain.UTXOs.put(benefit.outputs.get(0).id, benefit.outputs.get(0)); //its important to store our first transaction in the UTXOs list.
+			//위에 문장 여기서 해줘야될지는 모르겟음 - 거래 유효성 인정 시점에 따라..
+		}
 		this.blockHeader=new BlockHeader(prevBlockHash);
 	}
 
 	public boolean addTx(Transaction transaction) {
 		if(transaction == null) return false;		
-		if(blockHeader != null) { //null 인경우는 benefit tx
-			if((!"0".equals(blockHeader.getPreviousBlockHash()))) {
+		if(blockHeader != null) { //null인 경우는 benefit tx
+			if((!"0".equals(blockHeader.getPreviousBlockHash()))) { //genesisblock 아닌 경우
 				/*
 				if((transaction.processTransaction() != true)) {
 					System.out.println("Transaction failed to process. Discarded.");
@@ -54,7 +65,7 @@ public class Block {
 				*/
 			}
 		}
-
+		transactionCount++;
 		transactions.add(transaction);
 		System.out.println("Transaction Successfully added to Block");
 		return true;
@@ -64,6 +75,7 @@ public class Block {
 		int count = transactions.size();
 		ArrayList<String> previousTreeLayer=new ArrayList<String>();
 		for(Transaction t : transactions){
+			System.out.println("tx : "+t.toJSONObject());
 			previousTreeLayer.add(t.TxId);
 		}
 		ArrayList<String> treeLayer = previousTreeLayer;
@@ -76,33 +88,55 @@ public class Block {
 			previousTreeLayer=treeLayer;
 		}
 		String merkleRoot=(treeLayer.size()==1)?treeLayer.get(0) : "";
+		System.out.println("merkle root : "+merkleRoot);
 		return merkleRoot;
 	}
 
 	public String calculateHash() {
 		String hash = Sha256.hash( 
 				blockHeader.getPreviousBlockHash()+
-				Long.toString(blockHeader.timestamp) +
+				Long.toString(blockHeader.getTimestamp()) +
 				Long.toString(blockHeader.nonce) + 
-				blockHeader.merkleRootHash
+				blockHeader.getMerkleRootHash()
 				);
 		return hash;
 	}
 
 	//매개변수로 이전 블록 해쉬 값 받아 블록 검증, 추가할 요소 있으면 추가 필요
-	public boolean isBlockValid(String prevBlockHash){
-		if(!(prevBlockHash.equals(blockHeader.getPreviousBlockHash()))) return false;
-		
-		if(!isBlockValid()) return false; 
+	public boolean isBlockValid(String prevBlockHash, long prevBlockIndex){
+		System.out.println("---isBlockvalid---");
+		if(!(prevBlockHash.equals(blockHeader.getPreviousBlockHash()))) {
+			System.out.println("invalid block TT 1");
+			return false;
+		}
+		if(!(index==prevBlockIndex+1)) {
+			System.out.println("invalid block TT 3");
+			return false;
+		}
+		if(!isBlockValid()) {
+			System.out.println("invalid block TT 2");
+			return false; 
+		}
 		
 		return true;
-		
 	}
 	
 	//이전 블록 해쉬 값 체크 말고 나머지에 대한 블록 검증, 추가할 요소 있으면 추가 필요
 	public boolean isBlockValid() {
+		System.out.println("---isBlockValid()---");
 		for(Transaction t: transactions) {
-			if (t.isTransactionValid() == false) return false;
+			if (t.isTransactionValid() == false) {
+				System.out.println("invalid block 1");
+				return false;
+			}
+		}
+		if(index > 1000) {  // 채굴보상 체크
+			for(Transaction t: transactions) {
+				if(t.sender.equals("null")) {
+					System.out.println("invalid block2");
+					return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -120,7 +154,7 @@ public class Block {
 		
 		log.Logging.consoleLog("Block Mined!");
 		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
-		printBlock();
+		System.out.println(getString());
 		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
 		System.out.println(toJSONObject());
 		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
@@ -135,17 +169,6 @@ public class Block {
 		this.blockHeader = blockHeader;
 	}
 
-	public boolean printBlock(){
-		
-		getBlockHeader().printBlockHeader();
-		
-		if(transactions==null) log.Logging.consoleLog("null");
-		else{
-			for(int i=0;i<transactions.size();i++) log.Logging.consoleLog((transactions.get(i)).getString());
-		}
-		return true;
-	}
-	
 	public String getString(){
 		String blockStr="";
 		/*blockStr+=getBlockHeader().getString()+String.valueOf(transactionCount)+"\r\n";
@@ -154,27 +177,35 @@ public class Block {
 			for(int i=0;i<transactions.size();i++) blockStr+=transactions.get(i).getString();
 		}
 		return blockStr+"\r\n";*/
+		blockStr+="index : "+String.valueOf(index)+"\r\n";
 		blockStr+=getBlockHeader().getString();
 		for(int i=0;i<transactions.size();i++) blockStr+="transaction "+String.valueOf(i)+transactions.get(i).getString();
 		
 		return blockStr;
 	}
 
-	public String getBlockHash() {
-		return blockHash;
-	}
+	public String getBlockHash() {return blockHash;}
+	
+	public long getBlockIndex() {return index;}
 	
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
+		json.put("index", index);
 		json.put("blockSize", blockSize);
 		json.put("blockHeader", blockHeader.toJSONObject());
 		json.put("transactionCount", transactionCount);
 		json.put("transactions", convertTX_toJSONArray());
 		json.put("blockHash", blockHash);
+		
+		System.out.println("!!new block json!!");
+		System.out.println(json);
 		return json;
 	}
 	
 	public void convertClassObject(JSONObject json) {
+		System.out.println("!!before json to block!!");
+		System.out.println(json);
+		this.index=((Number)json.get("index")).longValue();
 		this.blockSize = ((Number)json.get("blockSize")).intValue();
 		this.blockHeader = new BlockHeader();
 		blockHeader.convertClassObject((JSONObject)json.get("blockHeader"));
@@ -192,8 +223,6 @@ public class Block {
 			tx.convertClassObject((JSONObject)txJson);
 			this.transactions.add(tx);
 		}
-		
-		
 	}
 	
 	private JSONArray convertTX_toJSONArray() {
@@ -203,4 +232,5 @@ public class Block {
 		}
 		return array;
 	}
+	
 }

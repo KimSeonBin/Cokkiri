@@ -34,9 +34,7 @@ public class Transaction {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		this.timestamp=timestamp.getTime();	
 		
-		if(sender==null) {
-			this.sender = new Address();
-			this.sender.setAddress("null");
+		if(sender.getString().equals(Coin.pathDir)) { //benefit tx
 			TxId=calulateTxId();
 		}
 	}
@@ -96,8 +94,41 @@ public class Transaction {
 	
 	// transaction 유효성 검증 위함.. 추가할 요소 잇으면 추가 필요
 	public boolean isTransactionValid() {
-		if(verifySignature() == false) return false;
-		if(getInputsValue() < Coin.minimumTransaction)return false;
+		System.out.println("--------isTransactionValid()----------");
+		if(sender.getString().equals(Coin.pathDir)) {
+			
+			if(!inputs.isEmpty()){
+				System.out.println("i'm invalid 1");
+				return false;
+			}
+			if(value !=10) {
+				System.out.println("i'm invalid 01");
+				return false;
+			}
+			/*if(inputs==null && value==10) {
+				System.out.println("i'm benefit");
+				return true;
+			}
+			else {
+				System.out.println("i'm invalid 1");
+				return false;
+			}*/
+			return true;
+		}
+		/*else if(verifySignature()==true && getInputsValue() < Coin.minimumTransaction) {
+			System.out.println("i'm valid");
+			return true;
+		}*/
+		
+		if(verifySignature() == false) {
+			System.out.println("i'm invalid 2");
+			return false;
+		}
+		if(getInputsValue() < Coin.minimumTransaction) {
+			System.out.println("i'm invalid 3");
+			return false;
+		}
+		System.out.println("i'm valid");
 		return true;
 	}
 		

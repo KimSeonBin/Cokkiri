@@ -71,7 +71,7 @@ public class BlockStore {
 			BlockHeader blockHeader = new BlockHeader();
 			blockHeader.convertClassObject(json_blockheader);
 			
-			Block block = new Block(((Number)json.get("blockSize")).intValue(), 
+			Block block = new Block(((Number)json.get("index")).longValue(), ((Number)json.get("blockSize")).intValue(), 
 					((Number)json.get("transactionCount")).intValue(), (String)json.get("blockHash"));
 			block.setBlockHeader(blockHeader);
 			

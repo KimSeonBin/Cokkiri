@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -46,19 +47,25 @@ public class SendFragment {
 			float value=Float.valueOf(coin_valuetext.getText());
 			String password=String.valueOf(passwordtext.getPassword());
 			
+			//receiver, value, password 검증 내용//
+			if(!checksendinputs(receiver, password)) {
+				String message = receiver + "와의 거래 생성을 실패했습니다.";
+	            JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
+				log.Logging.consoleLog("failed to create transaction");
+				return;
+			}
 			
-			//receiver, value, password 검증 내용
-			
-			Coin.wallet = new Wallet(Coin.id+password, false);
-			
+			Wallet sender = new Wallet(Coin.id+password, false);
 			Address receiverAdd=new Address();
 			receiverAdd.setAddress(receiver);
-			Transaction t=createTransaction.createTx(Coin.wallet, receiverAdd, value);
+			Transaction t=createTransaction.createTx(sender, receiverAdd, value);
 			
 			if(t!=null) {
 				//-------------tx전파---------------//
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
-				
+				String message = receiver + "와의 거래 생성을 성공했습니다.";
+	            JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
+	            
 				new Thread() {
 					public void run() {
 						try {
@@ -68,15 +75,25 @@ public class SendFragment {
 				}.start();
 				//--------------------------------//
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
+				
 				Coin.blockchain.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 			}else {
+				String message = receiver + "와의 거래 생성을 실패했습니다.";
+	            JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
 				log.Logging.consoleLog("failed to create transaction");
 			}
-
-			//wallet private key 제거 과정 필요
 			
-			//////////////////////////////////////////////////////////////////////
 		}
+	}
+	
+	private boolean checksendinputs(String receiver, String password) {
+		if(receiver.length()!=28) {
+			return false;
+		}
+		if(Coin.wallet.authenticate(password)!=1) { //비밀 번호 입력 실패
+			return false;
+		}
+		return true;
 	}
 }
