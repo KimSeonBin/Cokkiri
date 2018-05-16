@@ -94,7 +94,7 @@ public class Wallet {
 		System.out.println("***function getBalnace()****");
 		for (Map.Entry<String, TransactionOutput> item: Coin.blockchain.UTXOs.entrySet()){
 			TransactionOutput UTXO = item.getValue();
-
+			System.out.println("UTXO : "+UTXO.toJSONObject());
 			if(UTXO.isMine(address)) { //if output belongs to me ( if coins belong to me )
 	           	//if(removeUTXOs.get(item.getKey())==null) {
 	           		UTXOs.put(UTXO.id,UTXO); //add it to our list of unspent transactions.

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import client.Client;
+import coin.Coin;
 import log.Logging;
 import transaction.Transaction;
 import transaction.TransactionInput;
@@ -85,6 +86,7 @@ public class BlockChain {
 	
 	//block에서 utxo 가져오기
 	public void getUTXOs() {
+		System.out.println("GETUTXOS//");
 		if(allTx==null) return;
 		
 		ArrayList<Transaction> tmpAllTx = new ArrayList<Transaction>();
@@ -171,17 +173,34 @@ public class BlockChain {
 	
 
 	
-	//block을 매개변수로 받아 transaction pool 에 겹치는 블록 제거 (block 전파 받은 경우 수행, 아직 호출하지는 않음)
 	public void removeTx(Block newblock) {
-		ArrayList<Transaction> transactions = newblock.transactions;
-		Transaction tmp=new Transaction();
-		for(int i=0;i<transactions.size();i++) {
-			tmp=transactions.get(i);
-			if(transactionPool.contains(tmp))transactionPool.remove(tmp);
-			/////////////////////
-			// + 현재 채굴중인 블록있다면 그것에 대해서도 해야한다
-			/////////////////////
-		}
-	}
-		
+	      ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+	      transactions.addAll(newblock.transactions);
+	      Transaction tmp=new Transaction();
+	      int size=transactions.size();
+	      System.out.println("@@@removeTx()");
+	      ArrayList<Transaction> txpool = new ArrayList<Transaction>();
+	      txpool.addAll(Coin.blockchain.transactionPool);
+	      for(int i=0;i<size;i++) {
+	         tmp=transactions.get(i);
+	         System.out.println(tmp.toJSONObject());
+	         //synchronized(Coin.blockchain.transactionPool) { //싱크 확인위해 잠시 추가   
+	         Iterator it = txpool.iterator();
+	         while(it.hasNext()) {
+	            Transaction tmpp = (Transaction) it.next();
+	            if(tmp.TxId.equals(tmpp.TxId)) transactionPool.remove(tmpp);
+	         //}
+	         }
+	         /*
+	         transactionPool.remove(tmp);
+	         if(transactionPool.contains(tmp)) {
+	            System.out.println("removed...");
+	            transactionPool.remove(tmp);
+	         }*/
+	         /////////////////////
+	         // + 현재 채굴중인 블록있다면 그것에 대해서도 해야한다
+	         /////////////////////
+	      }
+	      System.out.println("------------------------");
+	   }		
 }

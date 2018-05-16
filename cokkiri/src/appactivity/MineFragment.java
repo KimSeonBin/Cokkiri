@@ -42,7 +42,7 @@ public class MineFragment {
 				if(minedBlock==null) minearea.append("failed to mining\n"+"===========================================================\n");
 				else {
 					minearea.append(minedBlock.getString()+"===========================================================\n");
-					
+					Coin.blockchain.getUTXOs();
 					System.out.println("^^check utxos after mining ");
 					Wallet.printHashmap(Coin.blockchain.UTXOs);
 				

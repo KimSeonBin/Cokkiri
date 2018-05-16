@@ -29,14 +29,14 @@ public class Coin {
 	
 	//user에게 pw 입력받음 (현재는 3회로 제한)++++++++++++++++++++++++++++
 	public static String getPW() {
-		Scanner scn = new Scanner(System.in);
+//		Scanner scn = new Scanner(System.in);
 		String passwd;
 		
 		for(int i=0;i<3;i++) {
 			System.out.print("password : ");
-			passwd=scn.next();
-			scn.nextLine();
-			//passwd = JOptionPane.showInputDialog("계좌 식별자를 입력하세요.");
+//			passwd=scn.next();
+//			scn.nextLine();
+			passwd = JOptionPane.showInputDialog("계좌 식별자를 입력하세요.");
 			if(!checkPWInput(passwd)) {
 				System.out.println("it's too short(16 letters or more)");
 				continue;

@@ -31,7 +31,7 @@ public class MineView extends JPanel{
 	}
 
 	private void initComponent() {
-		this.setPreferredSize(new Dimension(800, 700));
+//		this.setPreferredSize(new Dimension(800, 300));
 		this.setBorder(BorderFactory.createEmptyBorder(10, left_margin, 0, right_margin));
 		this.setOpaque(false);
 		width_size -= (left_margin + right_margin);
@@ -56,7 +56,7 @@ public class MineView extends JPanel{
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel_button.add(button_mine, bmk);
 		
-		this.add(panel_button, BorderLayout.AFTER_LAST_LINE);
+		this.add(panel_button, BorderLayout.NORTH);
 	}
 	
 	public JTextArea getMinearea() {

@@ -150,7 +150,9 @@ public class Server extends Thread {
 						//--------------------------------------------------------------------------//
 						
 						Coin.blockchain.blockchain.add(block);	
-						Coin.blockchain.storeBlock(block);
+						Coin.blockchain.removeTx(block);
+						
+						
 						//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
 						//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
 						//---------------------------------------------------------------------------//

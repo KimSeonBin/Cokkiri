@@ -40,7 +40,7 @@ public class MainView extends JFrame{
 	
 	private void initComponent() {
 		this.setVisible(true);
-		this.setSize(800, 800);
+		this.setSize(800, 700);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Dimension frameSize = this.getSize();

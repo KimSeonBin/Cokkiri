@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -47,10 +48,6 @@ public class SendFragment {
 			String password=String.valueOf(passwordtext.getPassword());
 			
 			
-//			String receiver= "dddddddd";
-//			float value = 1;
-//			String password ="1234512345123456";
-//			
 			//receiver, value, password 검증 내용
 			
 			Coin.wallet = new Wallet(Coin.id+password, false);
@@ -60,10 +57,10 @@ public class SendFragment {
 			Transaction t=createTransaction.createTx(Coin.wallet, receiverAdd, value);
 			
 			if(t!=null) {
-				flushText();
 				//-------------tx전파---------------//
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
-				
+				String message = receiver + "와의 거래 생성을 성공했습니다.";
+				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
 				new Thread() {
 					public void run() {
 						try {
@@ -76,6 +73,8 @@ public class SendFragment {
 				Coin.blockchain.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 			}else {
+				String message = receiver + "와의 거래 생성을 실패했습니다.";
+				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
 				log.Logging.consoleLog("failed to create transaction");
 			}
 
@@ -83,11 +82,5 @@ public class SendFragment {
 			
 			//////////////////////////////////////////////////////////////////////
 		}
-	}
-	
-	private void flushText() {
-		coin_valuetext.setValue(null);
-		publickeytext.setText(null);
-		passwordtext.setText(null);
 	}
 }
