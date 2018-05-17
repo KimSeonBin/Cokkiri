@@ -11,6 +11,7 @@ import appview.MineView;
 import blockchain.Block;
 import coin.Coin;
 import mining.Mining;
+import wallet.Wallet;
 
 public class MineFragment {
 	private MineView mineview;
