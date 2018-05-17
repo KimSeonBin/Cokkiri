@@ -12,19 +12,24 @@ import utill_network.MsgType;
 import wallet.Address;
 
 public class Mining {
+	
+	public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
+
 	public static Block mining(Address address) {
 		System.out.println("mining()");
 		Block block=new Block(Coin.blockchain.getPreviousBlockHash(), Coin.blockchain.getPreviousBlockIndex(), address); 
 		ArrayList<Transaction> miningTx=new ArrayList<Transaction>();
 
-		int size=Coin.blockchain.transactionPool.size();
+		//int size=Coin.blockchain.transactionPool.size();
+		int size = transactionPool.size();
 		System.out.println("size : "+String.valueOf(size));
 		
 
 		for(int k=0;k<size;k++){
-			Transaction t = Coin.blockchain.transactionPool.get(k);
-			//System.out.println("transaction added...");
-			//System.out.println(t.toJSONObject());
+			//Transaction t = Coin.blockchain.transactionPool.get(k);
+			Transaction t = transactionPool.get(k);
+			System.out.println("transaction added...");
+			System.out.println(t.toJSONObject());
 			
 			miningTx.add(t);
 			block.addTx(t);
@@ -46,8 +51,10 @@ public class Mining {
 			//----------------------------------------------//
 			Iterator<Transaction> it = miningTx.iterator();
 			while(it.hasNext()) {
-				Coin.blockchain.transactionPool.remove(it.next());
+				//Coin.blockchain.transactionPool.remove(it.next());
+				transactionPool.remove(it.next());
 			}
+			
 			return block;
 		}
 		else {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="Cokkiri/src"/>
-	<classpathentry kind="lib" path="Cokkiri/bcprov-jdk15on-159.jar"/>
-	<classpathentry kind="lib" path="Cokkiri/bouncycastle.jar"/>
-	<classpathentry kind="lib" path="Cokkiri/commons-codec-1.11.jar"/>
-	<classpathentry kind="lib" path="Cokkiri/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="Cokkiri/leveldbjni-all-1.8.jar"/>
-	<classpathentry kind="output" path="Cokkiri/bin"/>
+	<classpathentry kind="src" path="cokkiri/src"/>
+	<classpathentry kind="lib" path="cokkiri/bcprov-jdk15on-159.jar"/>
+	<classpathentry kind="lib" path="cokkiri/bouncycastle.jar"/>
+	<classpathentry kind="lib" path="cokkiri/commons-codec-1.11.jar"/>
+	<classpathentry kind="lib" path="cokkiri/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="cokkiri/leveldbjni-all-1.8.jar"/>
+	<classpathentry kind="output" path="cokkiri/bin"/>
 </classpath>

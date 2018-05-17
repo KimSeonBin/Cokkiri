@@ -9,7 +9,9 @@ import org.json.simple.JSONObject;
 import coin.Coin;
 import appactivity.*;
 import hash.Sha256;
+import log.Logging;
 import transaction.*;
+import utill_store.BlockStore;
 import wallet.Address;
 import wallet.Wallet;
 
@@ -102,7 +104,9 @@ public class Block {
 		return hash;
 	}
 
-	//매개변수로 이전 블록 해쉬 값 받아 블록 검증, 추가할 요소 있으면 추가 필요
+	/**
+	 * 매개변수로 이전 블록 해쉬 값과 인덱스 받아 블록 검증, 추가할 요소 있으면 추가 필요
+	 */
 	public boolean isBlockValid(String prevBlockHash, long prevBlockIndex){
 		System.out.println("---isBlockvalid---");
 		if(!(prevBlockHash.equals(blockHeader.getPreviousBlockHash()))) {
@@ -121,7 +125,9 @@ public class Block {
 		return true;
 	}
 	
-	//이전 블록 해쉬 값 체크 말고 나머지에 대한 블록 검증, 추가할 요소 있으면 추가 필요
+	/**
+	 * 블록의 트랜잭션 체크, 블록 인덱스 확인하여 채굴보상 없어야한다면 해당사항 체크
+	 */
 	public boolean isBlockValid() {
 		System.out.println("---isBlockValid()---");
 		for(Transaction t: transactions) {
@@ -130,7 +136,7 @@ public class Block {
 				return false;
 			}
 		}
-		if(index > 1000) {  // 채굴보상 체크
+		if(index > 1000) {  // 채굴보상없어야 하는 경우 없는지 체크
 			for(Transaction t: transactions) {
 				if(t.sender.equals("null")) {
 					System.out.println("invalid block2");
@@ -160,23 +166,14 @@ public class Block {
 		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
 
 	}
-	
-	public BlockHeader getBlockHeader() {
-		return blockHeader;
-	}
-
-	public void setBlockHeader(BlockHeader blockHeader) {
-		this.blockHeader = blockHeader;
-	}
+		
+	public long getBlockIndex() {return index;}
+	public String getBlockHash() {return blockHash;}
+	public BlockHeader getBlockHeader() {return blockHeader;}
+	public void setBlockHeader(BlockHeader blockHeader) {this.blockHeader = blockHeader;}
 
 	public String getString(){
 		String blockStr="";
-		/*blockStr+=getBlockHeader().getString()+String.valueOf(transactionCount)+"\r\n";
-		if(transactions==null) blockStr+="null";
-		else{
-			for(int i=0;i<transactions.size();i++) blockStr+=transactions.get(i).getString();
-		}
-		return blockStr+"\r\n";*/
 		blockStr+="index : "+String.valueOf(index)+"\r\n";
 		blockStr+=getBlockHeader().getString();
 		for(int i=0;i<transactions.size();i++) blockStr+="transaction "+String.valueOf(i)+transactions.get(i).getString();
@@ -184,10 +181,6 @@ public class Block {
 		return blockStr;
 	}
 
-	public String getBlockHash() {return blockHash;}
-	
-	public long getBlockIndex() {return index;}
-	
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
 		json.put("index", index);
@@ -203,8 +196,9 @@ public class Block {
 	}
 	
 	public void convertClassObject(JSONObject json) {
-		System.out.println("!!before json to block!!");
-		System.out.println(json);
+		
+		Logging.consoleLog("function call - convertClassObject()");
+		
 		this.index=((Number)json.get("index")).longValue();
 		this.blockSize = ((Number)json.get("blockSize")).intValue();
 		this.blockHeader = new BlockHeader();

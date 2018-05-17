@@ -17,7 +17,7 @@ import wallet.Address;
 public class BlockChain {
 	public static List<Block> blockchain= new ArrayList<Block>();
 	public static String pathDir;
-	public static int DIFFICULTY = 3; //채굴 난이도
+	public static int DIFFICULTY; //채굴 난이도
 
 	//public static HashMap<String, Transaction> transactionPool = new HashMap<String, Transaction>();
 	public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
@@ -26,8 +26,9 @@ public class BlockChain {
 	public static ArrayList<Transaction> allTx=new ArrayList<Transaction>();
 	private static int checkBlocknum=0;
 	
-	public BlockChain(String path) {
+	public BlockChain(String path, int difficulty) {
 		pathDir=path;
+		DIFFICULTY = difficulty;
 	}
 
 	public boolean isChainValid() { //블록 헤더의 previousblockheader항목과 이전 블록의 해쉬값을 비교하여 블록체인 검증
@@ -203,37 +204,4 @@ public class BlockChain {
 	public void remove(Block block) {
 		blockchain.remove(block);
 	}
-
-	//block을 매개변수로 받아 transaction pool 에 겹치는 블록 제거 (block 전파 받은 경우 수행, 아직 호출하지는 않음)
-	public void removeTx(Block newblock) {
-		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		transactions.addAll(newblock.transactions);
-		Transaction tmp=new Transaction();
-		int size=transactions.size();
-		System.out.println("@@@removeTx()");
-		ArrayList<Transaction> txpool = new ArrayList<Transaction>();
-		txpool.addAll(Coin.blockchain.transactionPool);
-		for(int i=0;i<size;i++) {
-			tmp=transactions.get(i);
-			System.out.println(tmp.toJSONObject());
-			//synchronized(Coin.blockchain.transactionPool) { //싱크 확인위해 잠시 추가	
-			Iterator it = txpool.iterator();
-			while(it.hasNext()) {
-				Transaction tmpp = (Transaction) it.next();
-				if(tmp.TxId.equals(tmpp.TxId)) transactionPool.remove(tmpp);
-			//}
-			}
-			/*
-			transactionPool.remove(tmp);
-			if(transactionPool.contains(tmp)) {
-				System.out.println("removed...");
-				transactionPool.remove(tmp);
-			}*/
-			/////////////////////
-			// + 현재 채굴중인 블록있다면 그것에 대해서도 해야한다
-			/////////////////////
-		}
-		System.out.println("------------------------");
-	}
-		
 }

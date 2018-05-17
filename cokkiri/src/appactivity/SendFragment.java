@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import coin.Coin;
+import mining.Mining;
 import appview.SendView;
 import client.Client;
 import transaction.Transaction;
@@ -65,7 +66,7 @@ public class SendFragment {
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
 				String message = receiver + "와의 거래 생성을 성공했습니다.";
 	            JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
-	            
+
 				new Thread() {
 					public void run() {
 						try {
@@ -74,13 +75,13 @@ public class SendFragment {
 					}
 				}.start();
 				//--------------------------------//
-				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
 				
-				Coin.blockchain.transactionPool.add(t);
+				Mining.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 			}else {
 				String message = receiver + "와의 거래 생성을 실패했습니다.";
 	            JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
+
 				log.Logging.consoleLog("failed to create transaction");
 			}
 			
@@ -89,9 +90,11 @@ public class SendFragment {
 	
 	private boolean checksendinputs(String receiver, String password) {
 		if(receiver.length()!=28) {
+			//System.out.println("*1*");
 			return false;
 		}
-		if(Coin.wallet.authenticate(password)!=1) { //비밀 번호 입력 실패
+		if(Coin.wallet.authenticate(Coin.id+password)!=1) { //비밀 번호 입력 실패
+			//System.out.println("*2*");
 			return false;
 		}
 		return true;

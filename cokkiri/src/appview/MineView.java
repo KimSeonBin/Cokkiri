@@ -31,7 +31,7 @@ public class MineView extends JPanel{
 	}
 
 	private void initComponent() {
-		this.setPreferredSize(new Dimension(800, 700));
+//		this.setPreferredSize(new Dimension(800, 300));
 		this.setBorder(BorderFactory.createEmptyBorder(10, left_margin, 0, right_margin));
 		this.setOpaque(false);
 		width_size -= (left_margin + right_margin);

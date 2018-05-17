@@ -1,17 +1,13 @@
 package wallet;
 
 import java.security.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import transaction.*;
 import coin.Coin;
+import log.Logging;
 
 public class Wallet {
 	private PrivateKey privateKey;
@@ -35,13 +31,14 @@ public class Wallet {
 				System.out.println("[error]wallet.java >> keypair is null");
 				return;
 			}else { 
-				if(!KeyUtil.checkKeyfile(Coin.pathDir+"/key_"+Coin.id)) {
-					KeyUtil.SaveKeyPair(Coin.pathDir+"/key_"+Coin.id, keyPair, passwd);
-					KeyUtil.SaveKeyPairHash(Coin.pathDir+"/key_"+Coin.id, KeyUtil.hashKeyPair(keyPair));
+				if(!KeyUtil.checkKeyfile(Coin.pathDir+"/"+Coin.id+"/key")) {
+					KeyUtil.SaveKeyPair(Coin.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
+
+					KeyUtil.SaveKeyPairHash(Coin.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
 				}
 			}
 		}
-		else keyPair = KeyUtil.LoadKeyPair(Coin.pathDir+"/key_"+Coin.id, passwd);
+		else keyPair = KeyUtil.LoadKeyPair(Coin.pathDir+"/"+Coin.id+"/key", passwd);
 		
 		privateKey=keyPair.getPrivate();
 		publicKey=keyPair.getPublic();
@@ -50,7 +47,7 @@ public class Wallet {
 	
 	//public key만 load
 	public Wallet() {
-		publicKey=KeyUtil.LoadPubKey(Coin.pathDir+"/key_"+Coin.id);
+		publicKey=KeyUtil.LoadPubKey(Coin.pathDir+"/"+Coin.id+"/key");
 		address=new Address(publicKey);
 	}
 	
@@ -59,12 +56,15 @@ public class Wallet {
 	 * @param passwd
 	 * @return -1(인증 실패), 0(키파일 없음), 1(인증 성공)
 	 */
-	public static int authenticate(String passwd){
-		if(KeyUtil.checkKeyfile(Coin.pathDir+"/key_"+Coin.id)){
+	public int authenticate(String passwd){
+		System.out.println("pw : "+passwd);
+		if(KeyUtil.checkKeyfile(Coin.pathDir+"/"+Coin.id+"/key")){
 			KeyPair check=KeyUtil.generateKeyPair(passwd);
 			String checkHash=KeyUtil.hashKeyPair(check);
-			String keyPairHash=KeyUtil.LoadKeyPairHash(Coin.pathDir+"/key_"+Coin.id);
+			String keyPairHash=KeyUtil.LoadKeyPairHash(Coin.pathDir+"/"+Coin.id+"/key");
 			if(!checkHash.equals(keyPairHash)){
+				System.out.println("checkHash "+checkHash);
+				System.out.println("keypairhash "+keyPairHash);
 				return -1; //인증 실패
 			}
 			return 1; //인증 성공
@@ -91,7 +91,7 @@ public class Wallet {
 	 */
 	public float getBalance() {
 		float total = 0;	
-		System.out.println("***function getBalnace()****");
+		Logging.consoleLog("function call - getBalnace()");
 		for (Map.Entry<String, TransactionOutput> item: Coin.blockchain.UTXOs.entrySet()){
 			TransactionOutput UTXO = item.getValue();
 			System.out.println("UTXO : "+UTXO.toJSONObject());

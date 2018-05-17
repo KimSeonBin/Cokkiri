@@ -3,6 +3,8 @@ package transaction;
 import java.security.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONArray;
@@ -92,10 +94,14 @@ public class Transaction {
 		return true;
 	}
 	
-	// transaction 유효성 검증 위함.. 추가할 요소 잇으면 추가 필요
+	/**
+	 *  transaction 유효성 검증 위함.. 추가할 요소 잇으면 추가 필요
+	 * @return
+	 */
 	public boolean isTransactionValid() {
 		System.out.println("--------isTransactionValid()----------");
-		if(sender.getString().equals(Coin.pathDir)) {
+		
+		if(sender.getString().equals(Coin.pathDir)) { //채굴보상tx 확인
 			
 			if(!inputs.isEmpty()){
 				System.out.println("i'm invalid 1");
@@ -105,20 +111,8 @@ public class Transaction {
 				System.out.println("i'm invalid 01");
 				return false;
 			}
-			/*if(inputs==null && value==10) {
-				System.out.println("i'm benefit");
-				return true;
-			}
-			else {
-				System.out.println("i'm invalid 1");
-				return false;
-			}*/
 			return true;
 		}
-		/*else if(verifySignature()==true && getInputsValue() < Coin.minimumTransaction) {
-			System.out.println("i'm valid");
-			return true;
-		}*/
 		
 		if(verifySignature() == false) {
 			System.out.println("i'm invalid 2");
@@ -128,6 +122,28 @@ public class Transaction {
 			System.out.println("i'm invalid 3");
 			return false;
 		}
+		
+		Coin.blockchain.getAllTx();
+		HashMap<String, Transaction> alltx = new HashMap<String, Transaction>();
+		Iterator it=Coin.blockchain.allTx.iterator();
+		while(it.hasNext()) {
+			Transaction t = (Transaction) it.next();
+			alltx.put(t.TxId, t);
+		}
+		
+		for(int i=0;i<inputs.size();i++) { 
+			TransactionOutput inputUtxo = inputs.get(i).UTXO;
+			if(!sender.getString().equals(inputUtxo.receiver.getString())) { //거래생성자와 txinput utxo 소유자 확인
+				System.out.println("i'm invalid 4");
+				return false;
+			}
+			if(alltx.get(inputUtxo.parentTxId).timestamp >= timestamp) {
+				System.out.println("i'm invalid 5");
+				return false;
+			}
+		}
+		
+		
 		System.out.println("i'm valid");
 		return true;
 	}
@@ -161,17 +177,22 @@ public class Transaction {
 		
 	//Signs all the data we dont wish to be tampered with.
 	public void generateSignature(PrivateKey privateKey) {
-		String data = sender.getString()+ receiver.getString() + Float.toString(value) + Long.toString(timestamp)	;
+		String data = sender.getString()+ receiver.getString() + Float.toString(value) + Long.toString(timestamp);
 		signature = ECDSAUtil.applyECDSASig(privateKey,data);		
 	}
 	
 	//Verifies the data we signed hasnt been tampered with
 	public boolean verifySignature() {
 		String data = sender.getString() + receiver.getString() + Float.toString(value) + Long.toString(timestamp);
-		if(Coin.wallet.getAddress().equals(sender)) {
+		if(Coin.wallet.getAddress().getString().equals(sender.getString())) {
 			return ECDSAUtil.verifyECDSASig(Coin.wallet.getPublicKey(), data, signature);
 		}
-		else return false;
+		else {
+			System.out.println("hi");
+			System.out.println(	Coin.wallet.getAddress().getString());
+			System.out.println(sender.getString());
+			return false;
+		}
 	}
 		
 	public Address getSender() {return sender;}
