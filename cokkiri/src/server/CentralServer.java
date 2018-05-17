@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import utill_network.Peer;
+import utill_network.PeerList;
 import utill_network.PeerQueue;
 
 public class CentralServer {
@@ -18,12 +19,16 @@ public class CentralServer {
 	private final static int numThreads = 30;
 	private static PeerQueue<Socket> peerQueue; 
 	private static HashMap<String, Peer> peerList;
+	private static ArrayList<Peer> peerArray;
 	
 	//putPeerList
 	private static void putPeerList() {
-		peerList.put("1000",new Peer("1000","192.168.10.4",3333));
-		//peerList.put("1001",new Peer("1001","192.168.10.5",3333));
-		peerList.put("1002",new Peer("1002","192.168.10.6",3333));
+		peerArray=PeerList.getPeerList();
+		
+		for(Peer peer : peerArray) {
+			peerList.put(peer.getId(), peer);
+		}
+		
 	}
 	
 

@@ -30,28 +30,15 @@ public class Server extends Thread {
 
 	public Server(Socket socket) {
 		this.socket = socket;
+		connectAll();
 	}
 	
 	
 	public void run() {
 		
-		boolean isexist = true;
-		
-		
-		try {
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));	
-			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-			objectInputStream = new ObjectInputStream(socket.getInputStream());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
 		//---------------------처음 클라이언트로 부터 ping 받는 부분-------------------------------------------//
 		String clientMsg=readMessage();
-		System.out.println("[server] peer id : "+clientMsg);
-		
+		System.out.println("[server] connected peer id : "+clientMsg+"...................");
 		
 		if(clientMsg.equals(MsgType.DNS_MSG)) {
 			sendMessage(MsgType.DNS_MSG);
@@ -60,10 +47,10 @@ public class Server extends Thread {
 		
 		//----------peerlist를 검색해  기존노드, 새로운노드인지 msg 보냄------------------//
 		Peer conPeer=new Peer(clientMsg,socket.getInetAddress().getHostAddress(),socket.getLocalPort());
+		boolean isexist = true;
 		synchronized(this){
 			isexist=CentralServer.isexistPeer(conPeer);
 		}
-		
 		
 		if(isexist) {//서버 peerlist에 있던 기존노드일경우 클라이언트에게 기존노드임을 알림
 			sendMessage(MsgType.PREEXISTNODE_MSG);			
@@ -78,8 +65,10 @@ public class Server extends Thread {
 				}
 			}
 			else {
+				System.out.println("[ServerErr] peerAuthentication Fail");
+				disconnectAll();
 				return;
-				}
+			}
 		}
 		//--------------------------------------------------------------------//
 		
@@ -87,7 +76,7 @@ public class Server extends Thread {
 		disconnectAll();
 		
 	}
-	
+
 	//클라이언트가 원하는 작업 처리. 
 	public void process() {
 	
@@ -97,80 +86,75 @@ public class Server extends Thread {
 		
 		
 		if(clientMsg.equals(MsgType.TRANSACTION_MSG)) {
-			
-			System.out.println("[server] received data\r\n =>" );
-			
-			JSONObject txStr = null;
-			try {
-				txStr = (JSONObject) new JSONParser().parse(readMessage());
-				System.out.println("Json : "+txStr);
-				
-				Transaction tx = new Transaction();
-				tx.convertClassObject(txStr);
-				
-				if(checkTransaction(tx)) {
-					Coin.blockchain.transactionPool.add(tx);
-				}
-				
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			/*
-			if(checkTransaction(tx)) {
-				//---------------------------NEW transaction 처리부분 추가------------------------//
-				//---------------------------------------------------------------------------//
-				
-				//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
-				Client.broadcast(MsgType.TRANSACTION_MSG+txStr);
-				//---------------------------------------------------------------------------//
-			}
-			*/
+			receivedTransction();
 			
 		}
 		else if(clientMsg.equals(MsgType.BLOCK_TRANSFER_MSG)) {
-			System.out.println("[server] received block\r\n =>");
-			
-			String preBlockHash = readMessage();
-			if(checkPreBlockHash(preBlockHash)){
-				sendMessage(MsgType.GETDATA_MSG);
-				
-				JSONObject blockStr = null;
-				try {
-					blockStr = (JSONObject) new JSONParser().parse(readMessage());
-					System.out.println("[Server] BroadcastedBlock log Block Json : "+blockStr);
-					Block block = new Block();
-					block.convertClassObject(blockStr);
-					
-					System.out.println("[Server] : Broadcasted Block is  : "+ block.getString());
-				
-					if(checkBlock(block)) {
-						//-----------------------------NEW Block 유효성 검사---------------------------//
-						//--------------------------------------------------------------------------//
-						
-						Coin.blockchain.blockchain.add(block);	
-						
-						//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
-						//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
-						//---------------------------------------------------------------------------//
-					}
-					else {return;}
-				
-					
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return;
-				}
-				
-
-			}else {return;}
+			receivedBlock();
 		}
 		else {
 			System.out.println("err");
 			return;
 		}	
+	}
+	
+	public void receivedTransction() {
+		//System.out.println("[server] received data\r\n =>" );
+		
+		JSONObject txStr = null;
+		try {
+			txStr = (JSONObject) new JSONParser().parse(readMessage());
+			System.out.println("Json : "+txStr);
+			
+			Transaction tx = new Transaction();
+			tx.convertClassObject(txStr);
+			
+			if(checkTransaction(tx)) {
+				Coin.blockchain.transactionPool.add(tx);
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void receivedBlock() {
+		//System.out.println("[server] received block\r\n =>");
+		
+		String preBlockHash = readMessage();
+		if(checkPreBlockHash(preBlockHash)){
+			sendMessage(MsgType.GETDATA_MSG);
+			
+			JSONObject blockStr = null;
+			try {
+				blockStr = (JSONObject) new JSONParser().parse(readMessage());
+				System.out.println("[Server] BroadcastedBlock log Block Json : "+blockStr);
+				Block block = new Block();
+				block.convertClassObject(blockStr);
+				
+				System.out.println("[Server] : Broadcasted Block is  : "+ block.getString());
+			
+				if(checkBlock(block)) {
+					//-----------------------------NEW Block 유효성 검사---------------------------//
+					//--------------------------------------------------------------------------//
+					
+					Coin.blockchain.blockchain.add(block);	
+					
+					//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
+					//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
+					//---------------------------------------------------------------------------//
+				}
+				else {return;}
+			
+				
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return;
+			}
+			
+
+		}else {return;}
 	}
 	
 	public boolean checkTransaction(Transaction tx) {
@@ -228,12 +212,25 @@ public class Server extends Thread {
 	}
 	
 	
+	public void connectAll() {
+		
+		try {
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));	
+			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			objectInputStream = new ObjectInputStream(socket.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
 	public void disconnectAll() {
 		try {
 			bufferedReader.close();
 			objectInputStream.close();
 			socket.close();//접속종료
-			System.out.println("[server] finish run()");
+			System.out.println("[server] finish run()............................");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
