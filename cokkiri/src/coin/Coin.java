@@ -36,7 +36,7 @@ public class Coin {
 			System.out.print("password : ");
 //			passwd=scn.next();
 //			scn.nextLine();
-			passwd = JOptionPane.showInputDialog("계좌 식별자를 입력하세요.");
+			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요.");
 			if(!checkPWInput(passwd)) {
 				System.out.println("it's too short(16 letters or more)");
 				continue;

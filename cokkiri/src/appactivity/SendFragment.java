@@ -22,9 +22,12 @@ import wallet.Wallet;
 public class SendFragment {
 	private SendView sendview;
 	private JTextField publickeytext;
-	private JFormattedTextField coin_valuetext;
+	//private JFormattedTextField coin_valuetext;
+	private JTextField coin_valuetext;
 	private JPasswordField passwordtext;
 	private JButton sendbutton;
+	
+	private JButton favoritebutton;
 	
 	public SendFragment(SendView sendview) {
 		this.sendview = sendview;
@@ -32,10 +35,13 @@ public class SendFragment {
 		coin_valuetext = sendview.getCoin_value();
 		passwordtext = sendview.getPassword();
 		sendbutton = sendview.getSendButton();
+		
+		favoritebutton = sendview.getFavoriteButton();
 		setbuttonclick();
 	}
 	public void setbuttonclick() {
 		sendbutton.addActionListener(new sendClickListener());
+		favoritebutton.addActionListener(new favoriteClickListener());
 	}
 	private class sendClickListener implements ActionListener {
 		@Override
@@ -44,7 +50,12 @@ public class SendFragment {
 
 			
 			String receiver=publickeytext.getText();
-			float value=Float.valueOf(coin_valuetext.getText());
+			String value_string = coin_valuetext.getText();
+			if(value_string.matches("^[0-9]+$") == false) {
+				JOptionPane.showMessageDialog(sendview, "코인 양에 숫자만 입력 가능합니다.", "코인 입력", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			float value=Float.valueOf(value_string);
 			String password=String.valueOf(passwordtext.getPassword());
 			
 			
@@ -60,7 +71,7 @@ public class SendFragment {
 				//-------------tx전파---------------//
 				System.out.println("[ClientSendlog] : BroadCast Transaction");
 				String message = receiver + "와의 거래 생성을 성공했습니다.";
-				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
+				
 				new Thread() {
 					public void run() {
 						try {
@@ -72,6 +83,8 @@ public class SendFragment {
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
 				Coin.blockchain.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
+				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
+				flushText();
 			}else {
 				String message = receiver + "와의 거래 생성을 실패했습니다.";
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
@@ -82,5 +95,21 @@ public class SendFragment {
 			
 			//////////////////////////////////////////////////////////////////////
 		}
+	}
+	
+	private class favoriteClickListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			FavoriteActivity favority = new FavoriteActivity();
+			System.out.println("click");
+		}
+		
+	}
+	
+	private void flushText() {
+		publickeytext.setText(null);
+//		coin_valuetext.setValue(null);
+		coin_valuetext.setText(null);
+		passwordtext.setText(null);
 	}
 }

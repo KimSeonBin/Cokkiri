@@ -31,7 +31,7 @@ public class MainView extends JFrame{
 	private JButton button_history;
 	private JButton button_send;
 	private JButton button_exchange;
-	private JButton button_mine;
+	private JButton button_mine; 
 	
 	public MainView() {
 		super();
@@ -40,7 +40,7 @@ public class MainView extends JFrame{
 	
 	private void initComponent() {
 		this.setVisible(true);
-		this.setSize(800, 700);
+		this.setSize(800, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Dimension frameSize = this.getSize();
