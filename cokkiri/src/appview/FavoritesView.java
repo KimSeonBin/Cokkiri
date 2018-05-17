@@ -131,28 +131,33 @@ public class FavoritesView extends JPanel{
 		Iterator<String> keys = Coin.bookmark.keySet().iterator();
 		for(keys.hasNext(); keys.hasNext(); ) {
 			String key = keys.next();
-			
-			JLabel address = new JLabel("林家");
-			JTextField addresstext = new JTextField(key);
-			addresstext.setEnabled(false);
-			JLabel nickname = new JLabel("林家");
-			JTextField nicknametext = new JTextField(Coin.bookmark.get(key));
-			nicknametext.setEnabled(false);
-			
-			GridBagConstraints addressgb = new GridBagConstraints(0, component_count, 1, 1, 1, 1, GridBagConstraints.CENTER,
-					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
-			contentPanel.add(address, addressgb);
-			GridBagConstraints addresstextgb = new GridBagConstraints(0, component_count+1, 1, 1, 1, 1, GridBagConstraints.CENTER,
-					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
-			contentPanel.add(addresstext, addresstextgb);
-			GridBagConstraints nicknamegb = new GridBagConstraints(0, component_count+2, 1, 1, 1, 1, GridBagConstraints.CENTER,
-					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
-			contentPanel.add(nickname, nicknamegb);
-			GridBagConstraints nicknametextgb = new GridBagConstraints(0, component_count+3, 1, 1, 1, 1, GridBagConstraints.CENTER,
-					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
-			contentPanel.add(nicknametext, nicknametextgb);
-			component_count += 4;
+			System.out.println("name : "+key);
+			System.out.println("add : "+Coin.bookmark.get(key));
+			addcontent(Coin.bookmark.get(key), key);
 		}
+	}
+	
+	public void addcontent(String addressString, String nicknameString) {
+		JLabel address = new JLabel("林家");
+		JTextField addresstext = new JTextField(addressString);
+		addresstext.setEnabled(false);
+		JLabel nickname = new JLabel("喊莫");
+		JTextField nicknametext = new JTextField(nicknameString);
+		nicknametext.setEnabled(false);
+		
+		GridBagConstraints addressgb = new GridBagConstraints(0, component_count, 1, 1, 1, 1, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+		contentPanel.add(address, addressgb);
+		GridBagConstraints addresstextgb = new GridBagConstraints(0, component_count+1, 1, 1, 1, 1, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+		contentPanel.add(addresstext, addresstextgb);
+		GridBagConstraints nicknamegb = new GridBagConstraints(0, component_count+2, 1, 1, 1, 1, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+		contentPanel.add(nickname, nicknamegb);
+		GridBagConstraints nicknametextgb = new GridBagConstraints(0, component_count+3, 1, 1, 1, 1, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+		contentPanel.add(nicknametext, nicknametextgb);
+		component_count += 4;
 	}
 	
 	public JButton getAddButton() {

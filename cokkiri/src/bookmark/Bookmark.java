@@ -44,9 +44,16 @@ public class Bookmark {
 	}
 
 	public static void loadBookmark() {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark";
+		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
-		//if(!file.exists()) file.mkdirs();
+		if(!file.exists()) {
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(filename));
