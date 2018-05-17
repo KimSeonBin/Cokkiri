@@ -18,7 +18,7 @@ public class Bookmark {
 		this.address=address;
 	}
 	
-	private boolean checkInput(String name, String address) {
+	private static boolean checkInput(String name, String address) {
 		if(address.length()!=28) {
 			System.out.println("wrong address");
 			return false;
@@ -30,7 +30,7 @@ public class Bookmark {
 		return true;
 	}
 	
-	public boolean addBookmark(String name, String address) {
+	public static boolean addBookmark(String name, String address) {
 		if(checkInput(name, address)) {
 			System.out.println("wrong input");
 			return false;
@@ -61,8 +61,8 @@ public class Bookmark {
 		}
 	}
 	
-	private boolean addtoFile(Bookmark newbookmark) {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark";
+	private static boolean addtoFile(Bookmark newbookmark) {
+		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
 		if(!file.exists()) {
 			System.out.println("error bookmark file open");
