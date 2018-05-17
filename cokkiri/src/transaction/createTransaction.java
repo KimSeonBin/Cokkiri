@@ -72,12 +72,12 @@ public class createTransaction {
 		}
 		*/
 		if(newTransaction.processTransaction()) { //일단 여기서..
-			for(TransactionInput input: inputs){
+			/*for(TransactionInput input: inputs){
 				//System.out.println("remove : "+ UTXOs.get(input.txOutputId).value); //확인용
 				//removeUTXOs.put(input.txOutputId, UTXOs.get(input.txOutputId));
 				
 				Coin.blockchain.UTXOs.remove(input.txOutputId);
-			}
+			}*/
 			return newTransaction;
 			
 		}else {

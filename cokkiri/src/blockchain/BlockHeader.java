@@ -11,8 +11,8 @@ public class BlockHeader {
 
 	private static int version=1;
 	private String previousBlockHash;
-	protected String merkleRootHash;
-	protected long timestamp;
+	private String merkleRootHash;
+	private long timestamp;
 	protected int difficulty;
 	protected long nonce;
 
@@ -89,5 +89,10 @@ public class BlockHeader {
 		this.timestamp = (long) json.get("timestamp");
 		this.difficulty = ((Number) json.get("difficulty")).intValue();
 		this.nonce = (long) json.get("nonce");
+	}
+
+	public String getMerkleRootHash() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

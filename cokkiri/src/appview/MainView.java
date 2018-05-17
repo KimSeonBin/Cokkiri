@@ -31,7 +31,7 @@ public class MainView extends JFrame{
 	private JButton button_history;
 	private JButton button_send;
 	private JButton button_exchange;
-	private JButton button_mine;
+	private JButton button_mine; 
 	
 	public MainView() {
 		super();

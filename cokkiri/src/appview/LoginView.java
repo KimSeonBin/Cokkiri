@@ -81,12 +81,14 @@ public class LoginView extends JFrame {
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel.add(icon, icongb);
 
+/*
 		JLabel name = new JLabel(app_name);
 		name.setHorizontalAlignment(JLabel.CENTER);
 		name.setFont(new Font("Serif", Font.BOLD, 30));
 		GridBagConstraints namegb = new GridBagConstraints(0, 1, 1, 1, 1, 0, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 20);
 		panel.add(name, namegb);
+*/
 
 		GridBagConstraints panelgb = new GridBagConstraints(0, 0, 1, 1, 0.6, 0.4, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(0, 150, 0, 150), 0, 0);

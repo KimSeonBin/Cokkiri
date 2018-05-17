@@ -1,7 +1,5 @@
 package transaction;
 
-import java.security.PublicKey;
-
 import org.json.simple.JSONObject;
 
 import hash.Sha256;

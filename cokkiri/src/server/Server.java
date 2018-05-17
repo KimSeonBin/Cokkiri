@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import blockchain.Block;
 import client.Client;
 import coin.Coin;
+import mining.Mining;
 import transaction.Transaction;
 import utill_network.MsgType;
 import utill_network.Peer;
@@ -101,18 +104,19 @@ public class Server extends Thread {
 	public void receivedTransction() {
 		//System.out.println("[server] received data\r\n =>" );
 		
-		JSONObject txStr = null;
-		try {
-			txStr = (JSONObject) new JSONParser().parse(readMessage());
-			System.out.println("Json : "+txStr);
+	JSONObject txStr = null;
+	try {
+		txStr = (JSONObject) new JSONParser().parse(readMessage());
+		System.out.println("Json : "+txStr);
+				
+		Transaction tx = new Transaction();
+		tx.convertClassObject(txStr);
 			
-			Transaction tx = new Transaction();
-			tx.convertClassObject(txStr);
-			
-			if(checkTransaction(tx)) {
-				Coin.blockchain.transactionPool.add(tx);
-			}
-			
+		if(checkTransaction(tx)) {
+		//Coin.blockchain.transactionPool.add(tx);
+		Mining.transactionPool.add(tx);
+		}
+				
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -138,9 +142,9 @@ public class Server extends Thread {
 				if(checkBlock(block)) {
 					//-----------------------------NEW Block 유효성 검사---------------------------//
 					//--------------------------------------------------------------------------//
-					
 					Coin.blockchain.blockchain.add(block);	
-					
+					removeTx(block);
+						
 					//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
 					//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
 					//---------------------------------------------------------------------------//
@@ -156,6 +160,32 @@ public class Server extends Thread {
 
 		}else {return;}
 	}
+	
+	//block을 매개변수로 받아 transaction pool 에 겹치는 블록 제거 (block 전파 받은 경우 수행)
+	public void removeTx(Block newblock) {
+
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>(); //새로운 블록안의 tx
+		transactions.addAll(newblock.transactions);
+		Transaction tmp=new Transaction();
+		int size=transactions.size();
+		System.out.println("@@@removeTx()");
+		ArrayList<Transaction> txpool = new ArrayList<Transaction>(); //txpool의 ㅅㅌ
+		txpool.addAll(Mining.transactionPool);
+		
+		for(int i=0;i<size;i++) {
+			tmp=transactions.get(i);
+			System.out.println(tmp.toJSONObject());
+			Iterator it = txpool.iterator();
+			while(it.hasNext()) {
+				Transaction tmpp = (Transaction) it.next();
+				if(tmp.TxId.equals(tmpp.TxId)) Mining.transactionPool.remove(tmpp);
+			}
+			/////////////////////
+			// + 현재 채굴중인 블록있다면 그것에 대해서도 해야한다
+			/////////////////////
+		}
+		System.out.println("------------------------");
+	}	
 	
 	public boolean checkTransaction(Transaction tx) {
 		//transaction 검증
