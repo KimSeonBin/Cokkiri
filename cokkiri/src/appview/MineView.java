@@ -61,6 +61,7 @@ public class MineView extends JPanel{
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel_button.add(button_mine, bmk);
 		
+		//this.add(panel_button, BorderLayout.AFTER_LAST_LINE);
 		this.add(panel_button, BorderLayout.NORTH);
 	}
 	

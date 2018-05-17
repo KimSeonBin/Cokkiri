@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import coin.Coin;
+import mining.Mining;
 import appview.SendView;
 import client.Client;
 import transaction.Transaction;

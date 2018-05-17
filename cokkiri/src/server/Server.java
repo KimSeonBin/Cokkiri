@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import blockchain.Block;
 import client.Client;
 import coin.Coin;
+import mining.Mining;
 import transaction.Transaction;
 import utill_network.MsgType;
 import utill_network.Peer;
@@ -109,7 +112,8 @@ public class Server extends Thread {
 				tx.convertClassObject(txStr);
 				
 				if(checkTransaction(tx)) {
-					Coin.blockchain.transactionPool.add(tx);
+					//Coin.blockchain.transactionPool.add(tx);
+					Mining.transactionPool.add(tx);
 				}
 				
 			} catch (ParseException e) {
@@ -150,7 +154,7 @@ public class Server extends Thread {
 						//--------------------------------------------------------------------------//
 						
 						Coin.blockchain.blockchain.add(block);	
-						Coin.blockchain.removeTx(block);
+						removeTx(block);
 						
 						
 						//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
@@ -174,6 +178,32 @@ public class Server extends Thread {
 			return;
 		}	
 	}
+	
+	//block을 매개변수로 받아 transaction pool 에 겹치는 블록 제거 (block 전파 받은 경우 수행)
+	public void removeTx(Block newblock) {
+
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>(); //새로운 블록안의 tx
+		transactions.addAll(newblock.transactions);
+		Transaction tmp=new Transaction();
+		int size=transactions.size();
+		System.out.println("@@@removeTx()");
+		ArrayList<Transaction> txpool = new ArrayList<Transaction>(); //txpool의 ㅅㅌ
+		txpool.addAll(Mining.transactionPool);
+		
+		for(int i=0;i<size;i++) {
+			tmp=transactions.get(i);
+			System.out.println(tmp.toJSONObject());
+			Iterator it = txpool.iterator();
+			while(it.hasNext()) {
+				Transaction tmpp = (Transaction) it.next();
+				if(tmp.TxId.equals(tmpp.TxId)) Mining.transactionPool.remove(tmpp);
+			}
+			/////////////////////
+			// + 현재 채굴중인 블록있다면 그것에 대해서도 해야한다
+			/////////////////////
+		}
+		System.out.println("------------------------");
+	}	
 	
 	public boolean checkTransaction(Transaction tx) {
 		//transaction 검증
