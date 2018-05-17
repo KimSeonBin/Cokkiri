@@ -151,7 +151,7 @@ public class ExchangeSellView extends JPanel{
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel.add(sellbutton, buttongb);
 		
-		GridBagConstraints panelgb = new GridBagConstraints(0, 2, 1, 1, 1, 0.1, GridBagConstraints.CENTER,
+		GridBagConstraints panelgb = new GridBagConstraints(0, 3, 1, 1, 1, 0.1, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		this.add(panel, panelgb);		
 	}

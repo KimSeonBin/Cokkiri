@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import appview.MineView;
 import blockchain.Block;
@@ -17,11 +18,13 @@ public class MineFragment {
 	private MineView mineview;
 	private JTextArea minearea;
 	private JButton button_mine;
+	private JTextField publickeytext;
 	
 	public MineFragment(MineView mineview) {
 		this.mineview = mineview;
 		minearea = mineview.getMinearea();
 		button_mine = mineview.getButton_mine();
+		publickeytext = mineview.getPublickeyText();
 		setbuttonclick();
 	}
 	
