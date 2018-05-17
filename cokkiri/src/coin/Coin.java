@@ -28,14 +28,8 @@ public class Coin {
 		
 		for(int i=0;i<3;i++) {
 			System.out.print("password : ");
-<<<<<<< HEAD
-//			passwd=scn.next();
-//			scn.nextLine();
-			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요.");
-=======
 			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요(16자 이상)");
 			
->>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 			if(!checkPWInput(passwd)) {
 				System.out.println("it's too short(16 letters or more)");
 				continue;

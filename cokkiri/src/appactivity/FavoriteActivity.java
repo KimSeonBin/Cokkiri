@@ -28,7 +28,14 @@ public class FavoriteActivity {
 //				FavoriteDialog inputs = new FavoriteDialog();
 //				JOptionPane.showInputDialog(null, inputs, "aaa", JOptionPane.PLAIN_MESSAGE);
 				FavoriteDialog fDialog = new FavoriteDialog();
-				
+				JButton okButton = fDialog.getOKButton();
+				okButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// ¡Ò∞‹√£±‚ '+' ¥≠∑∂¿ª Ω√
+						
+					}
+				});
 				
 			}
 		});
