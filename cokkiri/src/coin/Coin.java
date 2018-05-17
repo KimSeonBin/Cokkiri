@@ -60,7 +60,7 @@ public class Coin {
 		}
 		String passwd;
 
-		if(!KeyUtil.checkKeyfile(pathDir+"/key_"+id)){
+		if(!KeyUtil.checkKeyfile(pathDir+"/"+id+"/key")){
 			System.out.println("plz enter pw, then the key will be created");
 			passwd=getPW();
 			if(passwd==null) {
