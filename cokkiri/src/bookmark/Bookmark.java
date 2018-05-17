@@ -44,9 +44,17 @@ public class Bookmark {
 	}
 
 	public static void loadBookmark() {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark";
+		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
-		//if(!file.exists()) file.mkdirs();
+		if(!file.exists()) {
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			return;
+		}
 		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -62,7 +70,7 @@ public class Bookmark {
 	}
 	
 	private static boolean addtoFile(Bookmark newbookmark) {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark";
+		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
 		if(!file.exists()) {
 			System.out.println("error bookmark file open");
