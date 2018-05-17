@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import appview.FavoriteDialog;
 import appview.FavoritesView;
+import bookmark.Bookmark;
 
 public class FavoriteActivity {
 	private FavoritesView view;
@@ -25,15 +26,21 @@ public class FavoriteActivity {
 		this.addbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				FavoriteDialog inputs = new FavoriteDialog();
-//				JOptionPane.showInputDialog(null, inputs, "aaa", JOptionPane.PLAIN_MESSAGE);
 				FavoriteDialog fDialog = new FavoriteDialog();
 				JButton okButton = fDialog.getOKButton();
 				okButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// 즐겨찾기 '+' 눌렀을 시
-						
+						// 즐겨찾기 'ok' 눌렀을 시
+						String faddress = fDialog.getAddresstext().getText();
+						String fnickname = fDialog.getNicknametext().getText();
+						if(Bookmark.addBookmark(fnickname, faddress)) {
+							System.out.println("추가 완료");
+							view.validate();
+						}
+						else {
+							System.out.println("추가 실패");
+						}
 					}
 				});
 				
