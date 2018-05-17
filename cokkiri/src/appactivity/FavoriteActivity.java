@@ -27,6 +27,7 @@ public class FavoriteActivity {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FavoriteDialog fDialog = new FavoriteDialog();
+<<<<<<< HEAD
 				JButton okButton = fDialog.getOKButton();
 				okButton.addActionListener(new ActionListener() {
 					@Override
@@ -44,6 +45,24 @@ public class FavoriteActivity {
 					}
 				});
 				
+=======
+				
+				JButton okButton = fDialog.getOKButton();
+	            okButton.addActionListener(new ActionListener() {
+	                @Override
+	                public void actionPerformed(ActionEvent e) {
+	                   // 즐겨찾기 'ok' 눌렀을 시
+	                   String faddress = fDialog.getAddresstext().getText();
+	                   String fnickname = fDialog.getNicknametext().getText();
+	                   if(Bookmark.addBookmark(fnickname, faddress)) {
+	                	   System.out.println("bookmark 추가 완료");
+	                   }else {
+	                	   System.out.println("bookmark 추가 실패");
+	                   }
+	                }
+	             });
+	            
+>>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 			}
 		});
 	}

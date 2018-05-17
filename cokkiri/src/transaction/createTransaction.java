@@ -47,7 +47,6 @@ public class createTransaction {
 			if(total >= value) break;
 		}
 		Transaction newTransaction = new Transaction(sender.getAddress(), _recipient , value, inputs);
-		/*
 		System.out.println("check inputs");
 		Iterator<TransactionInput> it3=inputs.iterator();
 		while(it3.hasNext()) System.out.println(it3.next().toJSONObject());
@@ -59,7 +58,7 @@ public class createTransaction {
 		System.out.println("first - txoutput check");
 		Iterator<TransactionOutput> it2 = newTransaction.outputs.iterator();	
 		while(it2.hasNext()) System.out.println(it2.next().toJSONObject());
-		*/
+		
 		
 		newTransaction.generateSignature(sender.getPrivateKey());
 		
@@ -76,6 +75,7 @@ public class createTransaction {
 			/*for(TransactionInput input: inputs){
 				//System.out.println("remove : "+ UTXOs.get(input.txOutputId).value); //È®ÀÎ¿ë
 				//removeUTXOs.put(input.txOutputId, UTXOs.get(input.txOutputId));
+				
 				Coin.blockchain.UTXOs.remove(input.txOutputId);
 			}*/
 			return newTransaction;

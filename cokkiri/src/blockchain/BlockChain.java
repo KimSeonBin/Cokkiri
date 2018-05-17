@@ -129,11 +129,8 @@ public class BlockChain {
 		
 		tmpAllTx.addAll(allTx);
 		
-		//ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
-		ArrayList<TransactionOutput> usedTxOutput = new ArrayList<TransactionOutput>();
-		HashMap<String, TransactionOutput>txOutput = new HashMap<String, TransactionOutput>();
-
-		//ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
+		ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
+		ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
 
 		Iterator<Transaction> itTx=tmpAllTx.iterator();
 		while(itTx.hasNext()) { //거래하나 확인
@@ -144,32 +141,28 @@ public class BlockChain {
 			if(tmp.inputs !=null) {
 				Iterator<TransactionInput> itInput = tmp.inputs.iterator();
 				while(itInput.hasNext()) {
-					usedTxOutput.add(itInput.next().UTXO);
-				    //txInput.add(itInput.next());
+				    txInput.add(itInput.next());
 				}
 			}
 			//extracts all outputs
 			Iterator<TransactionOutput> itOutput = tmp.outputs.iterator();
 			while(itOutput.hasNext()) {
-				TransactionOutput txout=itOutput.next();
-				txOutput.put(txout.id, txout);
+				TransactionOutput tmpOutput=itOutput.next();
+			  	txOutput.add(tmpOutput);
 			}
 		}
 			
 		//outputs - inputs = utxo
-		Iterator<TransactionOutput> itInput = usedTxOutput.iterator();
+		Iterator<TransactionInput> itInput = txInput.iterator();
 		while(itInput.hasNext()) {
-			TransactionOutput test=itInput.next();
-			txOutput.remove(test.id);
-			//System.out.println("chek ..   "+test.toJSONObject());
+			txOutput.remove(itInput.next().txOutputId);
 		}
-		
-		Iterator<String> keys = txOutput.keySet().iterator();
-		while(keys.hasNext()) {
-			String tmpkey=keys.next();
-			UTXOs.put(tmpkey, txOutput.get(tmpkey));
-			//Logging.consoleLog("add UTXO~~ : "+txOutput.get(tmpkey).toJSONObject());
-
+			
+		Iterator<TransactionOutput> itOutput = txOutput.iterator();
+		while(itOutput.hasNext()) {
+			TransactionOutput tmp = itOutput.next();
+			Logging.consoleLog("add UTXO~~ : "+tmp.toJSONObject());
+			UTXOs.put(tmp.id, tmp);
 		}
 	}
 

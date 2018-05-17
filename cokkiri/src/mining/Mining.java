@@ -24,7 +24,7 @@ public class Mining {
 		int size = transactionPool.size();
 		System.out.println("size : "+String.valueOf(size));
 		
-
+		
 		for(int k=0;k<size;k++){
 			//Transaction t = Coin.blockchain.transactionPool.get(k);
 			Transaction t = transactionPool.get(k);
@@ -34,6 +34,7 @@ public class Mining {
 			miningTx.add(t);
 			block.addTx(t);
 		}
+		
 
 		//System.out.println("before add this block..");
 		//System.out.println(block.toJSONObject());

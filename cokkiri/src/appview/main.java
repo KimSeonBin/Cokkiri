@@ -4,6 +4,7 @@ import java.security.Security;
 
 import appactivity.LoginActivity;
 import server.CentralServer;
+import utill_network.PeerList;
 import login.Login;
 
 
@@ -16,7 +17,7 @@ public class main {
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		
 		//////////////////////////////////////////////////////////////////////
-		
+		PeerList.init();
 		//----------------------------server start-----------------------//
 		new Thread() {
 			public void run() {

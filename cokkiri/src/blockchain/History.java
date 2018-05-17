@@ -55,7 +55,7 @@ public class History{
 	    			value+=tmpOutput.value;
 	    		}
 	    	}
-	    	result+=receiver+"   "+String.valueOf(value)+"\n";
+	    	result+=receiver+"   "+String.valueOf(value);
 		}
 		if(result=="") return null;
 		return result;

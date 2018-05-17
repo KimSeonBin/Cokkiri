@@ -60,6 +60,7 @@ public class SendFragment {
 			String password=String.valueOf(passwordtext.getPassword());
 			
 			
+
 			//receiver, value, password 검증 내용
 			
 			Coin.wallet = new Wallet(Coin.id+password, false);
@@ -82,6 +83,7 @@ public class SendFragment {
 				}.start();
 				//--------------------------------//
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
+				
 				Coin.blockchain.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);

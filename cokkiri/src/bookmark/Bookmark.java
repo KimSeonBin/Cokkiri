@@ -31,7 +31,7 @@ public class Bookmark {
 	}
 	
 	public static boolean addBookmark(String name, String address) {
-		if(checkInput(name, address)) {
+		if(!checkInput(name, address)) {
 			System.out.println("wrong input");
 			return false;
 		}
