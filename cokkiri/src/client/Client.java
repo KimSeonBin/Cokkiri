@@ -39,7 +39,7 @@ public class Client {
 	public static boolean processBuy(Float coinvalue) {
 		
 		RequestBuy buy = new RequestBuy(coinvalue);
-		Peer server = new Peer("tmp", "tmp" ,3333);
+		Peer server = PeerList.getPeerList().get(0);
 		
 		String req = "tmp";
 		//buy.toJSONObject() string으로 변환하여..
