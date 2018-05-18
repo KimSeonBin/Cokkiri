@@ -94,6 +94,7 @@ public class Server extends Thread {
 		}
 		else if(clientMsg.equals(MsgType.BLOCK_TRANSFER_MSG)) {
 			receivedBlock();
+			
 		}
 		else {
 			System.out.println("err");

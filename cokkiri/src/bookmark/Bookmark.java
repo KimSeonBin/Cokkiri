@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import coin.Coin;
+import coin.Constant;
 
 public class Bookmark {
 	protected String name;
@@ -44,7 +45,7 @@ public class Bookmark {
 	}
 
 	public static void loadBookmark() {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
+		String filename = Constant.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
 		if(!file.exists()) {
 			try {
@@ -69,7 +70,7 @@ public class Bookmark {
 	}
 	
 	private static boolean addtoFile(Bookmark newbookmark) {
-		String filename = Coin.pathDir+"/"+Coin.id+"/bookmark.txt";
+		String filename = Constant.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
 		if(!file.exists()) {
 			System.out.println("error bookmark file open");

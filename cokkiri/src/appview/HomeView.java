@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import coin.Cash;
 import coin.Coin;
 
 /*
@@ -85,7 +86,7 @@ public class HomeView extends JPanel{
 	
 	private void addPanelExchange() {
 		JLabel label_exchange = new JLabel("현금자산");
-		label_exchange_value = new JLabel("10000");
+		label_exchange_value = new JLabel(String.valueOf(Cash.getCash()));
 		label_exchange.setPreferredSize(new Dimension(100, 50));
 		label_exchange_value.setSize(new Dimension(200, 100));
 		

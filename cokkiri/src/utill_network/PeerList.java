@@ -15,11 +15,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import coin.Coin;
+import coin.Constant;
 
 public class PeerList {
 
 	public static void init() {
-		File file = new File(Coin.pathDir+"/peerlist.txt");
+		File file = new File(Constant.pathDir+"/peerlist.txt");
 		if(file.exists()) {
 			file.delete();	
 		}
@@ -38,7 +39,7 @@ public class PeerList {
 	public static ArrayList<Peer> getPeerList() {
 		ArrayList<Peer> peerList = new ArrayList<Peer>();
 		try {
-			FileReader fr = new FileReader(Coin.pathDir+"/peerList.txt");
+			FileReader fr = new FileReader(Constant.pathDir+"/peerList.txt");
 			BufferedReader br = new BufferedReader(fr);
 			
 			String str = null;
@@ -61,7 +62,7 @@ public class PeerList {
 		JSONObject json = toJSONObject(peer);
 		System.out.println("json : "+ json);
 		
-		File file = new File(Coin.pathDir + "/peerlist.txt");
+		File file = new File(Constant.pathDir + "/peerlist.txt");
 		
 		FileWriter fw;
 		try {

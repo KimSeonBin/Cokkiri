@@ -79,15 +79,15 @@ public class Client {
 		Peer server = new Peer("tmp", "tmp" ,3333);
 		
 		String req = "tmp";
-		//buy.toJSONObject() string으로 변환하여..
+		//sell.toJSONObject() string으로 변환하여..
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
 		String requestType = "tmp";		//응답 받아오기
 
 		if(requestType.equals(MsgType.ANSWER_OK)) {
-			JSONObject tx = sell.makeTx();
+			JSONObject tx = sell.txJSONObject();
 			
-			String sellinfo = "tmp";
+			String sellinfo = tx.toJSONString();
 			//tx string으로 변환하여..
 
 			new Connection(sellinfo, server).start();
