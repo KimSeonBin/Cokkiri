@@ -27,7 +27,6 @@ public class Coin {
 		String passwd;
 		
 		for(int i=0;i<3;i++) {
-			System.out.print("password : ");
 			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요(16자 이상)");
 
 			if(!checkPWInput(passwd)) {

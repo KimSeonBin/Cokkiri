@@ -19,15 +19,15 @@ import coin.Coin;
 public class PeerList {
 
 	public static void init() {
-		File file = new File(Coin.pathDir+"peerlist.txt");
+		File file = new File(Coin.pathDir+"/peerlist.txt");
 		if(file.exists()) {
 			file.delete();	
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
 		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
-		//peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
-		peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
+		peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
+		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
 		peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
 	
 		for(Peer peer : peerArray) {
@@ -38,7 +38,7 @@ public class PeerList {
 	public static ArrayList<Peer> getPeerList() {
 		ArrayList<Peer> peerList = new ArrayList<Peer>();
 		try {
-			FileReader fr = new FileReader(Coin.pathDir+"peerList.txt");
+			FileReader fr = new FileReader(Coin.pathDir+"/peerList.txt");
 			BufferedReader br = new BufferedReader(fr);
 			
 			String str = null;
@@ -61,7 +61,7 @@ public class PeerList {
 		JSONObject json = toJSONObject(peer);
 		System.out.println("json : "+ json);
 		
-		File file = new File(Coin.pathDir + "peerlist.txt");
+		File file = new File(Coin.pathDir + "/peerlist.txt");
 		
 		FileWriter fw;
 		try {

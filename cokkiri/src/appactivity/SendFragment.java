@@ -4,26 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import coin.Coin;
-import mining.Mining;
 import appview.SendView;
 import client.Client;
 import transaction.Transaction;
 import transaction.createTransaction;
 import utill_network.MsgType;
-import utill_network.Peer;
 import wallet.Address;
 import wallet.Wallet;
 
 public class SendFragment {
 	private SendView sendview;
 	private JTextField publickeytext;
-	//private JFormattedTextField coin_valuetext;
 	private JTextField coin_valuetext;
 	private JPasswordField passwordtext;
 	private JButton sendbutton;
@@ -59,15 +55,19 @@ public class SendFragment {
 			float value=Float.valueOf(value_string);
 			String password=String.valueOf(passwordtext.getPassword());
 			
-			
+			if(!checksendinputs(receiver, password)) {
+				String message = receiver + "와의 거래 생성을 실패했습니다.";
+				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
+				log.Logging.consoleLog("failed to create transaction");
+				return;
+			}
 
-			//receiver, value, password 검증 내용
 			
-			Coin.wallet = new Wallet(Coin.id+password, false);
+			Wallet sender = new Wallet(Coin.id+password, false);
 			
 			Address receiverAdd=new Address();
 			receiverAdd.setAddress(receiver);
-			Transaction t=createTransaction.createTx(Coin.wallet, receiverAdd, value);
+			Transaction t=createTransaction.createTx(sender, receiverAdd, value);
 			
 			if(t!=null) {
 				//-------------tx전파---------------//
@@ -92,11 +92,7 @@ public class SendFragment {
 				String message = receiver + "와의 거래 생성을 실패했습니다.";
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
 				log.Logging.consoleLog("failed to create transaction");
-			}
-
-			//wallet private key 제거 과정 필요
-			
-			//////////////////////////////////////////////////////////////////////
+			}			
 		}
 	}
 	
@@ -114,5 +110,17 @@ public class SendFragment {
 //		coin_valuetext.setValue(null);
 		coin_valuetext.setText(null);
 		passwordtext.setText(null);
+	}
+	
+	private boolean checksendinputs(String receiver, String password) {
+		if(receiver.length()!=28) {
+			return false;
+	    }
+	    if(Coin.wallet.authenticate(Coin.id+password)!=1) {
+	    
+	    	return false;
+	    }
+	 
+	    return true;
 	}
 }
