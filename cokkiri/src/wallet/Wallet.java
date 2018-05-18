@@ -7,6 +7,7 @@ import java.util.Map;
 
 import transaction.*;
 import coin.Coin;
+import coin.Constant;
 import log.Logging;
 
 public class Wallet {
@@ -31,14 +32,14 @@ public class Wallet {
 				System.out.println("[error]wallet.java >> keypair is null");
 				return;
 			}else { 
-				if(!KeyUtil.checkKeyfile(Coin.pathDir+"/"+Coin.id+"/key")) {
-					KeyUtil.SaveKeyPair(Coin.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
+				if(!KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")) {
+					KeyUtil.SaveKeyPair(Constant.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
 
-					KeyUtil.SaveKeyPairHash(Coin.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
+					KeyUtil.SaveKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
 				}
 			}
 		}
-		else keyPair = KeyUtil.LoadKeyPair(Coin.pathDir+"/"+Coin.id+"/key", passwd);
+		else keyPair = KeyUtil.LoadKeyPair(Constant.pathDir+"/"+Coin.id+"/key", passwd);
 		
 		privateKey=keyPair.getPrivate();
 		publicKey=keyPair.getPublic();
@@ -47,7 +48,7 @@ public class Wallet {
 	
 	//public key¸¸ load
 	public Wallet() {
-		publicKey=KeyUtil.LoadPubKey(Coin.pathDir+"/"+Coin.id+"/key");
+		publicKey=KeyUtil.LoadPubKey(Constant.pathDir+"/"+Coin.id+"/key");
 		address=new Address(publicKey);
 	}
 	
@@ -58,10 +59,10 @@ public class Wallet {
 	 */
 	public int authenticate(String passwd){
 		System.out.println("pw : "+passwd);
-		if(KeyUtil.checkKeyfile(Coin.pathDir+"/"+Coin.id+"/key")){
+		if(KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")){
 			KeyPair check=KeyUtil.generateKeyPair(passwd);
 			String checkHash=KeyUtil.hashKeyPair(check);
-			String keyPairHash=KeyUtil.LoadKeyPairHash(Coin.pathDir+"/"+Coin.id+"/key");
+			String keyPairHash=KeyUtil.LoadKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key");
 			if(!checkHash.equals(keyPairHash)){
 				System.out.println("checkHash "+checkHash);
 				System.out.println("keypairhash "+keyPairHash);

@@ -18,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import appview.ExchangeSellView;
 import client.Client;
 import coin.Coin;
+import coin.Constant;
 import mining.Mining;
 import transaction.Transaction;
 import transaction.createTransaction;
@@ -31,7 +32,7 @@ public class RequestSell {
 	
 	public RequestSell(Float value) {
 		this.coin=value;
-		this.cash=value; // 처리 필요
+		this.cash=value*Constant.compasionValue;
 	}
 	
 	public JSONObject toJSONObject() {
@@ -41,15 +42,16 @@ public class RequestSell {
 		return json;
 	}
 	
-	public JSONObject buyJSONObject() {
-		JSONObject json = new JSONObject();
-		json.put("coin", coin);
-		json.put("address", Coin.wallet.getAddress());
-		return json;
+	public JSONObject txJSONObject() {
+		String server = "tmp"; //서버 어드레스 스트링
+		Address serveradd =new Address();
+		serveradd.setAddress(server);
+		Transaction tx = createTransaction.createTx(Coin.wallet, serveradd, coin);
+		
+		Mining.transactionPool.add(tx);
+		
+		return tx.toJSONObject();
 	}
-	
-
-	
 	
 	
 	
@@ -91,16 +93,7 @@ public class RequestSell {
 		return 0;
 	}
 
-	public JSONObject makeTx() {
-		String server = "tmp"; //서버 어드레스 스트링
-		Address serveradd =new Address();
-		serveradd.setAddress(server);
-		Transaction tx = createTransaction.createTx(Coin.wallet, serveradd, coin);
-		
-		Mining.transactionPool.add(tx);
-		
-		return tx.toJSONObject();
-	}
+
 	
 }
 	/*private String server_url = "http://192.168.10.7:8000/sale";

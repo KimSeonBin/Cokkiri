@@ -15,6 +15,7 @@ import hash.Sha256;
 import transaction.*;
 import wallet.Address;
 import coin.Coin;
+import coin.Constant;
 
 public class Transaction {
 	public String TxId; // this is also the hash of the transaction.
@@ -36,7 +37,7 @@ public class Transaction {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		this.timestamp=timestamp.getTime();	
 		
-		if(sender.getString().equals(Coin.pathDir)) { //benefit tx
+		if(sender.getString().equals(Constant.pathDir)) { //benefit tx
 			TxId=calulateTxId();
 		}
 	}
@@ -65,7 +66,7 @@ public class Transaction {
 			System.out.println("#Transaction Inputs to small: " + getInputsValue());
 			return false;
 		}
-		if(getInputsValue() > Coin.coinMax) {
+		if(getInputsValue() > Constant.coinMax) {
 			System.out.println("#Transaction Inputs to big: " + getInputsValue());
 			return false;
 		}
@@ -103,7 +104,7 @@ public class Transaction {
 	public boolean isTransactionValid() {
 		System.out.println("--------isTransactionValid()----------");
 		
-		if(sender.getString().equals(Coin.pathDir)) { //채굴보상tx 확인
+		if(sender.getString().equals(Constant.pathDir)) { //채굴보상tx 확인
 			
 			if(!inputs.isEmpty()){
 				System.out.println("i'm invalid 1");
