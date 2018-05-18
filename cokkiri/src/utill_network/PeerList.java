@@ -30,7 +30,7 @@ public class PeerList {
 		peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
 		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
 		peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
-	
+		
 		for(Peer peer : peerArray) {
 			PeerList.storePeerList(peer);	
 		}

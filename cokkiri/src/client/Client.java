@@ -78,13 +78,8 @@ public class Client {
 		RequestSell sell = new RequestSell(coinvalue);
 		Peer server = new Peer("tmp", "localhost" ,3333);
 		
-<<<<<<< HEAD
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
 		//buy.toJSONObject() string으로 변환하여..
-=======
-		String req = "tmp";
-		//sell.toJSONObject() string으로 변환하여..
->>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
 		String requestType = "tmp";		//응답 받아오기
