@@ -12,6 +12,10 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
+import org.json.simple.JSONObject;
+
+import appactivity.ExchangeSellFragment;
+import exchange.RequestSell;
 import utill_network.MsgType;
 import utill_network.NodeId;
 import utill_network.Peer;
@@ -113,6 +117,24 @@ public class Connection extends Thread{
 				String blockData = data.replaceFirst(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" ", "");
 				sendMessage(blockData);
 			}
+		}
+		else if(data.contains(MsgType.REQUEST_SELL)) {
+			System.out.println("[Client] coin sell to exchange server.............................." );
+			sendMessage(MsgType.REQUEST_SELL);
+			sendMessage(data.replaceFirst(MsgType.REQUEST_SELL, ""));
+			
+			String responseData = readMessage();
+
+			if(responseData.contains(MsgType.ANSWER_OK)) {
+				String password = ExchangeSellFragment.showInputPasswordDialog();
+				
+			}
+			else if(responseData.contains(MsgType.ANSWER_NO)) {
+				ExchangeSellFragment.showFailDialog();
+				return;
+			}
+		}
+		else if(data.contains(MsgType.REQUEST_PURCHASE)) {
 			
 		}
 		
@@ -129,7 +151,7 @@ public class Connection extends Thread{
 			return;
 		}
 	}
-	
+		
 	public void sendMessage(String msg) {
 		
 		try {
