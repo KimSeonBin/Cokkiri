@@ -37,6 +37,23 @@ public class RequestSell {
 		this.cash=value*Constant.compasionValue;
 	}
 	
+	public RequestSell(String json) {
+	      JSONParser paser = new JSONParser();
+	      JSONObject jsonO;
+	      try {
+	         jsonO = (JSONObject) paser.parse(json);
+	         this.cash = ((Number)jsonO.get("cash")).doubleValue();
+	         this.coin = ((Number)jsonO.get("coin")).floatValue();
+	      } catch (ParseException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }
+	   }
+	   
+	   public float getCoin() {
+	      return coin;
+	   }
+
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
 		json.put("coin", coin);
@@ -44,120 +61,23 @@ public class RequestSell {
 		return json;
 	}
 	
-	public JSONObject txJSONObject() {
+	public JSONObject txJSONObject(Wallet wallet, Address serverAdd) {
 		String server = "tmp"; //서버 어드레스 스트링
-		Address serveradd =new Address();
-		serveradd.setAddress(server);
-		Transaction tx = createTransaction.createTx(Coin.wallet, serveradd, coin);
+	
+		Transaction tx = createTransaction.createTx(wallet, serverAdd, coin);
 		
 		Mining.transactionPool.add(tx);
 		
+		System.out.println("[ClientSendlog] : BroadCast Transaction");
+		
+		new Thread() {
+			public void run() {
+				try {
+					Client.broadcast(MsgType.TRANSACTION_MSG+tx);
+				} catch (Exception e) {}
+			}
+		}.start();
+		
 		return tx.toJSONObject();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	public static float sellcoin(float value, ExchangeSellView sellview) {
-		
-		//첫번째 통신 (가능여부)
-		boolean check=true;
-		if(check) {
-			String passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요(16자 이상)");
-		    if(Coin.wallet.authenticate(Coin.id+passwd)!=1) {
-		    	String message = "코인 판매에 실패했습니다.";
-				JOptionPane.showMessageDialog(sellview, message, "거래 실패", JOptionPane.WARNING_MESSAGE);
-				log.Logging.consoleLog("failed to sell coin .. wrong password");
-		    	return 0;
-			}
-		    else {
-
-				Wallet seller= new Wallet(Coin.id+passwd, false);
-				
-				Address receiverAdd=new Address();
-				receiverAdd.setAddress("거래소주소 박아야함");
-				Transaction t=createTransaction.createTx(seller, receiverAdd, value);
-				
-				if(t!=null) {
-					
-					//서버와 통신
-					
-					log.Logging.consoleLog("**transaction created** : "+t.getString());
-				
-					return 1;
-				}
-		    }
-		}
-		return 0;
-	}
-
-
-	
 }
-	/*private String server_url = "http://192.168.10.7:8000/sale";
-	private String sale_page = "?page=";
-	private URL url;
-	private HttpURLConnection conn;
-	
-	public void setupPostConnection() {
-		try {
-			this.url = new URL(server_url);
-			this.conn = (HttpURLConnection) url.openConnection();
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("accept", "application/json");
-			conn.connect();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void registerSaletoExchange(String verification, JSONObject jsono) {
-		setupPostConnection();
-
-		jsono.put("verification", verification);
-		try {
-			DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-			dos.writeBytes(jsono.toJSONString());
-			dos.flush();
-
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-				System.out.println("error");
-			}
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String output;
-			System.out.println("from server..\n");
-			while ((output = br.readLine()) != null) {
-				System.out.println(output);
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		conn.disconnect();
-	}
-	
-	public JSONObject convertPOSTToExchange(float value) {
-		JSONObject jsono = new JSONObject();
-		
-		jsono.put("seller_id", Coin.wallet.getAddress().getString());
-		jsono.put("amount", value);
-		jsono.put("key", Coin.wallet.getPublicKey());
-		jsono.put("identifier", "ajou");
-		
-		return jsono;
-	}
-}
-*/

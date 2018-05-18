@@ -20,7 +20,7 @@ import wallet.Address;
 import wallet.Wallet;
 
 public class ExchangeBuyFragment {
-	private ExchangeBuyView buyview;
+	private static ExchangeBuyView buyview;
 	private JFormattedTextField coin_value;
 	private JTextField coincash;
 	private JButton buybutton;
@@ -33,6 +33,14 @@ public class ExchangeBuyFragment {
 
 		buybutton.addActionListener(new buyClickListener());
 	}
+	public static void showSuccessDialog() {
+		JOptionPane.showMessageDialog(buyview, "코인 판매 성공하였습니다.", "코인 판매", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public static void showFailDialog() {
+		JOptionPane.showMessageDialog(buyview, "코인 판매 실패하였습니다.", "코인 판매", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	private class buyClickListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -45,14 +53,14 @@ public class ExchangeBuyFragment {
 
 			boolean res =Client.processBuy(Float.parseFloat(value_string));
 
-			if(res) {
+			/*if(res) {
 
 				JOptionPane.showMessageDialog(buyview, "코인 구매 성공하였습니다.", "코인 구매", JOptionPane.INFORMATION_MESSAGE);
 				
 			}else {
 
 				JOptionPane.showMessageDialog(buyview, "코인 구매 실패하였습니다.", "코인 구매", JOptionPane.ERROR_MESSAGE);
-			}
+			}*/
 			flushText();
 			
 		}

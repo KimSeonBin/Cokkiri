@@ -52,6 +52,8 @@ public class ExchangeSellFragment {
 				return;
 			}	
 			
+			//value 체크 필요
+			
 
 			Client.processSell(Float.parseFloat(value_string));
 //			boolean res = Client.processSell(Float.parseFloat(value_string));

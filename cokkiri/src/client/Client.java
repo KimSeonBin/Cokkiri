@@ -37,88 +37,26 @@ public class Client {
 	
 	
 	public static boolean processBuy(Float coinvalue) {
-		
 		RequestBuy buy = new RequestBuy(coinvalue);
 		Peer server = PeerList.getPeerList().get(0);
 		
-		String req = "tmp";
-		//buy.toJSONObject() string으로 변환하여..
+		String req = MsgType.REQUEST_PURCHASE + buy.toJSONObject().toJSONString();
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
-		String requestType = "tmp";		//응답 받아오기
-
-		if(requestType.equals(MsgType.ANSWER_OK)) {
-			String buyinfo = "tmp";
-			//buy.buyJSONObject() string으로 변환하여..
-
-			new Connection(buyinfo, server).start();
-			
-			String response="tmp"; //응답 받아오기
-			
-			if(response.equals(MsgType.ANSWER_NO)) {
-				return false;
-			}
-			
-			buy.checkTxMsg(response);
-			
-			return true;
-			
-		}else if(requestType.equals(MsgType.ANSWER_NO)){
-			//통신 끝
-			return false;
-		}
-		else {
-			System.out.println("client.java processExchange() err");
-		}
 		return false;
 	}
 	
 	public static boolean processSell(Float coinvalue) {
 		
 		RequestSell sell = new RequestSell(coinvalue);
-		Peer server = new Peer("tmp", "localhost" ,3333);
+		Peer server = PeerList.getPeerList().get(0);
 		
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
-		//buy.toJSONObject() string으로 변환하여..
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
-		String requestType = "tmp";		//응답 받아오기
-/*
-		if(requestType.equals(MsgType.ANSWER_OK)) {
-			JSONObject tx = sell.txJSONObject();
-			
-			String sellinfo = tx.toJSONString();
-			//tx string으로 변환하여..
 
-			new Connection(sellinfo, server).start();
-			
-			String response="tmp"; //응답 받아오기
-			
-			//response에는 cash 금액 담겨있음
-			//노드의 cash 에 이 금액을 + 하여적용
-			
-
-			//-------------tx전파---------------//
-			System.out.println("[ClientSendlog] : BroadCast Transaction");
-			
-			new Thread() {
-				public void run() {
-					try {
-						Client.broadcast(MsgType.TRANSACTION_MSG+tx);
-					} catch (Exception e) {}
-				}
-			}.start();
-			//--------------------------------//
-			
-			return true;
-			
-		}else if(requestType.equals(MsgType.ANSWER_NO)){
-			//통신 끝
-			return false;
-		}
-		else {
-			System.out.println("client.java processExchange() err");
-		}*/
 		return false;
 	}
+	
+	
 }
