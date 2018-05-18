@@ -76,14 +76,14 @@ public class Client {
 	public static boolean processSell(Float coinvalue) {
 		
 		RequestSell sell = new RequestSell(coinvalue);
-		Peer server = new Peer("tmp", "tmp" ,3333);
+		Peer server = new Peer("tmp", "localhost" ,3333);
 		
-		String req = "tmp";
+		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
 		//buy.toJSONObject() string으로 변환하여..
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
 		String requestType = "tmp";		//응답 받아오기
-
+/*
 		if(requestType.equals(MsgType.ANSWER_OK)) {
 			JSONObject tx = sell.makeTx();
 			
@@ -118,7 +118,7 @@ public class Client {
 		}
 		else {
 			System.out.println("client.java processExchange() err");
-		}
+		}*/
 		return false;
 	}
 }
