@@ -26,11 +26,15 @@ public class PeerList {
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
+		
+		peerArray.add(new Peer("1","172.30.1.9",3333)); //서버
+		
 		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
 		peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
 		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
 		peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
 	
+		
 		for(Peer peer : peerArray) {
 			PeerList.storePeerList(peer);	
 		}

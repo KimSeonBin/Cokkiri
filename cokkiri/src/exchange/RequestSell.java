@@ -23,10 +23,12 @@ import mining.Mining;
 import transaction.Transaction;
 import transaction.createTransaction;
 import utill_network.MsgType;
+import utill_network.Peer;
 import wallet.Address;
 import wallet.Wallet;
 
 public class RequestSell {
+	
 	private double cash;
 	private float coin;
 	

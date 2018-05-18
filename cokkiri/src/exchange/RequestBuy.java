@@ -7,10 +7,11 @@ import org.json.simple.parser.ParseException;
 import coin.Coin;
 import coin.Constant;
 import transaction.Transaction;
+import utill_network.Peer;
 import wallet.Address;
 
 public class RequestBuy {
-
+	
 	private double cash;
 	private float coin;
 	
