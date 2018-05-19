@@ -11,7 +11,9 @@ import javax.swing.JTextField;
 import appview.ExchangeBuyView;
 import appview.SendView;
 import client.Client;
+import coin.Cash;
 import coin.Coin;
+import coin.Constant;
 import exchange.RequestBuy;
 import transaction.Transaction;
 import transaction.createTransaction;
@@ -34,11 +36,11 @@ public class ExchangeBuyFragment {
 		buybutton.addActionListener(new buyClickListener());
 	}
 	public static void showSuccessDialog() {
-		JOptionPane.showMessageDialog(buyview, "코인 판매 성공하였습니다.", "코인 판매", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(buyview, "코인 구매 성공하였습니다.", "코인 구매", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public static void showFailDialog() {
-		JOptionPane.showMessageDialog(buyview, "코인 판매 실패하였습니다.", "코인 판매", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(buyview, "코인 구매 실패하였습니다.", "코인 구매", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private class buyClickListener implements ActionListener {
@@ -51,16 +53,13 @@ public class ExchangeBuyFragment {
 				return;
 			}
 
+			if(Float.parseFloat(value_string)*Constant.compasionValue > Cash.getCash()) {
+				JOptionPane.showMessageDialog(buyview, "잔고가 부족합니다.", "코인 구매", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
 			boolean res =Client.processBuy(Float.parseFloat(value_string));
 
-			/*if(res) {
-
-				JOptionPane.showMessageDialog(buyview, "코인 구매 성공하였습니다.", "코인 구매", JOptionPane.INFORMATION_MESSAGE);
-				
-			}else {
-
-				JOptionPane.showMessageDialog(buyview, "코인 구매 실패하였습니다.", "코인 구매", JOptionPane.ERROR_MESSAGE);
-			}*/
 			flushText();
 			
 		}

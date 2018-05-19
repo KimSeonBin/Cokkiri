@@ -70,13 +70,13 @@ public class RequestSell {
 		
 		System.out.println("[ClientSendlog] : BroadCast Transaction");
 		
-		new Thread() {
+		/*new Thread() {
 			public void run() {
 				try {
 					Client.broadcast(MsgType.TRANSACTION_MSG+tx);
 				} catch (Exception e) {}
 			}
-		}.start();
+		}.start();*/
 		
 		return tx.toJSONObject();
 	}

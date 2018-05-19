@@ -8,6 +8,7 @@ import java.util.List;
 import client.Client;
 import coin.Coin;
 import log.Logging;
+import mining.Mining;
 import transaction.Transaction;
 import transaction.TransactionInput;
 import transaction.TransactionOutput;
@@ -20,7 +21,7 @@ public class BlockChain {
 	public static int DIFFICULTY; //채굴 난이도
 
 	//public static HashMap<String, Transaction> transactionPool = new HashMap<String, Transaction>();
-	public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
+	//public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
 	public static HashMap<String,TransactionOutput> UTXOs = new HashMap<String,TransactionOutput>();
 	
 	public static ArrayList<Transaction> allTx=new ArrayList<Transaction>();
@@ -32,45 +33,15 @@ public class BlockChain {
 	}
 
 	public boolean isChainValid() { //블록 헤더의 previousblockheader항목과 이전 블록의 해쉬값을 비교하여 블록체인 검증
-		//genesisblock 확인
-		Block genesis = blockchain.get(0);
-		if(genesis.getBlockIndex()!=0) {
-			System.out.println("i'm invalid genesis 1");
-			return false;
-		}
-		if(genesis.getBlockHeader().getTimestamp()!=3) {
-			System.out.println("i'm invalid genesis 2");
-			return false;
-		}if(!genesis.getBlockHeader().getPreviousBlockHash().equals("0")) {
-			System.out.println("i'm invalid genesis 3");
-			return false;
-		}
-		
+		//genesisblock 확인필요//
 		for(int i=1;i<blockchain.size();i++){
 			Block currentBlock=blockchain.get(i);
 			Block previousBlock=blockchain.get(i-1);
-			if(currentBlock.getBlockIndex()!=i) {
-				System.out.println("i'm invalid block 1");
-				return false;
-			}
-			if(!currentBlock.isBlockValid(previousBlock.getBlockHash(), previousBlock.getBlockIndex())) {
-				System.out.println("i'm invalid block 2");
-
-				return false;
-			}
 			if(!currentBlock.getBlockHash().equals(currentBlock.calculateHash())) {
-				System.out.println("i'm invalid block 3");
-
 				return false; //해쉬값 확인
 			}
 			if(!currentBlock.getBlockHeader().getPreviousBlockHash().equals(previousBlock.getBlockHash())) {
-				System.out.println("i'm invalid block 4");
 				return false; //이전블록해쉬값 비교
-			}
-			if(!(currentBlock.getBlockIndex()==previousBlock.getBlockIndex()+1)) {
-			
-				System.out.println("i'm invalid block 5");
-				return false; //index값 비교
 			}
 			//if(!currentBlock.mineCheck()) return false;
 			//블록안 거래에 대한 검증
@@ -85,6 +56,7 @@ public class BlockChain {
 	public long getPreviousBlockIndex() {
 		return blockchain.get(blockchain.size()-1).getBlockIndex();
 	}
+	
 	public void addBlock(Block block) {
 		block.getBlockHeader().setDifficulty(DIFFICULTY);
 		block.mineBlock();
@@ -129,8 +101,11 @@ public class BlockChain {
 		
 		tmpAllTx.addAll(allTx);
 		
-		ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
-		ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
+		//ArrayList<TransactionInput> txInput = new ArrayList<TransactionInput>();
+		ArrayList<TransactionOutput> usedTxOutput = new ArrayList<TransactionOutput>();
+		HashMap<String, TransactionOutput>txOutput = new HashMap<String, TransactionOutput>();
+
+		//ArrayList<TransactionOutput> txOutput = new ArrayList<TransactionOutput>();
 
 		Iterator<Transaction> itTx=tmpAllTx.iterator();
 		while(itTx.hasNext()) { //거래하나 확인
@@ -141,28 +116,32 @@ public class BlockChain {
 			if(tmp.inputs !=null) {
 				Iterator<TransactionInput> itInput = tmp.inputs.iterator();
 				while(itInput.hasNext()) {
-				    txInput.add(itInput.next());
+					usedTxOutput.add(itInput.next().UTXO);
+				    //txInput.add(itInput.next());
 				}
 			}
 			//extracts all outputs
 			Iterator<TransactionOutput> itOutput = tmp.outputs.iterator();
 			while(itOutput.hasNext()) {
-				TransactionOutput tmpOutput=itOutput.next();
-			  	txOutput.add(tmpOutput);
+				TransactionOutput txout=itOutput.next();
+				txOutput.put(txout.id, txout);
 			}
 		}
 			
 		//outputs - inputs = utxo
-		Iterator<TransactionInput> itInput = txInput.iterator();
+		Iterator<TransactionOutput> itInput = usedTxOutput.iterator();
 		while(itInput.hasNext()) {
-			txOutput.remove(itInput.next().txOutputId);
+			TransactionOutput test=itInput.next();
+			txOutput.remove(test.id);
+			System.out.println("chek ..   "+test.toJSONObject());
 		}
-			
-		Iterator<TransactionOutput> itOutput = txOutput.iterator();
-		while(itOutput.hasNext()) {
-			TransactionOutput tmp = itOutput.next();
-			Logging.consoleLog("add UTXO~~ : "+tmp.toJSONObject());
-			UTXOs.put(tmp.id, tmp);
+		
+		Iterator<String> keys = txOutput.keySet().iterator();
+		while(keys.hasNext()) {
+			String tmpkey=keys.next();
+			UTXOs.put(tmpkey, txOutput.get(tmpkey));
+			Logging.consoleLog("add UTXO~~ : "+txOutput.get(tmpkey).toJSONObject());
+
 		}
 	}
 
@@ -197,4 +176,5 @@ public class BlockChain {
 	public void remove(Block block) {
 		blockchain.remove(block);
 	}
+		
 }

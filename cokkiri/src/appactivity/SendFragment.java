@@ -9,6 +9,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import coin.Coin;
+import mining.Mining;
 import appview.SendView;
 import client.Client;
 import transaction.Transaction;
@@ -84,7 +85,7 @@ public class SendFragment {
 				//--------------------------------//
 				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
 				
-				Coin.blockchain.transactionPool.add(t);
+				Mining.transactionPool.add(t);
 				log.Logging.consoleLog("**transaction created** : "+t.getString());
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
 				flushText();

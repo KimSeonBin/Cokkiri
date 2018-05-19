@@ -153,7 +153,9 @@ public class Connection extends Thread{
 				RequestSell sell = new RequestSell(data);
 				System.out.println("$$$ sell.getCoin() "+String.valueOf(sell.getCoin()));
 				
-				sendMessage(sell.txJSONObject(sender, serverAdd).toJSONString());
+				String senddata = sell.txJSONObject(sender, serverAdd).toJSONString();
+				System.out.println("senddata : "+senddata);
+				sendMessage(senddata);
 				
 				String responseCash=readMessage();
 				double cash = Double.parseDouble(responseCash);
@@ -183,7 +185,7 @@ public class Connection extends Thread{
 					return;					
 			    }
 				RequestBuy buy = new RequestBuy(data);
-
+System.out.println("buy message : "+ buy.buyJSONObject().toJSONString());
 				sendMessage(buy.buyJSONObject().toJSONString());
 				
 				String responseTx = readMessage();
@@ -212,7 +214,10 @@ public class Connection extends Thread{
 		
 	JSONObject txStr = null;
 	try {
-		txStr = (JSONObject) new JSONParser().parse(readMessage());
+		String txx = readMessage();
+		System.out.println("server tx : "+txx);
+
+		txStr = (JSONObject) new JSONParser().parse(txx);
 		System.out.println("Json : "+txStr);
 				
 		Transaction tx = new Transaction();

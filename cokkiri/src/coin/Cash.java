@@ -43,12 +43,13 @@ public class Cash {
 	
 	public static void plus(double value) {
 		String filename = Constant.pathDir+"/"+Coin.id+"/cash.txt";
-	
+		cash+=value;
 		try {
+			
 			BufferedWriter out = new BufferedWriter(new FileWriter(filename));
 			out.append(String.valueOf(cash)); 
 			out.close();
-			cash+=value;
+			
 
 		} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -58,12 +59,12 @@ public class Cash {
 	}
 	public static void minus(double value) {
 		String filename = Constant.pathDir+"/"+Coin.id+"/cash.txt";
-		
+		cash-=value;
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(filename));
 			out.append(String.valueOf(cash)); 
 			out.close();
-			cash-=value;
+			
 
 		} catch (IOException e) {
 				// TODO Auto-generated catch block

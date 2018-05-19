@@ -143,7 +143,8 @@ public class Server extends Thread {
 				if(checkBlock(block)) {
 					//-----------------------------NEW Block 유효성 검사---------------------------//
 					//--------------------------------------------------------------------------//
-					Coin.blockchain.blockchain.add(block);	
+					Coin.blockchain.blockchain.add(block);
+					Coin.blockchain.storeBlock(block);
 					removeTx(block);
 						
 					//---------------------------NEW transaction를 다른 peer에게 broadcast------------//

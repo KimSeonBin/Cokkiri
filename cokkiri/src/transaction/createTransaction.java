@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import coin.Coin;
 import log.Logging;
 import wallet.Address;
 import wallet.Wallet;
@@ -59,7 +58,7 @@ public class createTransaction {
 		Iterator<TransactionOutput> it2 = newTransaction.outputs.iterator();	
 		while(it2.hasNext()) System.out.println(it2.next().toJSONObject());
 		
-		
+		newTransaction.setSenderPubkey(sender.getPublicKey());
 		newTransaction.generateSignature(sender.getPrivateKey());
 		
 		

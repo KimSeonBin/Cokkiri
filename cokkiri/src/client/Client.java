@@ -39,7 +39,6 @@ public class Client {
 	public static boolean processBuy(Float coinvalue) {
 		RequestBuy buy = new RequestBuy(coinvalue);
 		Peer server = PeerList.getPeerList().get(0);
-		
 		String req = MsgType.REQUEST_PURCHASE + buy.toJSONObject().toJSONString();
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
 		
