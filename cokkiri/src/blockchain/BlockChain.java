@@ -14,7 +14,7 @@ import utill_store.BlockStore;
 public class BlockChain {
 	public static List<Block> blockchain= new ArrayList<Block>();
 	public static String pathDir;
-	public static int DIFFICULTY; //채굴 난이도
+	public static int difficulty; //채굴 난이도
 
 	//public static HashMap<String, Transaction> transactionPool = new HashMap<String, Transaction>();
 	//public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
@@ -25,23 +25,36 @@ public class BlockChain {
 	
 	public BlockChain(String path, int difficulty) {
 		pathDir=path;
-		DIFFICULTY = difficulty;
+		this.difficulty = difficulty;
 	}
 
 	public boolean isChainValid() { //블록 헤더의 previousblockheader항목과 이전 블록의 해쉬값을 비교하여 블록체인 검증
-		//genesisblock 확인필요//
+		Block genesis = blockchain.get(0);
+		if(genesis.getBlockIndex()!=0) {
+			System.out.println("i'm invalid genesis 1");
+			return false;
+		}
+		if(genesis.getBlockHeader().getTimestamp()!=3) {
+			System.out.println("i'm invalid genesis 2");
+			return false;
+		}if(!genesis.getBlockHeader().getPreviousBlockHash().equals("0")) {
+			System.out.println("i'm invalid genesis 3");
+			return false;
+		}
+
 		for(int i=1;i<blockchain.size();i++){
 			Block currentBlock=blockchain.get(i);
 			Block previousBlock=blockchain.get(i-1);
-			if(!currentBlock.getBlockHash().equals(currentBlock.calculateHash())) {
-				return false; //해쉬값 확인
-			}
-			if(!currentBlock.getBlockHeader().getPreviousBlockHash().equals(previousBlock.getBlockHash())) {
-				return false; //이전블록해쉬값 비교
-			}
-			//if(!currentBlock.mineCheck()) return false;
-			//블록안 거래에 대한 검증
-		}
+			if(currentBlock.getBlockIndex()!=i) {
+						System.out.println("i'm invalid block 1");
+						return false;
+					}
+					if(!currentBlock.isBlockValid(previousBlock.getBlockHash(), previousBlock.getBlockIndex())) {
+						System.out.println("i'm invalid block 2");
+						return false;
+					}
+				 	
+				}
 		return true;
 	}
 	
@@ -54,7 +67,7 @@ public class BlockChain {
 	}
 	
 	public void addBlock(Block block) {
-		block.getBlockHeader().setDifficulty(DIFFICULTY);
+		block.getBlockHeader().setDifficulty(difficulty);
 		block.mineBlock();
 		blockchain.add(block);
 	}
