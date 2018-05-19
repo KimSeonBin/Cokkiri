@@ -28,6 +28,7 @@ public class ExchangeSellFragment {
 	//	this.passwordtext = sellview.getPassword();
 		
 		sellbutton.addActionListener(new sellClickListener());
+		
 	}
 	
 	public static void showSuccessDialog() {

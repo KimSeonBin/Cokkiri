@@ -76,7 +76,7 @@ public class Client {
 	public static boolean processSell(Float coinvalue) {
 		
 		RequestSell sell = new RequestSell(coinvalue);
-		Peer server = new Peer("tmp", "localhost" ,3333);
+		Peer server = PeerList.getPeerList().get(0);
 		
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
 		//buy.toJSONObject() string으로 변환하여..

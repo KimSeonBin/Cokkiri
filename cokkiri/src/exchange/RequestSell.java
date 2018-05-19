@@ -35,6 +35,23 @@ public class RequestSell {
 		this.cash=value*Constant.compasionValue;
 	}
 	
+	public RequestSell(String json) {
+		JSONParser paser = new JSONParser();
+		JSONObject jsonO;
+		try {
+			jsonO = (JSONObject) paser.parse(json);
+			this.cash = ((Number)jsonO.get("cash")).doubleValue();
+			this.coin = ((Number)jsonO.get("coin")).floatValue();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public float getCoin() {
+		return coin;
+	}
+	
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
 		json.put("coin", coin);
