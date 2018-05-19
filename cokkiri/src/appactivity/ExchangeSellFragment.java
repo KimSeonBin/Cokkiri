@@ -25,7 +25,6 @@ public class ExchangeSellFragment {
 		this.coin_value = sellview.getCoin_value();
 		this.coincash = sellview.getCoin_value();
 		this.sellbutton = sellview.getSellbutton();
-	//	this.passwordtext = sellview.getPassword();
 		
 		sellbutton.addActionListener(new sellClickListener());
 		
@@ -53,16 +52,14 @@ public class ExchangeSellFragment {
 				return;
 			}	
 			
+			if(Float.parseFloat(value_string) > Coin.wallet.getBalance()) {
+				JOptionPane.showMessageDialog(sellview, "코인이 부족합니다.", "코인 판매", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
 
 			Client.processSell(Float.parseFloat(value_string));
-//			boolean res = Client.processSell(Float.parseFloat(value_string));
-//			
-//			if(res) {
-//				
-//				showSuccessDialog();
-//			}else {
-//				showFailDialog();
-//			}
+
 			flushText();
 
 		}

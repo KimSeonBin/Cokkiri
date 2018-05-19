@@ -3,7 +3,7 @@ package appactivity;
 import javax.swing.JLabel;
 
 import appview.HomeView;
-
+import coin.Cash;
 import coin.Coin;
 public class HomeFragment {
 	private HomeView homeview;
@@ -20,7 +20,12 @@ public class HomeFragment {
 	
 	public void refresh() {
 		refreshTotalcoin();
+		refreshExchange();
 	}
+	private void refreshExchange() {
+		this.label_exchange_value.setText(String.valueOf(Cash.getCash()));
+	}
+
 	private void refreshTotalcoin() {
 		this.label_totalcoin_value.setText(String.valueOf(Coin.wallet.getBalance()));
 	}
