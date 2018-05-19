@@ -5,15 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import client.Client;
-import coin.Coin;
 import log.Logging;
-import mining.Mining;
 import transaction.Transaction;
 import transaction.TransactionInput;
 import transaction.TransactionOutput;
 import utill_store.BlockStore;
-import wallet.Address;
 
 public class BlockChain {
 	public static List<Block> blockchain= new ArrayList<Block>();
