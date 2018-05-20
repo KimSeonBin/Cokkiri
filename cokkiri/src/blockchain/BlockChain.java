@@ -37,7 +37,8 @@ public class BlockChain {
 		if(genesis.getBlockHeader().getTimestamp()!=3) {
 			System.out.println("i'm invalid genesis 2");
 			return false;
-		}if(!genesis.getBlockHeader().getPreviousBlockHash().equals("0")) {
+		}
+		if(!genesis.getBlockHeader().getPreviousBlockHash().equals("0")) {
 			System.out.println("i'm invalid genesis 3");
 			return false;
 		}
@@ -46,15 +47,14 @@ public class BlockChain {
 			Block currentBlock=blockchain.get(i);
 			Block previousBlock=blockchain.get(i-1);
 			if(currentBlock.getBlockIndex()!=i) {
-						System.out.println("i'm invalid block 1");
-						return false;
-					}
-					if(!currentBlock.isBlockValid(previousBlock.getBlockHash(), previousBlock.getBlockIndex())) {
-						System.out.println("i'm invalid block 2");
-						return false;
-					}
-				 	
-				}
+				System.out.println("i'm invalid block 1");
+				return false;
+			}
+			if(!currentBlock.isBlockValid(previousBlock.getBlockHash(), previousBlock.getBlockIndex())) {
+				System.out.println("i'm invalid block 2");
+				return false;
+			}
+		}
 		return true;
 	}
 	

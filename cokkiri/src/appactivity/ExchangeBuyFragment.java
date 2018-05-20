@@ -16,7 +16,7 @@ import coin.Coin;
 import coin.Constant;
 import exchange.RequestBuy;
 import transaction.Transaction;
-import transaction.createTransaction;
+import transaction.CreateTransaction;
 import utill_network.MsgType;
 import wallet.Address;
 import wallet.Wallet;

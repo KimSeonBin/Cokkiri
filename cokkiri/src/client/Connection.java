@@ -25,7 +25,7 @@ import exchange.RequestSell;
 import mining.Mining;
 import server.Server;
 import transaction.Transaction;
-import transaction.createTransaction;
+import transaction.CreateTransaction;
 import utill_network.MsgType;
 import utill_network.NodeId;
 import utill_network.Peer;

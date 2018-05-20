@@ -13,7 +13,7 @@ import log.Logging;
 import wallet.Address;
 import wallet.Wallet;
 
-public class createTransaction {
+public class CreateTransaction {
 
 	/**
 	 * Generates and returns a new transaction from this wallet.

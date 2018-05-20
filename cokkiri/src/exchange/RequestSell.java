@@ -21,7 +21,7 @@ import coin.Coin;
 import coin.Constant;
 import mining.Mining;
 import transaction.Transaction;
-import transaction.createTransaction;
+import transaction.CreateTransaction;
 import utill_network.MsgType;
 import utill_network.Peer;
 import wallet.Address;
@@ -65,7 +65,7 @@ public class RequestSell {
 	public JSONObject txJSONObject(Wallet wallet, Address serverAdd) {
 		String server = "tmp"; //서버 어드레스 스트링
 	
-		Transaction tx = createTransaction.createTx(wallet, serverAdd, coin);
+		Transaction tx = CreateTransaction.createTx(wallet, serverAdd, coin);
 		
 		Mining.transactionPool.add(tx);
 		
