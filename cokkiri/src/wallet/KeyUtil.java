@@ -112,7 +112,7 @@ public class KeyUtil {
 	 * @param hash
 	 * @return
 	 */
-	static boolean SaveKeyPairHash(String path, String hash){
+	static boolean saveKeyPairHash(String path, String hash){
 		 try {
 			 BufferedWriter out = new BufferedWriter(new FileWriter(path+"/keypairhash"));
 			 out.write(hash); 
@@ -129,7 +129,7 @@ public class KeyUtil {
 	 * @param pathdir
 	 * @return
 	 */
-	static String LoadKeyPairHash(String pathdir) {
+	static String loadKeyPairHash(String pathdir) {
 		String hash="";
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(pathdir+"/keypairhash"));
@@ -163,7 +163,7 @@ public class KeyUtil {
 	 * @param passwd
 	 * @return
 	 */
-	static boolean SaveKeyPair(String path, KeyPair keyPair, String passwd){
+	static boolean saveKeyPair(String path, KeyPair keyPair, String passwd){
 		PrivateKey privateKey = keyPair.getPrivate();
 		PublicKey publicKey = keyPair.getPublic();
  		
@@ -202,7 +202,7 @@ public class KeyUtil {
 	 * @param passwd => 암호화하여 저장한 private key 파일 복호화하기위함
 	 * @return
 	 */
-	static KeyPair LoadKeyPair(String path, String passwd){
+	static KeyPair loadKeyPair(String path, String passwd){
 		File filePublicKey = new File(path + "/public.key");
 		FileInputStream fis;
 		byte[] encodedPublicKey, encodedPrivateKey;
@@ -246,7 +246,7 @@ public class KeyUtil {
 		return new KeyPair(null, null);
 	}
 	
-	static PublicKey LoadPubKey(String path) {
+	static PublicKey loadPubKey(String path) {
 		File filePublicKey = new File(path + "/public.key");
 		FileInputStream fis;
 		byte[] encodedPublicKey, encodedPrivateKey;

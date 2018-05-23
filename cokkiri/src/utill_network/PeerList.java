@@ -27,8 +27,8 @@ public class PeerList {
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
 		
-		//peerArray.add(new Peer("1","172.30.1.9",3333)); //서버
-		peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
+		peerArray.add(new Peer("1","172.30.1.43",3333)); //서버
+		//peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
 		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
 		peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
 		peerArray.add(new Peer("1002","192.168.10.6",3333));//현영

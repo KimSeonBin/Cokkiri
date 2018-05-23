@@ -33,13 +33,13 @@ public class Wallet {
 				return;
 			}else { 
 				if(!KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")) {
-					KeyUtil.SaveKeyPair(Constant.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
+					KeyUtil.saveKeyPair(Constant.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
 
-					KeyUtil.SaveKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
+					KeyUtil.saveKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
 				}
 			}
 		}
-		else keyPair = KeyUtil.LoadKeyPair(Constant.pathDir+"/"+Coin.id+"/key", passwd);
+		else keyPair = KeyUtil.loadKeyPair(Constant.pathDir+"/"+Coin.id+"/key", passwd);
 		
 		privateKey=keyPair.getPrivate();
 		publicKey=keyPair.getPublic();
@@ -48,7 +48,7 @@ public class Wallet {
 	
 	//public key¸¸ load
 	public Wallet() {
-		publicKey=KeyUtil.LoadPubKey(Constant.pathDir+"/"+Coin.id+"/key");
+		publicKey=KeyUtil.loadPubKey(Constant.pathDir+"/"+Coin.id+"/key");
 		address=new Address(publicKey);
 	}
 	
@@ -62,7 +62,7 @@ public class Wallet {
 		if(KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")){
 			KeyPair check=KeyUtil.generateKeyPair(passwd);
 			String checkHash=KeyUtil.hashKeyPair(check);
-			String keyPairHash=KeyUtil.LoadKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key");
+			String keyPairHash=KeyUtil.loadKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key");
 			if(!checkHash.equals(keyPairHash)){
 				System.out.println("checkHash "+checkHash);
 				System.out.println("keypairhash "+keyPairHash);

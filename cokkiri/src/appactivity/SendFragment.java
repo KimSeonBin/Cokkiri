@@ -16,7 +16,7 @@ import mining.Mining;
 import appview.SendView;
 import client.Client;
 import transaction.Transaction;
-import transaction.createTransaction;
+import transaction.CreateTransaction;
 import utill_network.MsgType;
 import wallet.Address;
 import wallet.Wallet;
@@ -71,7 +71,7 @@ public class SendFragment {
 			
 			Address receiverAdd=new Address();
 			receiverAdd.setAddress(receiver);
-			Transaction t=createTransaction.createTx(sender, receiverAdd, value);
+			Transaction t=CreateTransaction.createTx(sender, receiverAdd, value);
 			
 			if(t!=null) {
 				//-------------txÀüÆÄ---------------//

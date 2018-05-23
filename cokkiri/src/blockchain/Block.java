@@ -114,6 +114,10 @@ public class Block {
 			System.out.println("invalid block TT 3");
 			return false;
 		}
+		if(!blockHash.equals(calculateHash())) {
+			System.out.println("i'm invalid block 3");
+			return false; //해쉬값 확인
+		}
 		if(!isBlockValid()) {
 			System.out.println("invalid block TT 2");
 			return false; 
