@@ -1,3 +1,5 @@
+{"port":3333,"ip_address":"192.168.51.72","peer_id":"1"}
 {"port":3333,"ip_address":"192.168.10.4","peer_id":"1000"}
 {"port":3333,"ip_address":"192.168.10.5","peer_id":"1001"}
+{"port":3333,"ip_address":"192.168.10.6","peer_id":"1002"}
 {"port":3333,"ip_address":"192.168.10.7","peer_id":"1003"}
