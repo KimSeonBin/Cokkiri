@@ -25,7 +25,7 @@ import wallet.Wallet;
 
 public class ExchangeBuyFragment {
 	private static ExchangeBuyView buyview;
-	private JFormattedTextField coin_value;
+	private JTextField coin_value;
 	private JTextField coincash;
 	private JButton buybutton;
 	

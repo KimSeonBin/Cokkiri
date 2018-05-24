@@ -18,7 +18,7 @@ import exchange.RequestSell;
 
 public class ExchangeSellFragment {
 	private static ExchangeSellView sellview;
-	private JFormattedTextField coin_value;
+	private JTextField coin_value;
 	private JTextField coincash;
 	private JButton sellbutton;
 //	private JPasswordField passwordtext;
@@ -29,6 +29,10 @@ public class ExchangeSellFragment {
 		this.coincash = sellview.getCoincash();
 		this.sellbutton = sellview.getSellbutton();
 		
+<<<<<<< HEAD
+=======
+		
+>>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 		sellbutton.addActionListener(new sellClickListener());
 		coin_value.addKeyListener(new coinvalueListener());
 	}
@@ -73,6 +77,7 @@ public class ExchangeSellFragment {
 	}
 	
 	private class coinvalueListener implements KeyListener{
+<<<<<<< HEAD
 	      @Override
 	      public void keyPressed(KeyEvent e) {
 	         
@@ -97,5 +102,31 @@ public class ExchangeSellFragment {
 	      }
 	      
 	   }
+=======
+		@Override
+		public void keyPressed(KeyEvent e) {
+			
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			String value = coin_value.getText();
+			System.out.println(value);
+			try{
+				double value_convert = Double.parseDouble(value);
+				System.out.println(value_convert);
+				coincash.setText(String.valueOf(value_convert * Constant.compasionValue));
+			}
+			catch(NumberFormatException e1) {
+				System.out.println("error");
+				coincash.setText("invalid input");
+			}
+		}
+		@Override
+		public void keyTyped(KeyEvent e) {
+			
+		}
+		
+	}
+>>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 
 }
