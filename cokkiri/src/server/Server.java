@@ -18,10 +18,15 @@ import org.json.simple.parser.ParseException;
 import blockchain.Block;
 import client.Client;
 import coin.Coin;
+import coin.TransferTxs;
+import coin.TransferUTXO;
 import mining.Mining;
 import transaction.Transaction;
+import transaction.TransactionInput;
+import transaction.TransactionOutput;
 import utill_network.MsgType;
 import utill_network.Peer;
+import wallet.Address;
 
 public class Server extends Thread {
 	private Socket socket;
@@ -38,11 +43,12 @@ public class Server extends Thread {
 	
 	
 	public void run() {
-		
+		System.out.println("Server.java run()");
 		//---------------------처음 클라이언트로 부터 ping 받는 부분-------------------------------------------//
 		String clientMsg=readMessage();
 		System.out.println("[server] connected peer id : "+clientMsg+"...................");
-		
+		System.out.println("[server] connected peer info: "+socket.toString());
+		System.out.println("ip : "+socket.getInetAddress());
 		if(clientMsg.equals(MsgType.DNS_MSG)) {
 			sendMessage(MsgType.DNS_MSG);
 			disconnectAll();
@@ -90,11 +96,12 @@ public class Server extends Thread {
 		
 		if(clientMsg.equals(MsgType.TRANSACTION_MSG)) {
 			receivedTransction();
-			
 		}
 		else if(clientMsg.equals(MsgType.BLOCK_TRANSFER_MSG)) {
 			receivedBlock();
 			
+		}else if(clientMsg.equals(MsgType.MYTX_REQ_MSG)) {
+			receivedUserTxReq();
 		}
 		else {
 			System.out.println("err");
@@ -102,25 +109,50 @@ public class Server extends Thread {
 		}	
 	}
 	
-	public void receivedTransction() {
-		//System.out.println("[server] received data\r\n =>" );
+	private void receivedUserTxReq() {
+		System.out.println("Server.java receivedUserTxReq()");
+		String addressStr = readMessage();
+		Address user = new Address();
+		user.setAddress(addressStr);
 		
-	JSONObject txStr = null;
-	try {
-		txStr = (JSONObject) new JSONParser().parse(readMessage());
-		System.out.println("Json : "+txStr);
+		TransferTxs txs = new TransferTxs();
+		txs.setTxList(user);
+		String msg = txs.toJSONObject().toJSONString();
+		
+		sendMessage(msg);
+		System.out.println("send user txs : "+msg);
+		
+	}
+
+
+	public void receivedTransction() {
+		System.out.println("Server.java receivedTransaction()");
+		
+		JSONObject txStr = null;
+		try {
+			txStr = (JSONObject) new JSONParser().parse(readMessage());
+			System.out.println("[server] tx : "+txStr);
+					
+			Transaction tx = new Transaction();
+			tx.convertClassObject(txStr);
 				
-		Transaction tx = new Transaction();
-		tx.convertClassObject(txStr);
-			
-		if(checkTransaction(tx)) {
-		//Coin.blockchain.transactionPool.add(tx);
-		Mining.transactionPool.add(tx);
-		}
+			if(checkTransaction(tx)) {
+				Mining.transactionPool.add(tx);
 				
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+				//add outputs to Unspent list
+				for(TransactionOutput o : tx.outputs) {
+					Coin.blockchain.UTXOs.put(o.id , o);
+				}
+
+				//remove transaction inputs from UTXO lists as spent:
+				for(TransactionInput i : tx.inputs) {
+					if(i.UTXO == null) continue; //if Transaction can't be found skip it 
+					Coin.blockchain.UTXOs.remove(i.UTXO.id);
+				}
+				
+			}
+					
+			} catch (ParseException e) {e.printStackTrace();}
 		
 	}
 	
@@ -153,12 +185,10 @@ public class Server extends Thread {
 				}
 				else {return;}
 			
-				
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return;
 			}
-			
 
 		}else {return;}
 	}
@@ -170,7 +200,7 @@ public class Server extends Thread {
 		transactions.addAll(newblock.transactions);
 		Transaction tmp=new Transaction();
 		int size=transactions.size();
-		System.out.println("@@@removeTx()");
+		//System.out.println("@@@removeTx()");
 		ArrayList<Transaction> txpool = new ArrayList<Transaction>(); //txpool의 ㅅㅌ
 		txpool.addAll(Mining.transactionPool);
 		
@@ -191,6 +221,10 @@ public class Server extends Thread {
 	
 	public boolean checkTransaction(Transaction tx) {
 		//transaction 검증
+		Iterator check = Mining.transactionPool.iterator();
+		while(check.hasNext()) {
+			if(tx.TxId.equals(((Transaction)check).TxId)) return false;
+		}
 		return true;
 	}
 	
@@ -200,7 +234,12 @@ public class Server extends Thread {
 	}
 	
 	public boolean checkBlock(Block block) {
-		//Block 유효성검사
+		Iterator it = Coin.blockchain.blockchain.iterator();
+		while(it.hasNext()) {
+			if(block.getBlockIndex()==((Block)it.next()).getBlockIndex()){
+				return false;
+			}
+		}
 		return true;
 	}
 	

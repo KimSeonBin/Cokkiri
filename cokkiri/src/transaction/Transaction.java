@@ -3,16 +3,12 @@ package transaction;
 import java.security.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import appactivity.*;
 import hash.Sha256;
-import transaction.*;
 import wallet.Address;
 import wallet.KeyUtil;
 import coin.Coin;
@@ -51,8 +47,6 @@ public class Transaction {
 
 	//Returns true if new transaction could be created.	
 	public boolean processTransaction() {
-		System.out.println("check22222222");
-		System.out.println(toJSONObject());
 		
 		if(verifySignature() == false) {
 			System.out.println("#Transaction Signature failed to verify");

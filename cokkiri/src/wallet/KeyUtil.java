@@ -39,6 +39,7 @@ public class KeyUtil {
 	 */
 	public static String getStringFromKey(Key key) {
 		if(key==null) return "null"; //¿œ¥‹..
+		
 		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 	
@@ -95,6 +96,8 @@ public class KeyUtil {
 			e1.printStackTrace();
 		}
 		secureRandom.setSeed(passwd.getBytes());
+		System.out.println();
+		
 		try {
 			KeyPairGenerator keyGen=KeyPairGenerator.getInstance(algorithm, provider);
 			ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp256k1");

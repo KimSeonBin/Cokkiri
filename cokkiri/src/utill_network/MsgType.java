@@ -13,4 +13,5 @@ public class MsgType {
 	public final static String REQUEST_PURCHASE = "coin_amount";
 	public final static String ANSWER_OK = "OK";
 	public final static String ANSWER_NO = "NO";
+	public static final String MYTX_REQ_MSG = "request my tx";
 }

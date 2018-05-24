@@ -1,7 +1,6 @@
 package login;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Login {
 
@@ -13,6 +12,7 @@ public class Login {
 	}*/
 	
 	public static String login(String id, String pw) {
+		
 		if(id.equals(pw)) {
 			if(id.length()==9&&id.charAt(0)=='2'&&id.charAt(1)=='0') {
 				

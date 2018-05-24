@@ -46,6 +46,7 @@ public class Client {
 	}
 	
 	public static boolean processSell(Float coinvalue) {
+		System.out.println("Client.java processSell()");
 		
 		RequestSell sell = new RequestSell(coinvalue);
 		Peer server = PeerList.getPeerList().get(0);

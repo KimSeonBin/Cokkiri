@@ -2,7 +2,6 @@ package transaction;
 
 import org.json.simple.JSONObject;
 
-import appactivity.*;
 import coin.Coin;
 
 public class TransactionInput {

@@ -127,15 +127,15 @@ public class LoginView extends JFrame {
 		loginbutton = new JButton("로그인");
 		buttonDesign(loginbutton);
 		GridBagConstraints logingb = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER,
-				GridBagConstraints.BOTH, new Insets(0, 0, 0, 25), 0, 0);
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel.add(loginbutton, logingb);
 
-		signinbutton = new JButton("계좌 생성");
-		buttonDesign(signinbutton);
-
-		GridBagConstraints signgb = new GridBagConstraints(1, 0, 1, 1, 0.9, 1, GridBagConstraints.CENTER,
-				GridBagConstraints.BOTH, new Insets(0, 25, 0, 0), 0, 0);
-		panel.add(signinbutton, signgb);
+//		signinbutton = new JButton("계좌 생성");
+////		buttonDesign(signinbutton);
+//
+//		GridBagConstraints signgb = new GridBagConstraints(1, 0, 1, 1, 0.9, 1, GridBagConstraints.CENTER,
+//				GridBagConstraints.BOTH, new Insets(0, 25, 0, 0), 0, 0);
+//		panel.add(signinbutton, signgb);
 
 		GridBagConstraints panelgb = new GridBagConstraints(0, 2, 1, 1, 1, 0.2, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(20, 200, 150, 200), 0, 0);

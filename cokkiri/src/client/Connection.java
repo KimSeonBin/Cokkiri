@@ -25,6 +25,8 @@ import exchange.RequestSell;
 import mining.Mining;
 import server.Server;
 import transaction.Transaction;
+import transaction.TransactionInput;
+import transaction.TransactionOutput;
 import transaction.CreateTransaction;
 import utill_network.MsgType;
 import utill_network.NodeId;
@@ -185,7 +187,7 @@ public class Connection extends Thread{
 					return;					
 			    }
 				RequestBuy buy = new RequestBuy(data);
-System.out.println("buy message : "+ buy.buyJSONObject().toJSONString());
+				System.out.println("buy message : "+ buy.buyJSONObject().toJSONString());
 				sendMessage(buy.buyJSONObject().toJSONString());
 				
 				String responseTx = readMessage();
@@ -225,6 +227,18 @@ System.out.println("buy message : "+ buy.buyJSONObject().toJSONString());
 			
 		//if(checkTransaction(tx)) {
 			Mining.transactionPool.add(tx);
+			
+			//add outputs to Unspent list
+			for(TransactionOutput o : tx.outputs) {
+				Coin.blockchain.UTXOs.put(o.id , o);
+			}
+
+			//remove transaction inputs from UTXO lists as spent:
+			for(TransactionInput i : tx.inputs) {
+				if(i.UTXO == null) continue; //if Transaction can't be found skip it 
+				Coin.blockchain.UTXOs.remove(i.UTXO.id);
+			}
+			
 		//}
 				
 		} catch (ParseException e) {

@@ -2,6 +2,8 @@ package appactivity;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -11,6 +13,7 @@ import javax.swing.JTextField;
 import appview.ExchangeSellView;
 import client.Client;
 import coin.Coin;
+import coin.Constant;
 import exchange.RequestSell;
 
 public class ExchangeSellFragment {
@@ -23,11 +26,11 @@ public class ExchangeSellFragment {
 	public ExchangeSellFragment(ExchangeSellView sellview) {
 		this.sellview=sellview;
 		this.coin_value = sellview.getCoin_value();
-		this.coincash = sellview.getCoin_value();
+		this.coincash = sellview.getCoincash();
 		this.sellbutton = sellview.getSellbutton();
 		
 		sellbutton.addActionListener(new sellClickListener());
-		
+		coin_value.addKeyListener(new coinvalueListener());
 	}
 	
 	public static void showSuccessDialog() {
@@ -68,5 +71,31 @@ public class ExchangeSellFragment {
 			coincash.setText(null);
 		}
 	}
+	
+	private class coinvalueListener implements KeyListener{
+	      @Override
+	      public void keyPressed(KeyEvent e) {
+	         
+	      }
+	      @Override
+	      public void keyReleased(KeyEvent e) {
+	         String value = coin_value.getText();
+	         System.out.println(value);
+	         try{
+	            double value_convert = Double.parseDouble(value);
+	            System.out.println(value_convert);
+	            coincash.setText(String.valueOf(value_convert * Constant.compasionValue));
+	         }
+	         catch(NumberFormatException e1) {
+	            System.out.println("error");
+	            coincash.setText("invalid input");
+	         }
+	      }
+	      @Override
+	      public void keyTyped(KeyEvent e) {
+	         
+	      }
+	      
+	   }
 
 }

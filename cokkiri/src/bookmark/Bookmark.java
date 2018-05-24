@@ -45,6 +45,7 @@ public class Bookmark {
 	}
 
 	public static void loadBookmark() {
+		System.out.println("Bookmark.java loadBookmark()");
 		String filename = Constant.pathDir+"/"+Coin.id+"/bookmark.txt";
 		File file=new File(filename);
 		if(!file.exists()) {

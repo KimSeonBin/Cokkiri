@@ -45,8 +45,6 @@ public class SendFragment {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		
-
-			
 			String receiver=publickeytext.getText();
 			String value_string = coin_valuetext.getText();
 			if(value_string.matches("^[0-9]+$") == false) {
@@ -58,12 +56,9 @@ public class SendFragment {
 			
 			if(!checksendinputs(receiver, password)) {
 				String message = receiver + "와의 거래 생성을 실패했습니다.";
-				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
-				log.Logging.consoleLog("failed to create transaction");
+				JOptionPane.showMessageDialog(sendview, message, "입력값 오류", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-
-			
 			Wallet sender = new Wallet(Coin.id+password, false);
 			
 			Address receiverAdd=new Address();
@@ -72,9 +67,7 @@ public class SendFragment {
 			
 			if(t!=null) {
 				//-------------tx전파---------------//
-				System.out.println("[ClientSendlog] : BroadCast Transaction");
-				String message = receiver + "와의 거래 생성을 성공했습니다.";
-				
+				//System.out.println("[ClientSendlog] : BroadCast Transaction");
 				new Thread() {
 					public void run() {
 						try {
@@ -83,16 +76,16 @@ public class SendFragment {
 					}
 				}.start();
 				//--------------------------------//
-				//Coin.blockchain.transactionPool.put(t.TxId, t); //hashmap 사용할 때
 				
 				Mining.transactionPool.add(t);
-				log.Logging.consoleLog("**transaction created** : "+t.getString());
+				//log.Logging.consoleLog("**transaction created** : "+t.getString());
+				String message = receiver + "와의 거래 생성을 성공했습니다.";
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.INFORMATION_MESSAGE);
 				flushText();
 			}else {
 				String message = receiver + "와의 거래 생성을 실패했습니다.";
 				JOptionPane.showMessageDialog(sendview, message, "거래 생성", JOptionPane.WARNING_MESSAGE);
-				log.Logging.consoleLog("failed to create transaction");
+				//log.Logging.consoleLog("failed to create transaction");
 			}			
 		}
 	}

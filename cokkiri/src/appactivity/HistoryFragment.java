@@ -1,7 +1,5 @@
 package appactivity;
 
-import java.util.Iterator;
-
 import javax.swing.JTextArea;
 
 import appview.HistoryView;
