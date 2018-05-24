@@ -11,6 +11,7 @@ import appview.MineView;
 import blockchain.Block;
 import coin.Coin;
 import mining.Mining;
+import wallet.Address;
 import wallet.Wallet;
 
 public class MineFragment {
@@ -40,7 +41,10 @@ public class MineFragment {
 			button_mine.setText("√§±º ¡ﬂ¡ˆ");
 
 			if(button_text.equals("√§±º Ω√¿€")) {
-				Block minedBlock = Mining.mining(Coin.wallet.getAddress());
+				Address miner = new Address();
+				miner.setAddress(publickeytext.getText());
+				Block minedBlock = Mining.mining(miner);
+				
 				if(minedBlock==null) minearea.append("failed to mining\n"+"===========================================================\n");
 				else {
 					minearea.append(minedBlock.getString()+"===========================================================\n");

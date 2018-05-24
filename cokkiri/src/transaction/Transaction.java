@@ -14,7 +14,9 @@ import appactivity.*;
 import hash.Sha256;
 import transaction.*;
 import wallet.Address;
+import wallet.KeyUtil;
 import coin.Coin;
+import coin.Constant;
 
 public class Transaction {
 	public String TxId; // this is also the hash of the transaction.
@@ -23,6 +25,8 @@ public class Transaction {
 	public float value;
 	public byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
 	public long timestamp;
+	
+	public String senderPubkey;
 	
 	public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 	public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
@@ -36,7 +40,7 @@ public class Transaction {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		this.timestamp=timestamp.getTime();	
 		
-		if(sender.getString().equals(Coin.pathDir)) { //benefit tx
+		if(sender.getString().equals(Constant.pathDir)) { //benefit tx
 			TxId=calulateTxId();
 		}
 	}
@@ -65,7 +69,7 @@ public class Transaction {
 			System.out.println("#Transaction Inputs to small: " + getInputsValue());
 			return false;
 		}
-		if(getInputsValue() > Coin.coinMax) {
+		if(getInputsValue() > Constant.coinMax) {
 			System.out.println("#Transaction Inputs to big: " + getInputsValue());
 			return false;
 		}
@@ -103,7 +107,7 @@ public class Transaction {
 	public boolean isTransactionValid() {
 		System.out.println("--------isTransactionValid()----------");
 		
-		if(sender.getString().equals(Coin.pathDir)) { //채굴보상tx 확인
+		if(sender.getString().equals(Constant.pathDir)) { //채굴보상tx 확인
 			
 			if(!inputs.isEmpty()){
 				System.out.println("i'm invalid 1");
@@ -124,7 +128,7 @@ public class Transaction {
 			System.out.println("i'm invalid 3");
 			return false;
 		}
-		
+		/*
 		Coin.blockchain.getAllTx();
 		HashMap<String, Transaction> alltx = new HashMap<String, Transaction>();
 		Iterator it=Coin.blockchain.allTx.iterator();
@@ -145,7 +149,7 @@ public class Transaction {
 			}
 		}
 		
-		
+		*/
 		System.out.println("i'm valid");
 		return true;
 	}
@@ -186,15 +190,10 @@ public class Transaction {
 	//Verifies the data we signed hasnt been tampered with
 	public boolean verifySignature() {
 		String data = sender.getString() + receiver.getString() + Float.toString(value) + Long.toString(timestamp);
-		if(Coin.wallet.getAddress().getString().equals(sender.getString())) {
-			return ECDSAUtil.verifyECDSASig(Coin.wallet.getPublicKey(), data, signature);
-		}
-		else {
-			System.out.println("hi");
-			System.out.println(	Coin.wallet.getAddress().getString());
-			System.out.println(sender.getString());
-			return false;
-		}
+		System.out.println("ㅏㅏㅏ:"+data);
+	    System.out.println(senderPubkey);
+		return ECDSAUtil.verifyECDSASig(KeyUtil.getPubKeyFromString(senderPubkey), data, signature);
+		
 	}
 		
 	public Address getSender() {return sender;}
@@ -215,6 +214,8 @@ public class Transaction {
 		json.put("signature", Base64.encodeBase64String(signature));
 		json.put("inputs", convertInput_toJSONArray());
 		json.put("outputs", convertOutput_toJSONArray());
+		json.put("pubkey", senderPubkey);
+		json.put("timestamp", timestamp);
 		return json;
 	}
 	
@@ -226,6 +227,8 @@ public class Transaction {
 		this.receiver.setAddress((String) json.get("receiver"));
 		this.value = ((Number) json.get("value")).floatValue();
 		this.signature = Base64.decodeBase64((String) json.get("signature"));
+		this.senderPubkey = (String) json.get("pubkey");
+		this.timestamp = ((Number)json.get("timestamp")).longValue();
 		
 		JSONArray jsonArray = (JSONArray) json.get("inputs");
 		JSONObject temp;
@@ -276,5 +279,10 @@ public class Transaction {
 			array.add(tx.toJSONObject());
 		}
 		return array;
+	}
+
+	public void setSenderPubkey(PublicKey publicKey) {
+		senderPubkey=KeyUtil.getStringFromKey(publicKey);
+		System.out.println("확인!!!!! "+senderPubkey);
 	}
 }

@@ -94,6 +94,7 @@ public class Server extends Thread {
 		}
 		else if(clientMsg.equals(MsgType.BLOCK_TRANSFER_MSG)) {
 			receivedBlock();
+			
 		}
 		else {
 			System.out.println("err");
@@ -142,9 +143,10 @@ public class Server extends Thread {
 				if(checkBlock(block)) {
 					//-----------------------------NEW Block 유효성 검사---------------------------//
 					//--------------------------------------------------------------------------//
-					Coin.blockchain.blockchain.add(block);	
+					Coin.blockchain.blockchain.add(block);
+					Coin.blockchain.storeBlock(block);
 					removeTx(block);
-						
+					Coin.blockchain.getUTXOs();
 					//---------------------------NEW transaction를 다른 peer에게 broadcast------------//
 					//Client.broadcast(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" "+blockMsg);
 					//---------------------------------------------------------------------------//

@@ -1,19 +1,16 @@
 package blockchain;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import coin.Coin;
-import appactivity.*;
+import coin.Constant;
 import hash.Sha256;
 import log.Logging;
 import transaction.*;
-import utill_store.BlockStore;
 import wallet.Address;
-import wallet.Wallet;
 
 public class Block {
 	private long index;
@@ -42,8 +39,8 @@ public class Block {
 		System.out.println("*&*& index : "+index);
 		if(index <1000) { // 채굴 보상 제한 1000개 블록으로
 			Address coinbase=new Address();
-			coinbase.setAddress(Coin.pathDir);
-			Transaction benefit = new Transaction(coinbase, minerAddress, 10, null);
+			coinbase.setAddress(Constant.pathDir);
+			Transaction benefit = new Transaction(coinbase, minerAddress, Constant.benefit, null);
 			//genesisTransaction.generateSignature(coinbase.getPrivateKey());	 //signature 어떻게 해야할지 모르겠음
 			benefit.inputs=new ArrayList<TransactionInput>();
 			benefit.outputs.add(new TransactionOutput(benefit.receiver, benefit.value, benefit.TxId)); //manually add the Transactions Output
@@ -116,6 +113,10 @@ public class Block {
 		if(!(index==prevBlockIndex+1)) {
 			System.out.println("invalid block TT 3");
 			return false;
+		}
+		if(!blockHash.equals(calculateHash())) {
+			System.out.println("i'm invalid block 3");
+			return false; //해쉬값 확인
 		}
 		if(!isBlockValid()) {
 			System.out.println("invalid block TT 2");

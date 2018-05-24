@@ -16,7 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import coin.Coin;
+import coin.Constant;
 
 
 public class ClientPeerReceive {
@@ -95,7 +95,7 @@ public class ClientPeerReceive {
 	 * port
 	 */
 	private void storePeerList(JSONArray json) {
-		File file = new File(Coin.pathDir + "peerlist.txt");
+		File file = new File(Constant.pathDir + "peerlist.txt");
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			JSONObject jsonObject;
@@ -114,7 +114,7 @@ public class ClientPeerReceive {
 	}
 	
 	public boolean checkexistsList() {
-		File file = new File(Coin.pathDir + "peerlist.txt");
+		File file = new File(Constant.pathDir + "peerlist.txt");
 		if (!file.exists()) {
 			return false;
 		}

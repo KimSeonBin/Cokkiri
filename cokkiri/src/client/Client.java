@@ -3,6 +3,13 @@ package client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.simple.JSONObject;
+
+import exchange.RequestBuy;
+import exchange.RequestSell;
+import mining.Mining;
+import utill_network.MsgType;
 import utill_network.Peer;
 import utill_network.PeerList;
 
@@ -28,6 +35,27 @@ public class Client {
 		new Connection(data,peer).start();
 	}
 	
+	
+	public static boolean processBuy(Float coinvalue) {
+		RequestBuy buy = new RequestBuy(coinvalue);
+		Peer server = PeerList.getPeerList().get(0);
+		String req = MsgType.REQUEST_PURCHASE + buy.toJSONObject().toJSONString();
+		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
+		
+		return false;
+	}
+	
+	public static boolean processSell(Float coinvalue) {
+		
+		RequestSell sell = new RequestSell(coinvalue);
+		Peer server = PeerList.getPeerList().get(0);
+		
+		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
+		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
+		
 
-
+		return false;
+	}
+	
+	
 }

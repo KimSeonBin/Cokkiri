@@ -26,25 +26,24 @@ public class FavoriteActivity {
 		this.addbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				FavoriteDialog inputs = new FavoriteDialog();
-//				JOptionPane.showInputDialog(null, inputs, "aaa", JOptionPane.PLAIN_MESSAGE);
 				FavoriteDialog fDialog = new FavoriteDialog();
-				
 				JButton okButton = fDialog.getOKButton();
-	            okButton.addActionListener(new ActionListener() {
-	                @Override
-	                public void actionPerformed(ActionEvent e) {
-	                   // 즐겨찾기 'ok' 눌렀을 시
-	                   String faddress = fDialog.getAddresstext().getText();
-	                   String fnickname = fDialog.getNicknametext().getText();
-	                   if(Bookmark.addBookmark(fnickname, faddress)) {
-	                	   System.out.println("bookmark 추가 완료");
-	                   }else {
-	                	   System.out.println("bookmark 추가 실패");
-	                   }
-	                }
-	             });
-	            
+				okButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// 즐겨찾기 'ok' 눌렀을 시
+						String faddress = fDialog.getAddresstext().getText();
+						String fnickname = fDialog.getNicknametext().getText();
+						if(Bookmark.addBookmark(fnickname, faddress)) {
+							System.out.println("추가 완료");
+							view.addcontent(faddress, fnickname);
+							view.validate();
+						}
+						else {
+							System.out.println("추가 실패");
+						}
+					}
+				});
 			}
 		});
 	}

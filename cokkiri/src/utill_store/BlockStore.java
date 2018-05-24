@@ -15,7 +15,7 @@ import org.json.simple.parser.ParseException;
 import blockchain.Block;
 import blockchain.BlockHeader;
 import transaction.*;
-import coin.Coin;
+import coin.Constant;
 
 /*
  * https://en.wikipedia.org/wiki/LevelDB
@@ -33,7 +33,7 @@ public class BlockStore {
 	public BlockStore() {
 		options = new Options();
 		try {
-			levelDBStore = factory.open(new File(Coin.pathDir+"/BlockChain"), options);
+			levelDBStore = factory.open(new File(Constant.pathDir+"/BlockChain"), options);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
