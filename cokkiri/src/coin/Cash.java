@@ -13,6 +13,7 @@ public class Cash {
 	private final static double INIT = 10000;
 
 	public static void loadCash() {
+		System.out.println("Cash.java loadCash()");
 		String filename = Constant.pathDir+"/"+Coin.id+"/cash.txt";
 		File file=new File(filename);
 		if(!file.exists()) {

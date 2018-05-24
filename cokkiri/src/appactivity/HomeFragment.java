@@ -3,8 +3,10 @@ package appactivity;
 import javax.swing.JLabel;
 
 import appview.HomeView;
+import client.Client;
 import coin.Cash;
 import coin.Coin;
+import utill_network.PeerList;
 public class HomeFragment {
 	private HomeView homeview;
 	private JLabel label_address_value;
@@ -12,6 +14,9 @@ public class HomeFragment {
 	private JLabel label_exchange_value;
 	
 	public HomeFragment(HomeView homeview) {
+
+		Client.sendMsg("hello", PeerList.getPeerList().get(0));
+		Client.sendMsg("hello", PeerList.getPeerList().get(1));
 		this.homeview = homeview;
 		this.label_address_value = homeview.getLabel_address_value();
 		this.label_totalcoin_value = homeview.getLabel_totalcoin_value();

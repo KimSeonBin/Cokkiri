@@ -29,7 +29,10 @@ public class BlockChain {
 	}
 
 	public boolean isChainValid() { //블록 헤더의 previousblockheader항목과 이전 블록의 해쉬값을 비교하여 블록체인 검증
-		Block genesis = blockchain.get(0);
+		System.out.println("BlockChain.java isChainValid()");
+		ArrayList<Block> tmp = new ArrayList<Block>();
+		tmp.addAll(blockchain);
+		Block genesis = tmp.get(0);
 		if(genesis.getBlockIndex()!=0) {
 			System.out.println("i'm invalid genesis 1");
 			return false;
@@ -44,9 +47,12 @@ public class BlockChain {
 		}
 
 		for(int i=1;i<blockchain.size();i++){
-			Block currentBlock=blockchain.get(i);
-			Block previousBlock=blockchain.get(i-1);
+			Block currentBlock=tmp.get(i);
+			Block previousBlock=tmp.get(i-1);
 			if(currentBlock.getBlockIndex()!=i) {
+				//System.out.println("------------------------");
+				//System.out.println(currentBlock.getString());
+				//System.out.println(previousBlock.getString());
 				System.out.println("i'm invalid block 1");
 				return false;
 			}
@@ -84,6 +90,7 @@ public class BlockChain {
 	}
 	
 	public void loadFullBlock() {
+		System.out.println("BlockChain.java loadFullBlock()");
 		BlockStore store = new BlockStore();
 		for(int i = 1; true; i++) {
 			Block block = store.readBlock(i);
@@ -92,16 +99,16 @@ public class BlockChain {
 			else {
 				blockchain.add(block);
 				Logging.consoleLog(String.valueOf(i) + "번째 block : " + block.getString());
-				Logging.consoleLog(" => json : "+block.toJSONObject());
+				//Logging.consoleLog(" => json : "+block.toJSONObject());
 			}
 		}
 		store.closeDB();
 		getUTXOs(); //일단 여기에
 	}
 	
-	//block에서 utxo 가져오기
+	//blockchain에서 utxo 가져오기
 	public void getUTXOs() {
-		System.out.println("GETUTXOS//");
+		System.out.println("BlockChain.java getUTXOs()");
 		if(allTx==null) return;
 		
 		ArrayList<Transaction> tmpAllTx = new ArrayList<Transaction>();
@@ -156,25 +163,35 @@ public class BlockChain {
 
 	public int getAllTx() {
 		int plus=0;
-		System.out.println(" GETALLTX()");
+		//System.out.println(" GETALLTX()");
+		System.out.println("BlockChain.java getAllTx()");
+		//System.out.println("checkBlocknum="+String.valueOf(checkBlocknum));
+		
 		if(blockchain.size()==checkBlocknum-1) {
 			//아마 새로운 블록 데이터 없는 것
 			return plus;
 		}
 			
 		Iterator<Block> itBlock = blockchain.iterator();
-		System.out.println("$$$check : blockchaini size : "+String.valueOf(blockchain.size()));
 		for(int i=0;i<checkBlocknum;i++) itBlock.next(); //이미 확인한 블록 중복 넘어가기 위해
 
 		ArrayList<Transaction> txs=new ArrayList<Transaction>();
 			
 		while(itBlock.hasNext()){ //블록 하나 확인
-			System.out.println(" block 하나 확인");
+			System.out.println("*블록 확인");
 		    txs.addAll(itBlock.next().transactions);    
 		    plus++;
 		}
 		checkBlocknum+=plus;
 		allTx.addAll(txs);	
+		
+		/*
+		Iterator it = txs.iterator();
+		while(it.hasNext()) {
+			System.out.println("check all tx : "+ ((Transaction)it.next()).getString());
+		}
+		*/
+		
 		return plus;
 	}
 		

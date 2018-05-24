@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
 public class ExchangeBuyView extends JPanel {
-	private JFormattedTextField coin_value;
+	private JTextField coin_value;
 	private JTextField coincash;
 	private JButton buybutton;
 	
@@ -53,7 +53,7 @@ public class ExchangeBuyView extends JPanel {
 		panel.add(labelblank, labelblankgb);
 		
 		
-		coin_value = getNumberTextField();
+		coin_value = new JTextField();
 		GridBagConstraints coin_valuegb = new GridBagConstraints(0, 1, 2, 1, 1, 1, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
 		panel.add(coin_value, coin_valuegb);
@@ -138,7 +138,7 @@ public class ExchangeBuyView extends JPanel {
 		return new JFormattedTextField(formatter);
 	}
 
-	public JFormattedTextField getCoin_value() {
+	public JTextField getCoin_value() {
 		return coin_value;
 	}
 

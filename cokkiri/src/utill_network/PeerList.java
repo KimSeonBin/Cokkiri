@@ -26,13 +26,15 @@ public class PeerList {
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
-		
-		peerArray.add(new Peer("1","172.30.1.43",3333)); //서버
+		peerArray.add(new Peer("2", "192.168.0.17", 3333));
+		//peerArray.add(new Peer("2", "172.17.99.15", 3333));
+		peerArray.add(new Peer("3", "172.17.100.15", 3333));
+		//peerArray.add(new Peer("1","192.168.25.121",3333)); //서버
 		//peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
-		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
-		peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
-		peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
-		peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
+		//peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
+		//peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
+		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
+		//peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
 
 		
 		for(Peer peer : peerArray) {

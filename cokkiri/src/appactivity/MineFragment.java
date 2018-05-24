@@ -2,6 +2,7 @@ package appactivity;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -49,11 +50,10 @@ public class MineFragment {
 				else {
 					minearea.append(minedBlock.getString()+"===========================================================\n");
 					Coin.blockchain.getUTXOs();
-					System.out.println("^^check utxos after mining ");
-					Wallet.printHashmap(Coin.blockchain.UTXOs);
+					//System.out.println("^^check utxos after mining ");
+					//Wallet.printHashmap(Coin.blockchain.UTXOs);
 				
-				}
-				
+				}				
 			}
 			else {
 				button_mine.setText("√§±º Ω√¿€");

@@ -29,54 +29,27 @@ public class CreateTransaction {
 
 		//create array list of inputs
 		ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
-        
-        //HashMap<String,TransactionOutput> sortedUTXOs=sortByValue(Coin.blockchain.UTXOs);
-        HashMap<String, TransactionOutput> sortedUTXOs=sortByValue(sender.UTXOs);
-		
+		HashMap<String, TransactionOutput> sortedUTXOs=sortByValue(sender.UTXOs);
 		
 		float total = 0;
 		for (Map.Entry<String, TransactionOutput> item: sortedUTXOs.entrySet()){
 			TransactionOutput UTXO = item.getValue();
 			total += UTXO.value;
-			System.out.println("UTXO : "+UTXO.toJSONObject());
+			//System.out.println("UTXO : "+UTXO.toJSONObject());
 			TransactionInput tmp=new TransactionInput(UTXO.id);
-			System.out.println("tmp : "+tmp.toJSONObject());
+			//System.out.println("tmp : "+tmp.toJSONObject());
 			inputs.add(tmp);
 
 			if(total >= value) break;
 		}
+		
 		Transaction newTransaction = new Transaction(sender.getAddress(), _recipient , value, inputs);
-		System.out.println("check inputs");
-		Iterator<TransactionInput> it3=inputs.iterator();
-		while(it3.hasNext()) System.out.println(it3.next().toJSONObject());
-		System.out.println("first- tx check ");
-		System.out.println(newTransaction.getString());
-		System.out.println("first - txinput check");
-		Iterator<TransactionInput> it1 = newTransaction.inputs.iterator();	
-		while(it1.hasNext()) System.out.println(it1.next().toJSONObject());
-		System.out.println("first - txoutput check");
-		Iterator<TransactionOutput> it2 = newTransaction.outputs.iterator();	
-		while(it2.hasNext()) System.out.println(it2.next().toJSONObject());
 		
 		newTransaction.setSenderPubkey(sender.getPublicKey());
 		newTransaction.generateSignature(sender.getPrivateKey());
 		
-		
-		/*
-		Iterator<String> iterator1 = UTXOs.keySet().iterator();
-		// 반복자를 이용해서 출력
-		while (iterator1.hasNext()) { 
-			String key = (String)iterator1.next(); // 키 얻기
-			System.out.println("*key="+key+" / value=" + UTXOs.get(key).value);  // 출력
-		}
-		*/
 		if(newTransaction.processTransaction()) { //일단 여기서..
-			/*for(TransactionInput input: inputs){
-				//System.out.println("remove : "+ UTXOs.get(input.txOutputId).value); //확인용
-				//removeUTXOs.put(input.txOutputId, UTXOs.get(input.txOutputId));
-				
-				Coin.blockchain.UTXOs.remove(input.txOutputId);
-			}*/
+			
 			return newTransaction;
 			
 		}else {

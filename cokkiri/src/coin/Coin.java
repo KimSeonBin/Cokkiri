@@ -45,6 +45,7 @@ public class Coin {
 	//로그인 성공하면 호출됨. 
 	//공개키, 주소 로드, block 로드
 	public static void loginSuccess() {
+		System.out.println("Coin.java loginSuccess()");
 		blockchain= new BlockChain("ajoucoin", DIFFICULTY);
 
 		File file=new File(Constant.pathDir);

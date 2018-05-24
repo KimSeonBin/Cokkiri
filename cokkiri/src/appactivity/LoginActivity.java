@@ -27,7 +27,7 @@ public class LoginActivity {
 		idtext = loginview.getIdtext();
 		pwtext = loginview.getPasswordtext();
 		loginbutton = loginview.getLoginbutton();
-		signinbutton = loginview.getSigninbutton();
+	//	signinbutton = loginview.getSigninbutton();
 		
 		buttonClickListener();
 	}
@@ -50,7 +50,7 @@ public class LoginActivity {
 					Coin.id=identifier;
 					loginview.dispose();
 					Coin.loginSuccess();
-					log.Logging.consoleLog("login success");
+					//log.Logging.consoleLog("login success");
 					MainActivity main = new MainActivity();
 					main.start();
 				}
@@ -62,12 +62,12 @@ public class LoginActivity {
 
 			
 		});
-		signinbutton.addActionListener(new ActionListener() {
+		/*signinbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("!!!");
 			}
-		});
+		});*/
 	}
 
 }
