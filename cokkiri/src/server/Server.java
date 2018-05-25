@@ -16,10 +16,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import blockchain.Block;
-import client.Client;
 import coin.Coin;
 import coin.TransferTxs;
-import coin.TransferUTXO;
 import mining.Mining;
 import transaction.Transaction;
 import transaction.TransactionInput;

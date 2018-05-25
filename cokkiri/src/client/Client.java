@@ -53,7 +53,6 @@ public class Client {
 		
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
-		
 
 		return false;
 	}
