@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.util.Iterator;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,7 @@ import org.json.simple.parser.ParseException;
 
 import appactivity.ExchangeBuyFragment;
 import appactivity.ExchangeSellFragment;
+import blockchain.Block;
 import coin.Cash;
 import coin.Coin;
 import coin.TransferBlocks;
@@ -219,7 +221,7 @@ public class Connection extends Thread{
 			sendMessage(MsgType.BLOCK_REQ_MSG);
 			data=data.replaceFirst(MsgType.BLOCK_REQ_MSG, "");
 			sendMessage(data);
-				
+			System.out.println("send to server ; "+data);
 			String answer = readMessage();
 			System.out.println("answer: "+answer);
 			if(answer.equals(MsgType.ANSWER_NO)) {
@@ -229,7 +231,20 @@ public class Connection extends Thread{
 				TransferBlocks transferblocks = new TransferBlocks();
 				try {
 					answerJson = (JSONObject)new JSONParser().parse(answer);
+					
+					System.out.println("JSON=============");
+					System.out.println(answerJson);
+					
 					transferblocks.convertResObject(answerJson);
+					
+					Iterator<Block> ite = transferblocks.getBlocks().iterator();
+					while(ite.hasNext()) {
+						Block block = ite.next();
+						System.out.println("check block + "+block.getString());
+
+					}
+					
+			
 					
 					if(!transferblocks.check()) {
 						System.out.println("transferblocks.check() error!!");
@@ -237,29 +252,28 @@ public class Connection extends Thread{
 					}
 					else {
 						System.out.println("block success");
-						//체인에 추가하고, 맞는지 체크
+						Iterator<Block> it = transferblocks.getBlocks().iterator();
+						while(it.hasNext()) {
+							Block block = it.next();
+							Coin.blockchain.blockchain.add(block);
+							if(Coin.blockchain.isChainValid()) {
+								System.out.println("check + "+block.getString());
+								Coin.blockchain.storeBlock(block);
+							}
+							else {
+								System.out.println("check2 + "+block.getString());
+
+								Coin.blockchain.remove(block);
+								break;
+							}
+						}
 				
 					}
-					
-					
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
-				
-			
-			
-
 		}
 	}
 	

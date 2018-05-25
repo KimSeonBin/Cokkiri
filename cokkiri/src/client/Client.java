@@ -92,8 +92,9 @@ public class Client {
 		req.setIndex(start, end);
 		String data = MsgType.BLOCK_REQ_MSG+req.toReqJSON().toJSONString();
 		System.out.println("requestBlock");
-		sendMsg(data,new Peer("1000","192.168.10.4",3333));
+		//sendMsg(data,new Peer("1000","192.168.10.4",3333));
 		//broadcastToAdmin(data);
+		broadcastToPC(data);
 
 	}
 	

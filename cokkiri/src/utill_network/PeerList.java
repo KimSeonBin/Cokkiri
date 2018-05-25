@@ -33,11 +33,11 @@ public class PeerList {
 		//peerArray.add(new Peer("3", "172.17.100.15", 3333));
 		//peerArray.add(new Peer("1","192.168.25.121",3333)); //서버
 		//peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
-		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
+		peerArray.add(new Peer("1000","172.30.1.48",3333));//선빈
 		//peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
 		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
 		//peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
-		peerArray.add(new Peer("2001","192.168.10.2",3333));//슬비android
+		//peerArray.add(new Peer("2001","192.168.10.2",3333));//슬비android
 		
 		for(Peer peer : peerArray) {
 			PeerList.storePeerList(peer);	

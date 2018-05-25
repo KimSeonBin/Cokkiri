@@ -72,6 +72,11 @@ public class TransferBlocks {
 		for(int i = 0; i < jsonArray.size(); i++) {
 			Block block = new Block();
 			block.convertClassObject((JSONObject) jsonArray.get(i));
+			
+			System.out.println("block converted : "+  block.getString());
+			
+			
+			
 			this.blocks.add(block);
 		}
 	}
@@ -93,5 +98,8 @@ public class TransferBlocks {
 	public long getStartIndex() {
 		return startIndex;
 		
+	}
+	public ArrayList<Block> getBlocks(){
+		return blocks;
 	}
 }
