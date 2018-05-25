@@ -20,6 +20,7 @@ import appactivity.ExchangeBuyFragment;
 import appactivity.ExchangeSellFragment;
 import coin.Cash;
 import coin.Coin;
+import coin.TransferBlocks;
 import exchange.RequestBuy;
 import exchange.RequestSell;
 import mining.Mining;
@@ -212,9 +213,50 @@ public class Connection extends Thread{
 				return;
 			}
 		}//else if MsgType.REQUEST_PURCHASE
-		else if(data.contains(MsgType.FULLBLOCK_REQ_MSG)) {
-			sendMessage(MsgType.FULLBLOCK_REQ_MSG);
-			receivedFullBlock(readMessage());
+		else if(data.contains(MsgType.BLOCK_REQ_MSG)) {
+			sendMessage(MsgType.BLOCK_REQ_MSG);
+			data=data.replaceFirst(MsgType.BLOCK_REQ_MSG, "");
+			sendMessage(data);
+						
+			String answer = readMessage();
+			if(answer.equals(MsgType.ANSWER_NO)) {
+				return;
+			}else {
+				JSONObject answerJson;
+				TransferBlocks transferblocks = new TransferBlocks();
+				try {
+					answerJson = (JSONObject)new JSONParser().parse(answer);
+					transferblocks.convertResObject(answerJson);
+					
+					if(!transferblocks.check()) {
+						System.out.println("transferblocks.check() error!!");
+						//오류
+					}
+					else {
+						System.out.println("block success");
+						//체인에 추가하고, 맞는지 체크
+				
+					}
+					
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+				
+			
+			
+
 		}
 	}
 	
@@ -253,9 +295,7 @@ public class Connection extends Thread{
 		}
 		
 	}
-	public void receivedFullBlock(String data) {
-		
-	}
+	
 	
 	public void authenticateProcess() {
 		//인증과정수행

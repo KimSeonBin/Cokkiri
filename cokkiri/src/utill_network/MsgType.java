@@ -14,5 +14,5 @@ public class MsgType {
 	public final static String ANSWER_OK = "OK";
 	public final static String ANSWER_NO = "NO";
 	public static final String MYTX_REQ_MSG = "request my tx";
-	public static final String FULLBLOCK_REQ_MSG = "request full block";
+	public static final String BLOCK_REQ_MSG = "request block";
 }

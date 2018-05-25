@@ -28,7 +28,7 @@ public class PeerList {
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
-		peerArray.add(new Peer("2", "192.168.0.17", 3333));
+		peerArray.add(new Peer("2", "192.168.10.6", 3333));
 		//peerArray.add(new Peer("2", "172.17.99.15", 3333));
 		peerArray.add(new Peer("3", "172.17.100.15", 3333));
 		//peerArray.add(new Peer("1","192.168.25.121",3333)); //¼­¹ö

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import mining.Mining;
 import transaction.Transaction;
 import wallet.Address;
 
@@ -20,6 +21,7 @@ public class TransferTxs {
 		ArrayList<Transaction> tmp = new ArrayList<>();
 		Coin.blockchain.getAllTx();
 		tmp.addAll(Coin.blockchain.allTx);
+		tmp.addAll(Mining.transactionPool);
 		for(int i=0;i<tmp.size();i++) {
 			Transaction check = tmp.get(i);
 			System.out.println("all "+check.getString());

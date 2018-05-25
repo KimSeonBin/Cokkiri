@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 
+import coin.TransferBlocks;
 import exchange.RequestBuy;
 import exchange.RequestSell;
 import mining.Mining;
@@ -64,9 +65,7 @@ public class Client {
 		RequestBuy buy = new RequestBuy(coinvalue);
 		String req = MsgType.REQUEST_PURCHASE + buy.toJSONObject().toJSONString();
 		broadcastToAdmin(req);
-		
-		/*Peer server = PeerList.getPeerList().get(0);
-		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..*/		
+	
 		return false;
 	}
 	
@@ -76,17 +75,17 @@ public class Client {
 		RequestSell sell = new RequestSell(coinvalue);
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
 		broadcastToAdmin(req);
-		/*Peer server = PeerList.getPeerList().get(0);
-		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
-*/		
+	
 
 		return false;
 	}
 	
-	public static void requestBlock() {
-		
-		broadcastToAdmin(MsgType.FULLBLOCK_REQ_MSG);
-		
+	public static void requestBlock(long start, long end) {
+		TransferBlocks req = new TransferBlocks();
+		req.setIndex(start, end);
+		String data = MsgType.BLOCK_REQ_MSG+req.toReqJSON().toJSONString();
+		broadcastToAdmin(data);
+
 	}
 	
 	

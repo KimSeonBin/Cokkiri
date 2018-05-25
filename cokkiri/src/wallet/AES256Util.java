@@ -55,6 +55,49 @@ public class AES256Util {
 		}
     }
 
+    
+    public byte[] encrypt(byte[] plain) {
+        Cipher c;
+		try {
+			c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
+		
+			byte[] encrypted;
+		
+			encrypted = c.doFinal(plain);
+		 
+			//String enStr = new String(Base64.encodeBase64(encrypted));
+			return encrypted;
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException
+				| IllegalBlockSizeException | BadPaddingException  e) {
+			e.printStackTrace();
+		}
+		return null;
+    }
+    
+    
+    public byte[] decrypt(byte[] cipher)  {
+        Cipher c;
+		try {
+			c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
+	        byte[] byteStr = Base64.decodeBase64(cipher);
+			return c.doFinal(cipher);
+
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException 
+				 | IllegalBlockSizeException | BadPaddingException e) {
+			
+			e.printStackTrace();
+		} 
+        return null;
+    }
+    
+    
+    
+    
+    
+    
     /**
      * 
      * @param is

@@ -18,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import blockchain.Block;
 import client.Client;
 import coin.Coin;
+import coin.TransferBlocks;
 import coin.TransferTxs;
 import coin.TransferUTXO;
 import mining.Mining;
@@ -103,6 +104,9 @@ public class Server extends Thread {
 		}else if(clientMsg.equals(MsgType.MYTX_REQ_MSG)) {
 			receivedUserTxReq();
 		}
+		else if(clientMsg.equals(MsgType.BLOCK_REQ_MSG)) {
+			receivedUserBlockReq();
+		}
 		else {
 			System.out.println("err");
 			return;
@@ -121,6 +125,30 @@ public class Server extends Thread {
 		
 		sendMessage(msg);
 		System.out.println("send user txs : "+msg);
+		
+	}
+	private void receivedUserBlockReq() {
+		String requestIndex = readMessage();
+		try {
+			JSONObject IndexJson = (JSONObject)new JSONParser().parse(requestIndex);
+			int lastIndex = Coin.blockchain.blockchain.size()-1;
+			
+			TransferBlocks transferBlocks = new TransferBlocks();
+			transferBlocks.convertReqObject(IndexJson);
+			if(transferBlocks.getStartIndex() > lastIndex) {
+				sendMessage(MsgType.ANSWER_NO);
+			}else {
+				transferBlocks.setIndex(transferBlocks.getStartIndex(), lastIndex);
+				transferBlocks.setBlock();
+				JSONObject ResponseJson = transferBlocks.toResJSON();
+				sendMessage(ResponseJson.toJSONString());
+			}
+			
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 
