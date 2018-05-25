@@ -67,7 +67,7 @@ public class Coin {
 				System.exit(0);
 			}
 			Wallet resChk = new Wallet(id+passwd, true);
-			if (resChk.getPrivateKey()!=null&&resChk.getPublicKey()!=null){
+			if (resChk.getPublicKey()!=null){
 				System.out.println("the key is created");
 			}else{
 				System.out.println("failed to create key");

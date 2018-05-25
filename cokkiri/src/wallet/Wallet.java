@@ -34,14 +34,15 @@ public class Wallet {
 			}else { 
 				if(!KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")) {
 					KeyUtil.saveKeyPair(Constant.pathDir+"/"+Coin.id+"/key", keyPair, passwd);
-
-					KeyUtil.saveKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key", KeyUtil.hashKeyPair(keyPair));
+					KeyUtil.savePubKey(Constant.pathDir+"/"+Coin.id+"/key", keyPair.getPublic());
 				}
 			}
 		}
-		else keyPair = KeyUtil.loadKeyPair(Constant.pathDir+"/"+Coin.id+"/key", passwd);
+		else {
+			keyPair = KeyUtil.loadKeyPair(Constant.pathDir+"/"+Coin.id+"/key", passwd);
+			privateKey=keyPair.getPrivate();
+		}
 		
-		privateKey=keyPair.getPrivate();
 		publicKey=keyPair.getPublic();
 		address=new Address(publicKey);
 	}
@@ -53,19 +54,16 @@ public class Wallet {
 	}
 	
 	/**
-	 * password를 매개변수로 받아 keypair생성하고 hash 값을 비교하여 기존에 생성한 키에 대한 인증 수행
+	 * password를 매개변수로 받아 암호화된 공개키 파일 복호화하여 원본 공개키 파일과 비교
 	 * @param passwd
 	 * @return -1(인증 실패), 0(키파일 없음), 1(인증 성공)
 	 */
 	public int authenticate(String passwd){
 		System.out.println("pw : "+passwd);
 		if(KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")){
-			KeyPair check=KeyUtil.generateKeyPair(passwd);
-			String checkHash=KeyUtil.hashKeyPair(check);
-			String keyPairHash=KeyUtil.loadKeyPairHash(Constant.pathDir+"/"+Coin.id+"/key");
-			if(!checkHash.equals(keyPairHash)){
-				System.out.println("checkHash "+checkHash);
-				System.out.println("keypairhash "+keyPairHash);
+			if(!KeyUtil.authenticate(Constant.pathDir+"/"+Coin.id+"/key", passwd)){
+				//System.out.println("checkHash "+checkHash);
+				//System.out.println("keypairhash "+keyPairHash);
 				return -1; //인증 실패
 			}
 			return 1; //인증 성공

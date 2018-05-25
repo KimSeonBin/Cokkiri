@@ -184,8 +184,8 @@ public class Transaction {
 	//Verifies the data we signed hasnt been tampered with
 	public boolean verifySignature() {
 		String data = sender.getString() + receiver.getString() + Float.toString(value) + Long.toString(timestamp);
-		System.out.println("たたた:"+data);
-	    System.out.println(senderPubkey);
+		//System.out.println("たたた:"+data);
+	    //System.out.println(senderPubkey);
 		return ECDSAUtil.verifyECDSASig(KeyUtil.getPubKeyFromString(senderPubkey), data, signature);
 		
 	}
