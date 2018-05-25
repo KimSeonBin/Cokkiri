@@ -23,7 +23,6 @@ public class Client {
 	//broadcast
 	public static void broadcastToAdmin(String data) {
 		
-
 		peerList = PeerList.getAdminPeerList();
 
 		System.out.println("broadcastToAdmin");
@@ -31,9 +30,6 @@ public class Client {
 		for(Peer peer : peerList) {
 			new Connection(data,peer).start();
 		}
-		
-		
-	
 	}
 
 	//broadcast
@@ -50,12 +46,24 @@ public class Client {
 
 	//broadcast
 	public static void broadcastToAndorid(String data) {
-		
+		System.out.println("broadcastToAndroid");
 		peerList = PeerList.getAndroidPeerList();
 		for(Peer peer : peerList) {
+			System.out.println("peer ; "+peer.toString());
+			System.out.println("data : "+data);
 			new Connection(data,peer).start();
 		}
 		
+	}
+	
+	public static void broadcastExcept(String nodeid, String data) {
+		HashMap<String, Peer> tmpPeerList = PeerList.getPeerList();
+		tmpPeerList.remove(nodeid);
+		for(Peer peer : tmpPeerList.values()) {
+			System.out.println("peer ; "+peer.toString());
+			System.out.println("data : "+data);
+			new Connection(data,peer).start();
+		}
 	}
 	
 	
@@ -92,8 +100,9 @@ public class Client {
 		req.setIndex(start, end);
 		String data = MsgType.BLOCK_REQ_MSG+req.toReqJSON().toJSONString();
 		System.out.println("requestBlock");
-		sendMsg(data,new Peer("1000","192.168.10.4",3333));
+		//sendMsg(data,new Peer("1000","192.168.10.4",3333));
 		//broadcastToAdmin(data);
+		broadcastToAdmin(data);
 
 	}
 	

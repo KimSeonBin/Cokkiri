@@ -8,6 +8,7 @@ import java.util.Map;
 import transaction.*;
 import coin.Coin;
 import coin.Constant;
+import hash.Sha256;
 import log.Logging;
 
 public class Wallet {
@@ -24,7 +25,7 @@ public class Wallet {
 	 */
 	public Wallet(String passwd, boolean check){ //check true이면 새로운 key 생성, false면 키파일 로드
 		KeyPair keyPair;
-		
+		passwd=Sha256.hash(passwd);
 		if(check){
 			keyPair=KeyUtil.generateKeyPair(passwd);
 			
@@ -60,6 +61,7 @@ public class Wallet {
 	 */
 	public int authenticate(String passwd){
 		System.out.println("pw : "+passwd);
+		passwd=Sha256.hash(passwd);
 		if(KeyUtil.checkKeyfile(Constant.pathDir+"/"+Coin.id+"/key")){
 			if(!KeyUtil.authenticate(Constant.pathDir+"/"+Coin.id+"/key", passwd)){
 				//System.out.println("checkHash "+checkHash);

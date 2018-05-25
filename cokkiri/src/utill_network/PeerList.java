@@ -28,17 +28,16 @@ public class PeerList {
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
-		//peerArray.add(new Peer("2", "192.168.10.6", 3333));
-		//peerArray.add(new Peer("2", "172.17.99.15", 3333));
-		//peerArray.add(new Peer("3", "172.17.100.15", 3333));
-		//peerArray.add(new Peer("1","192.168.25.121",3333)); //서버
-		//peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
-		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
-		//peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
-		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
-		//peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
-		peerArray.add(new Peer("2001","192.168.10.2",3333));//슬비android
-		
+		peerArray.add(new Peer("0A0C5893A5F48", "192.168.10.98", 3333));//관리자(선빈 pc)
+//		peerArray.add(new Peer("1FCF8AEA1A9E6", "192.168.10.5", 3333));//슬비 pc
+//	      peerArray.add(new Peer("19CB6D01A37A1", "192.168.10.6", 3333));//현영 pc
+//	      //peerArray.add(new Peer("0DCA971606AE9", "192.168.10.7", 3333));//현영 미니어처 pc
+//
+//
+//	      peerArray.add(new Peer("294:8B:C1:20:57:F0", "192.168.10.2", 3333));//슬비 android
+//	      //peerArray.add(new Peer("208:00:27:CE:E7:19", "192.168.10.6", 3333));//현영 녹스 android
+//	      peerArray.add(new Peer("25C:70:A3:7D:11:DE", "192.168.10.8", 3333));//선빈 android
+	      
 		for(Peer peer : peerArray) {
 			PeerList.storePeerList(peer);	
 		}
@@ -54,11 +53,13 @@ public class PeerList {
 			
 			String str = null;
 			
-			while((str=br.readLine())!=null) {								
-				JSONObject json = (JSONObject)new JSONParser().parse(str);
-				
-				peerList.put((String)json.get("peer_id"), new Peer((String)json.get("peer_id"),(String)json.get("ip_address"),((Number)json.get("port")).intValue()));
-			}
+			while((str=br.readLine())!=null) {
+	            JSONObject json = (JSONObject)new JSONParser().parse(str);
+	            if(!((String)json.get("peer_id")).equals(NodeId.getNodeId())){
+	               peerList.put((String)json.get("peer_id"), new Peer((String)json.get("peer_id"),(String)json.get("ip_address"),((Number)json.get("port")).intValue()));
+	            }
+	         }
+
 			
 		
 		} catch (Exception e) {

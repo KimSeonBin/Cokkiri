@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.util.Iterator;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,7 @@ import org.json.simple.parser.ParseException;
 
 import appactivity.ExchangeBuyFragment;
 import appactivity.ExchangeSellFragment;
+import blockchain.Block;
 import coin.Cash;
 import coin.Coin;
 import coin.TransferBlocks;
@@ -137,66 +139,49 @@ public class Connection extends Thread{
 		}// else if MsgType.BLOCK_TRANSFER_MSG
 		
 		else if(data.contains(MsgType.REQUEST_SELL)) {
-			System.out.println("[Client] coin sell to exchange server.............................." );
-			System.out.println("checkkkkkk data : "+data);
 			sendMessage(MsgType.REQUEST_SELL);
 			data=data.replaceFirst(MsgType.REQUEST_SELL, "");
 			sendMessage(data);
 			
 			String responseData = readMessage();
-			
 			if(responseData.contains(MsgType.ANSWER_OK)) {
 				String address = readMessage();
 				String password = ExchangeSellFragment.showInputPasswordDialog();
-				if(Coin.wallet.authenticate(Coin.id+password)!=1) { //passwd 체크
-					return;					
-			    }
+				if(Coin.wallet.authenticate(Coin.id+password)!=1) return;
 				
 				Address serverAdd= new Address();
 				serverAdd.setAddress(address);
 				Wallet sender = new Wallet(Coin.id+password, false);
-				System.out.println("$$$$$check  data : "+data);
 				RequestSell sell = new RequestSell(data);
-				System.out.println("$$$ sell.getCoin() "+String.valueOf(sell.getCoin()));
 				
 				String senddata = sell.txJSONObject(sender, serverAdd).toJSONString();
-				System.out.println("senddata : "+senddata);
 				sendMessage(senddata);
 				
 				String responseCash=readMessage();
 				double cash = Double.parseDouble(responseCash);
 				Cash.plus(cash);
-				System.out.println("cash : "+ cash);
 				ExchangeSellFragment.showSuccessDialog();
-
-				
 			}
 			else if(responseData.contains(MsgType.ANSWER_NO)) {
 				ExchangeSellFragment.showFailDialog();
 				return;
 			}
-		}// else if MsgType.REQUEST_SELL
-		
+		}		
 		else if(data.contains(MsgType.REQUEST_PURCHASE)) {
-			System.out.println("[Client] coin buy to exchange server.............................." );
 			sendMessage(MsgType.REQUEST_PURCHASE);
 			data=data.replaceFirst(MsgType.REQUEST_PURCHASE, "");
 			sendMessage(data);
 			
 			String responseData = readMessage();
-			
 			if(responseData.contains(MsgType.ANSWER_OK)) {
 				String password = ExchangeSellFragment.showInputPasswordDialog();
-				if(Coin.wallet.authenticate(Coin.id+password)!=1) { //passwd 체크
-					System.out.println("return");
-					return;					
-			    }
+				if(Coin.wallet.authenticate(Coin.id+password)!=1)return;					
+			    
 				RequestBuy buy = new RequestBuy(data);
 				System.out.println("buy message : "+ buy.buyJSONObject().toJSONString());
 				sendMessage(buy.buyJSONObject().toJSONString());
 				
 				String responseTx = readMessage();
-				
 				if(responseTx.contains(MsgType.ANSWER_NO)) {
 					ExchangeBuyFragment.showFailDialog();
 					return;
@@ -204,22 +189,20 @@ public class Connection extends Thread{
 				else if(responseTx.contains(MsgType.TRANSACTION_MSG)) {
 					receivedTransaction();
 					Cash.minus(buy.getCash());
-
 					ExchangeBuyFragment.showSuccessDialog();
-
 				}			
 			}	
 			else if(responseData.contains(MsgType.ANSWER_NO)) {
 				ExchangeBuyFragment.showFailDialog();
 				return;
 			}
-		}//else if MsgType.REQUEST_PURCHASE
+		}
 		else if(data.contains(MsgType.BLOCK_REQ_MSG)) {
 			System.out.println("[Client] request block to server.............................." );
 			sendMessage(MsgType.BLOCK_REQ_MSG);
 			data=data.replaceFirst(MsgType.BLOCK_REQ_MSG, "");
 			sendMessage(data);
-				
+			System.out.println("send to server ; "+data);
 			String answer = readMessage();
 			System.out.println("answer: "+answer);
 			if(answer.equals(MsgType.ANSWER_NO)) {
@@ -229,7 +212,18 @@ public class Connection extends Thread{
 				TransferBlocks transferblocks = new TransferBlocks();
 				try {
 					answerJson = (JSONObject)new JSONParser().parse(answer);
+					
+					System.out.println("JSON=============");
+					System.out.println(answerJson);
+					
 					transferblocks.convertResObject(answerJson);
+					
+					Iterator<Block> ite = transferblocks.getBlocks().iterator();
+					while(ite.hasNext()) {
+						Block block = ite.next();
+						System.out.println("check block + "+block.getString());
+
+					}
 					
 					if(!transferblocks.check()) {
 						System.out.println("transferblocks.check() error!!");
@@ -237,29 +231,28 @@ public class Connection extends Thread{
 					}
 					else {
 						System.out.println("block success");
-						//체인에 추가하고, 맞는지 체크
+						Iterator<Block> it = transferblocks.getBlocks().iterator();
+						while(it.hasNext()) {
+							Block block = it.next();
+							Coin.blockchain.blockchain.add(block);
+							if(Coin.blockchain.isChainValid()) {
+								System.out.println("check + "+block.getString());
+								Coin.blockchain.storeBlock(block);
+							}
+							else {
+								System.out.println("check2 + "+block.getString());
+
+								Coin.blockchain.remove(block);
+								break;
+							}
+						}
 				
 					}
-					
-					
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
-				
-			
-			
-
 		}
 	}
 	

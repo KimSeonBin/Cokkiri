@@ -107,6 +107,8 @@ public class Block {
 	public boolean isBlockValid(String prevBlockHash, long prevBlockIndex){
 		System.out.println("---isBlockvalid---");
 		if(!(prevBlockHash.equals(blockHeader.getPreviousBlockHash()))) {
+			System.out.println("ばば  "+blockHeader.getPreviousBlockHash());
+			System.out.println("にに "+prevBlockHash);
 			System.out.println("invalid block TT 1");
 			return false;
 		}
@@ -151,21 +153,13 @@ public class Block {
 	public void mineBlock() {
 		blockHeader.setTimestamp();
 		blockHeader.setMerkleRootHash(calculteMerkleRoot(transactions));
-		String target =  new String(new char[blockHeader.difficulty]).replace('\0', '0');//Create a string with difficulty * "0" 
+		String target =  new String(new char[blockHeader.difficulty]).replace('\0', '0');
 		this.blockHash=calculateHash();
 		
 		while(!this.getBlockHash().substring( 0, blockHeader.difficulty).equals(target)) {
 			blockHeader.nonce++;
 			this.blockHash=calculateHash();
 		}
-		
-		log.Logging.consoleLog("Block Mined!");
-		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
-		System.out.println(getString());
-		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
-		System.out.println(toJSONObject());
-		log.Logging.consoleLog("-----------------------------------------------------------------------------------------");
-
 	}
 		
 	public long getBlockIndex() {return index;}
@@ -176,6 +170,7 @@ public class Block {
 	public String getString(){
 		String blockStr="";
 		blockStr+="index : "+String.valueOf(index)+"\r\n";
+		blockStr+="hash : "+blockHash+"\r\n";
 		blockStr+=getBlockHeader().getString();
 		for(int i=0;i<transactions.size();i++) blockStr+="transaction "+String.valueOf(i)+transactions.get(i).getString();
 		
@@ -200,6 +195,9 @@ public class Block {
 		
 		Logging.consoleLog("function call - convertClassObject()");
 		
+		System.out.println("check !!!!");
+		System.out.println("json : "+json);
+		
 		this.index=((Number)json.get("index")).longValue();
 		this.blockSize = ((Number)json.get("blockSize")).intValue();
 		this.blockHeader = new BlockHeader();
@@ -209,6 +207,7 @@ public class Block {
 		array = (JSONArray)json.get("transactions");
 		converJSONArray_toTX(array);
 		this.blockHash = (String)json.get("blockHash");
+		System.out.println("string : "+ getString());
 		
 	}
 	

@@ -72,18 +72,28 @@ public class TransferBlocks {
 		for(int i = 0; i < jsonArray.size(); i++) {
 			Block block = new Block();
 			block.convertClassObject((JSONObject) jsonArray.get(i));
+			
+			System.out.println("block converted : "+  block.getString());
+			
+			
+			
 			this.blocks.add(block);
 		}
 	}
 	
 	public boolean check() {
 		if(blocks.get(0).getBlockIndex() != startIndex) {
+			System.out.println("false 1 "+String.valueOf(blocks.get(0).getBlockIndex())+"  "+String.valueOf(startIndex));
 			return false;
 		}
 		if(blocks.get(blocks.size()-1).getBlockIndex()!=endIndex) {
+			System.out.println("false 2 "+String.valueOf(blocks.get(blocks.size()-1).getBlockIndex())+"  "+String.valueOf(endIndex));
+
 			return false;
 		}
 		if((endIndex-startIndex+1)!= blocks.size()){
+			System.out.println("false 3 "+String.valueOf(endIndex)+"  "+String.valueOf(startIndex)+"   "+String.valueOf(blocks.size()));
+
 			return false;
 		}
 		
@@ -93,5 +103,8 @@ public class TransferBlocks {
 	public long getStartIndex() {
 		return startIndex;
 		
+	}
+	public ArrayList<Block> getBlocks(){
+		return blocks;
 	}
 }

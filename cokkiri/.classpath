@@ -6,10 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/SSO/git/Cokkiri/cokkiri/bcprov-jdk15on-159.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SSO/git/Cokkiri/cokkiri/bouncycastle.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SSO/git/Cokkiri/cokkiri/commons-codec-1.11.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SSO/git/Cokkiri/cokkiri/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SSO/git/Cokkiri/cokkiri/leveldbjni-all-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/capstone/capstoneadmin/bcprov-jdk15on-159.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/capstone/capstoneadmin/bouncycastle.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/capstone/capstoneadmin/commons-codec-1.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/capstone/capstoneadmin/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/capstone/capstoneadmin/leveldbjni-all-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

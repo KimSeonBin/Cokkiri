@@ -16,7 +16,6 @@ public class LoginActivity {
 	private JTextField idtext;
 	private JPasswordField pwtext;
 	private JButton loginbutton;
-	private JButton signinbutton;
 	
 	public LoginActivity() {
 		
@@ -27,7 +26,6 @@ public class LoginActivity {
 		idtext = loginview.getIdtext();
 		pwtext = loginview.getPasswordtext();
 		loginbutton = loginview.getLoginbutton();
-	//	signinbutton = loginview.getSigninbutton();
 		
 		buttonClickListener();
 	}
@@ -40,10 +38,7 @@ public class LoginActivity {
 				
 				String id = idtext.getText();
 				String pw = pwtext.getText();
-				
-				//String id = "201420951";
-				//String pw = "201420951";
-//				
+
 				String identifier = Login.login(id, pw);
 				
 				if(identifier != null) {

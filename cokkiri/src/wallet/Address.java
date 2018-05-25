@@ -26,12 +26,16 @@ public class Address {
 	
 	private static String getAddress(PublicKey publicKey) {
 		//System.out.println("check getAddress : "+new String(publicKey.getEncoded()));
+		System.out.println("publickey.getString() : ");
+		String str = publicKey.toString();
+		System.out.println("length : "+str.length());
 		String address=Sha256.hash(new String(publicKey.getEncoded()));
 		MessageDigest messageDigest;
 		try {
 			messageDigest = MessageDigest.getInstance("RIPEMD160");
 			byte[] hashedString = messageDigest.digest(address.getBytes());
 			address=Base58.encode(hashedString);
+			System.out.println("address length : "+address.length());
 			return address;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

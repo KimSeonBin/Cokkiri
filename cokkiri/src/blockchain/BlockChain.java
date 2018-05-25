@@ -48,7 +48,10 @@ public class BlockChain {
 
 		for(int i=1;i<blockchain.size();i++){
 			Block currentBlock=tmp.get(i);
+			System.out.println("ischainvalid() currentBlock : "+currentBlock.getString());
 			Block previousBlock=tmp.get(i-1);
+			System.out.println("ischainvalid() previousBlock : "+previousBlock.getString());
+
 			if(currentBlock.getBlockIndex()!=i) {
 				//System.out.println("------------------------");
 				//System.out.println(currentBlock.getString());
@@ -92,6 +95,7 @@ public class BlockChain {
 	public void loadFullBlock() {
 		System.out.println("BlockChain.java loadFullBlock()");
 		BlockStore store = new BlockStore();
+		if(!store.isValid()) return;
 		for(int i = 1; true; i++) {
 			Block block = store.readBlock(i);
 

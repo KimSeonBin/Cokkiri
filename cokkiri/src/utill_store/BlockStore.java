@@ -33,7 +33,7 @@ public class BlockStore {
 	public BlockStore() {
 		options = new Options();
 		try {
-			levelDBStore = factory.open(new File(Constant.pathDir+"/BlockChain"), options);
+			levelDBStore = factory.open(new File("cokkiri/"+Constant.pathDir+"/BlockChain"), options);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -99,5 +99,10 @@ public class BlockStore {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isValid() {
+		if(levelDBStore == null) return false;
+		else return true;
 	}
 }

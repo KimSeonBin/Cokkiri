@@ -26,7 +26,7 @@ public class Coin {
 		String passwd;
 		
 		for(int i=0;i<3;i++) {
-			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요(16자 이상)");
+			passwd = JOptionPane.showInputDialog("계좌 비밀번호를 입력하세요(숫자6자리)");
 
 			if(!checkPWInput(passwd)) {
 				System.out.println("it's too short(16 letters or more)");
@@ -47,17 +47,7 @@ public class Coin {
 	//공개키, 주소 로드, block 로드
 	public static void loginSuccess() {
 		System.out.println("Coin.java loginSuccess()");
-		blockchain= new BlockChain("ajoucoin", DIFFICULTY);
-
-		File file=new File(Constant.pathDir);
-		if(!file.exists()) {
-			file.mkdirs();
-			/****************************/
-			//peer에 블록체인 받아오기
-			
-			/**************************/
-			
-		}
+		
 		String passwd;
 
 		if(!KeyUtil.checkKeyfile(Constant.pathDir+"/"+id+"/key")){
@@ -67,7 +57,9 @@ public class Coin {
 				JOptionPane.showMessageDialog(null, "프로그램 종료");
 				System.exit(0);
 			}
+			
 			Wallet resChk = new Wallet(id+passwd, true);
+			
 			if (resChk.getPublicKey()!=null){
 				System.out.println("the key is created");
 			}else{
@@ -77,14 +69,6 @@ public class Coin {
 		}
 		
 		wallet=new Wallet();
-		blockchain.loadFullBlock();
-		if(blockchain.getSize() == 0) {		
-			Block genesisBlock=new Block(3);
-			blockchain.blockchain.add(genesisBlock);
-			blockchain.storeBlock(genesisBlock);
-		}
-		
-		Client.requestBlock(Coin.blockchain.blockchain.size(), -1);
 		
 		Bookmark.loadBookmark();
 		Cash.loadCash();

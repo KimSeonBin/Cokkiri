@@ -19,15 +19,12 @@ public class CreateTransaction {
 	 * Generates and returns a new transaction from this wallet.
 	 */
 	public static Transaction createTx(Wallet sender, Address _recipient,float value ) {
-		
-		Logging.consoleLog("createTx()");
-		
-		if(sender.getBalance() < value) { //gather balance and check funds.
-			System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
+				
+		if(sender.getBalance() < value) { 
+			System.out.println("#fail.. Not Enough coin to create Tx");
 			return null;
 		}
 
-		//create array list of inputs
 		ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
 		HashMap<String, TransactionOutput> sortedUTXOs=sortByValue(sender.UTXOs);
 		
@@ -35,11 +32,8 @@ public class CreateTransaction {
 		for (Map.Entry<String, TransactionOutput> item: sortedUTXOs.entrySet()){
 			TransactionOutput UTXO = item.getValue();
 			total += UTXO.value;
-			//System.out.println("UTXO : "+UTXO.toJSONObject());
 			TransactionInput tmp=new TransactionInput(UTXO.id);
-			//System.out.println("tmp : "+tmp.toJSONObject());
 			inputs.add(tmp);
-
 			if(total >= value) break;
 		}
 		
@@ -48,15 +42,12 @@ public class CreateTransaction {
 		newTransaction.setSenderPubkey(sender.getPublicKey());
 		newTransaction.generateSignature(sender.getPrivateKey());
 		
-		if(newTransaction.processTransaction()) { //일단 여기서..
-			
+		if(newTransaction.processTransaction()) {
 			return newTransaction;
-			
 		}else {
 			System.out.println("Transaction failed..");
 			return null;
 		}
-		
 	}
 	
 

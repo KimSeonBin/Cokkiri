@@ -112,11 +112,12 @@ public class SendFragment {
 	}
 	
 	private boolean checksendinputs(String receiver, String password) {
-		if(receiver.length()!=28) {
+		/*if(receiver.length()!=28) {
+			System.out.println("prob1");
 			return false;
-	    }
+	    }*/
 	    if(Coin.wallet.authenticate(Coin.id+password)!=1) {
-	    
+	    	System.out.println("prob2");
 	    	return false;
 	    }
 	 

@@ -37,6 +37,7 @@ public class AES256Util {
      * @throws UnsupportedEncodingException 키값의 길이가 16이하일 경우 발생
      */
     public AES256Util(String key){
+    	//key=key.substring(0, 16);
         this.iv = key.substring(0, 16);
         byte[] keyBytes = new byte[16];
         byte[] b;
