@@ -25,7 +25,8 @@ public class Address {
 	public String getString() {return address;}
 	
 	private static String getAddress(PublicKey publicKey) {
-		String address=Sha256.hash(publicKey.toString());
+		//System.out.println("check getAddress : "+new String(publicKey.getEncoded()));
+		String address=Sha256.hash(new String(publicKey.getEncoded()));
 		MessageDigest messageDigest;
 		try {
 			messageDigest = MessageDigest.getInstance("RIPEMD160");
