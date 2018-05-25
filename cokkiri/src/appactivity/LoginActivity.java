@@ -41,8 +41,8 @@ public class LoginActivity {
 				String id = idtext.getText();
 				String pw = pwtext.getText();
 				
-//				String id = "aaa";
-//				String pw = "aaa";
+				//String id = "201420951";
+				//String pw = "201420951";
 //				
 				String identifier = Login.login(id, pw);
 				

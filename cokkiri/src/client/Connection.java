@@ -53,7 +53,7 @@ public class Connection extends Thread{
 		
 		this.data = data;
 		this.peer = peer;
-		
+		System.out.println("1");
 		SocketAddress socketAddress = new InetSocketAddress(peer.getIpAddress(), peer.getPort());
 		socket = new Socket();	
 		
@@ -89,6 +89,7 @@ public class Connection extends Thread{
 		
 		//server로부터 기존노드인지 새로운노드인지 메시지 받음
 		serverMsg = readMessage();
+		System.out.println(serverMsg);
 		if(serverMsg == null) {
 			System.out.println("err");
 			disconnectAll();
@@ -214,11 +215,13 @@ public class Connection extends Thread{
 			}
 		}//else if MsgType.REQUEST_PURCHASE
 		else if(data.contains(MsgType.BLOCK_REQ_MSG)) {
+			System.out.println("[Client] request block to server.............................." );
 			sendMessage(MsgType.BLOCK_REQ_MSG);
 			data=data.replaceFirst(MsgType.BLOCK_REQ_MSG, "");
 			sendMessage(data);
-						
+				
 			String answer = readMessage();
+			System.out.println("answer: "+answer);
 			if(answer.equals(MsgType.ANSWER_NO)) {
 				return;
 			}else {

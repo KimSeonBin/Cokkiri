@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -74,6 +75,8 @@ public class LoginView extends JFrame {
 		try {
 			File file = new File(iconimg_path);
 			Image img = ImageIO.read(file);
+			System.out.println(System.getProperty("user.dir"));
+			System.out.println(file.getAbsolutePath());
 			Image newimage = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
 			icon.setIcon(new ImageIcon(newimage));
 			icon.setOpaque(false);

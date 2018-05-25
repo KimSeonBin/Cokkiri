@@ -64,7 +64,8 @@ public class TransferBlocks {
 		startIndex=((Number)json.get("startIndex")).longValue();
 		endIndex=((Number)json.get("endIndex")).longValue();
 		
-		blocks.clear();
+		//blocks.clear();
+		this.blocks=new ArrayList<Block>();
 		JSONArray jsonArray = (JSONArray) json.get("blocks");
 		JSONObject temp;
 		

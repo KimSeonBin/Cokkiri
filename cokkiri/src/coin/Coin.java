@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import blockchain.Block;
 import blockchain.BlockChain;
 import bookmark.Bookmark;
+import client.Client;
 import wallet.*;
 
 public class Coin {
@@ -82,6 +83,8 @@ public class Coin {
 			blockchain.blockchain.add(genesisBlock);
 			blockchain.storeBlock(genesisBlock);
 		}
+		
+		Client.requestBlock(Coin.blockchain.blockchain.size(), -1);
 		
 		Bookmark.loadBookmark();
 		Cash.loadCash();

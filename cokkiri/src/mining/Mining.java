@@ -45,6 +45,7 @@ public class Mining {
 			new Thread() {
 				public void run() {
 					try {
+						System.out.println("run broadcast");
 						Client.broadcastToAdmin(MsgType.BLOCK_TRANSFER_MSG+block.getBlockHeader().getPreviousBlockHash()+" "+block.toJSONObject());
 						Client.broadcastToPC(MsgType.BLOCK_TRANSFER_MSG+block.getBlockHeader().getPreviousBlockHash()+" "+block.toJSONObject());
 					} catch (Exception e) {}

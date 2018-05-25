@@ -15,6 +15,11 @@ public class HomeFragment {
 	
 	public HomeFragment(HomeView homeview) {
 
+<<<<<<< HEAD
+=======
+		//Client.sendMsg("hello", PeerList.getPeerList().get(0));
+		//Client.sendMsg("hello", PeerList.getPeerList().get(1));
+>>>>>>> branch 'master' of https://github.com/KimSeonBin/Cokkiri.git
 		this.homeview = homeview;
 		this.label_address_value = homeview.getLabel_address_value();
 		this.label_totalcoin_value = homeview.getLabel_totalcoin_value();
