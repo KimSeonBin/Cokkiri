@@ -30,7 +30,6 @@ public class TransferTxs {
 				userTxs.add(check); 
 			}	
 		}
-		
 	}
 	
 	public JSONObject toJSONObject() {
@@ -45,9 +44,9 @@ public class TransferTxs {
 		json.put("allTxs", array);
 		return json;
 	}
-	/////////////
+	//////////////////////////
 	
-	////////안드 에서만 ////////
+	////////안드 에서만 //////////
 	public void convertClassObject(JSONObject json) {
 		
 		userTxs.clear();
@@ -60,5 +59,5 @@ public class TransferTxs {
 			userTxs.add(tx);
 		}
 	}
-	//////////////////////
+	/////////////////////////
 }
