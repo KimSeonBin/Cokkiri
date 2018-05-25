@@ -20,6 +20,7 @@ import appactivity.ExchangeBuyFragment;
 import appactivity.ExchangeSellFragment;
 import coin.Cash;
 import coin.Coin;
+import coin.TransferBlocks;
 import exchange.RequestBuy;
 import exchange.RequestSell;
 import mining.Mining;
@@ -117,7 +118,8 @@ public class Connection extends Thread{
 			sendMessage(MsgType.TRANSACTION_MSG);
 			sendMessage(data.replaceFirst(MsgType.TRANSACTION_MSG, ""));//transaction data
 			System.out.println("[Client] TRANSACTION Transfer complete..............." );
-		}
+		}// if MsgType.TRANSACTION_MSG
+		
 		else if(data.contains(MsgType.BLOCK_TRANSFER_MSG)) {
 			System.out.println("[Client] BLOCK Transfer.............................." );
 			sendMessage(MsgType.BLOCK_TRANSFER_MSG);
@@ -131,7 +133,8 @@ public class Connection extends Thread{
 				String blockData = data.replaceFirst(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" ", "");
 				sendMessage(blockData);
 			}
-		}
+		}// else if MsgType.BLOCK_TRANSFER_MSG
+		
 		else if(data.contains(MsgType.REQUEST_SELL)) {
 			System.out.println("[Client] coin sell to exchange server.............................." );
 			System.out.println("checkkkkkk data : "+data);
@@ -171,7 +174,8 @@ public class Connection extends Thread{
 				ExchangeSellFragment.showFailDialog();
 				return;
 			}
-		}
+		}// else if MsgType.REQUEST_SELL
+		
 		else if(data.contains(MsgType.REQUEST_PURCHASE)) {
 			System.out.println("[Client] coin buy to exchange server.............................." );
 			sendMessage(MsgType.REQUEST_PURCHASE);
@@ -208,6 +212,51 @@ public class Connection extends Thread{
 				ExchangeBuyFragment.showFailDialog();
 				return;
 			}
+		}//else if MsgType.REQUEST_PURCHASE
+		else if(data.contains(MsgType.BLOCK_REQ_MSG)) {
+			sendMessage(MsgType.BLOCK_REQ_MSG);
+			data=data.replaceFirst(MsgType.BLOCK_REQ_MSG, "");
+			sendMessage(data);
+						
+			String answer = readMessage();
+			if(answer.equals(MsgType.ANSWER_NO)) {
+				return;
+			}else {
+				JSONObject answerJson;
+				TransferBlocks transferblocks = new TransferBlocks();
+				try {
+					answerJson = (JSONObject)new JSONParser().parse(answer);
+					transferblocks.convertResObject(answerJson);
+					
+					if(!transferblocks.check()) {
+						System.out.println("transferblocks.check() error!!");
+						//오류
+					}
+					else {
+						System.out.println("block success");
+						//체인에 추가하고, 맞는지 체크
+				
+					}
+					
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+				
+			
+			
+
 		}
 	}
 	
@@ -246,6 +295,7 @@ public class Connection extends Thread{
 		}
 		
 	}
+	
 	
 	public void authenticateProcess() {
 		//인증과정수행

@@ -19,7 +19,7 @@ public class BlockChain {
 	//public static HashMap<String, Transaction> transactionPool = new HashMap<String, Transaction>();
 	//public static ArrayList<Transaction> transactionPool = new ArrayList<Transaction>();
 	public static HashMap<String,TransactionOutput> UTXOs = new HashMap<String,TransactionOutput>();
-	
+	public long[][] sss;
 	public static ArrayList<Transaction> allTx=new ArrayList<Transaction>();
 	private static int checkBlocknum=0;
 	

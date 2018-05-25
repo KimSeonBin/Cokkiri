@@ -19,15 +19,12 @@ public class CentralServer {
 	private final static int numThreads = 30;
 	private static PeerQueue<Socket> peerQueue; 
 	private static HashMap<String, Peer> peerList;
-	private static ArrayList<Peer> peerArray;
+
 	
 	//putPeerList
 	private static void putPeerList() {
-		peerArray=PeerList.getPeerList();
-		
-		for(Peer peer : peerArray) {
-			peerList.put(peer.getId(), peer);
-		}
+		peerList=PeerList.getPeerList();
+
 	}
 	
 

@@ -3,6 +3,7 @@ package appview;
 import java.io.File;
 import java.security.Security;
 
+
 import appactivity.LoginActivity;
 import blockchain.BlockChain;
 import coin.Coin;
@@ -18,7 +19,6 @@ public class main {
 		
 		//프로그램 시작시 먼저 기존 블록체인 전부 다 받아야한다.+피어 리스트도..
 		
-
 		File file=new File(Constant.pathDir);
 		if(!file.exists()) {
 			file.mkdirs();
@@ -46,6 +46,8 @@ public class main {
 		
 		login = new LoginActivity();
 		login.start();
+		
 	}
+
 
 }

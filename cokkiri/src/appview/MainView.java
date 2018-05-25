@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -75,7 +76,9 @@ public class MainView extends JFrame{
 		button_home.setOpaque(true);
 		button_home.setPreferredSize(new Dimension(200, 50));
 		try {
-			Image img = ImageIO.read(getClass().getResource("/img/ic_home_black.png"));
+			File file = new File("img/ic_home_black.png");
+			Image img = ImageIO.read(file);
+			//Image img = ImageIO.read(getClass().getResource("img/ic_home_black.png"));
 			button_home.setIcon(new ImageIcon(img));
 		} catch (IOException e) {
 			e.printStackTrace();

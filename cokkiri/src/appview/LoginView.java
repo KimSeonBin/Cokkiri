@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -20,10 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import coin.Constant;
+
 public class LoginView extends JFrame {
-	private String iconimg_path = "/img/appicon.png";
-	private String personimg_path = "/img/person.png";
-	private String keyimg_path = "/img/keyimage.png";
+	private String iconimg_path = "img/appicon.png";
+	private String personimg_path = "img/person.png";
+	private String keyimg_path = "img/keyimage.png";
 	private String app_name = "아주 코인";
 
 	private JFrame frame;
@@ -36,7 +39,8 @@ public class LoginView extends JFrame {
 		super();
 		frame = this;
 		initJFrame();
-		initComponent();
+		initComponent();	
+		
 	}
 
 	private void initJFrame() {
@@ -68,7 +72,8 @@ public class LoginView extends JFrame {
 
 		JLabel icon = new JLabel();
 		try {
-			Image img = ImageIO.read(getClass().getResource(iconimg_path));
+			File file = new File(iconimg_path);
+			Image img = ImageIO.read(file);
 			Image newimage = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
 			icon.setIcon(new ImageIcon(newimage));
 			icon.setOpaque(false);
@@ -151,7 +156,9 @@ public class LoginView extends JFrame {
 	private void textfieldicon(JPanel panel, String path, int gridx, int gridy, Insets margin) {
 		JLabel icon = new JLabel();
 		try {
-			Image img = ImageIO.read(getClass().getResource(path));
+			File file = new File(path);
+			Image img = ImageIO.read(file);
+			//Image img = ImageIO.read(getClass().getResource(path));
 			icon.setIcon(new ImageIcon(img));
 			icon.setOpaque(false);
 		} catch (IOException e) {

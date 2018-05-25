@@ -28,7 +28,7 @@ public class ExchangeSellFragment {
 		this.coin_value = sellview.getCoin_value();
 		this.coincash = sellview.getCoincash();
 		this.sellbutton = sellview.getSellbutton();
-		
+
 		sellbutton.addActionListener(new sellClickListener());
 		coin_value.addKeyListener(new coinvalueListener());
 	}
@@ -97,5 +97,6 @@ public class ExchangeSellFragment {
 	      }
 	      
 	   }
+
 
 }
