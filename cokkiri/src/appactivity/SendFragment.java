@@ -74,7 +74,9 @@ public class SendFragment {
 				new Thread() {
 					public void run() {
 						try {
-							Client.broadcast(MsgType.TRANSACTION_MSG+t.toJSONObject());
+							Client.broadcastToAdmin(MsgType.TRANSACTION_MSG+t.toJSONObject());
+							Client.broadcastToPC(MsgType.TRANSACTION_MSG+t.toJSONObject());
+							Client.broadcastToAndorid(MsgType.TRANSACTION_MSG+t.toJSONObject());
 						} catch (Exception e) {}
 					}
 				}.start();

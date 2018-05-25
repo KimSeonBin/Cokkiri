@@ -16,18 +16,42 @@ import utill_network.PeerList;
 
 public class Client {
 	
-	
+	private static ArrayList<Peer> peerList;	
 
+	
 	//broadcast
-	public static void broadcast(String data) {
+	public static void broadcastToAdmin(String data) {
 		
-		//임시  
-		ArrayList<Peer> peerList = PeerList.getPeerList();
-		
+
+		peerList = PeerList.getAdminPeerList();
 		for(Peer peer : peerList) {
 			new Connection(data,peer).start();
 		}
+		
+		
+	
 	}
+
+	//broadcast
+	public static void broadcastToPC(String data) {
+		
+		peerList = PeerList.getPcPeerList();
+		for(Peer peer : peerList) {
+			new Connection(data,peer).start();
+		}
+		
+	}
+
+	//broadcast
+	public static void broadcastToAndorid(String data) {
+		
+		peerList = PeerList.getAndroidPeerList();
+		for(Peer peer : peerList) {
+			new Connection(data,peer).start();
+		}
+		
+	}
+	
 	
 	//함수 이름 바꿀거임 
 	//하나의 peer에게 data 전송
@@ -38,10 +62,11 @@ public class Client {
 	
 	public static boolean processBuy(Float coinvalue) {
 		RequestBuy buy = new RequestBuy(coinvalue);
-		Peer server = PeerList.getPeerList().get(0);
 		String req = MsgType.REQUEST_PURCHASE + buy.toJSONObject().toJSONString();
-		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
+		broadcastToAdmin(req);
 		
+		/*Peer server = PeerList.getPeerList().get(0);
+		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..*/		
 		return false;
 	}
 	
@@ -49,13 +74,19 @@ public class Client {
 		System.out.println("Client.java processSell()");
 		
 		RequestSell sell = new RequestSell(coinvalue);
-		Peer server = PeerList.getPeerList().get(0);
-		
 		String req = MsgType.REQUEST_SELL + sell.toJSONObject().toJSONString();
+		broadcastToAdmin(req);
+		/*Peer server = PeerList.getPeerList().get(0);
 		new Connection(req, server).start(); //이렇게 하면 안될거같긴한데 일단..
-		
+*/		
 
 		return false;
+	}
+	
+	public static void requestBlock() {
+		
+		broadcastToAdmin(MsgType.FULLBLOCK_REQ_MSG);
+		
 	}
 	
 	

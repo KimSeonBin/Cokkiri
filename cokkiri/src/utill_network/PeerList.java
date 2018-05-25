@@ -8,12 +8,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import client.Connection;
 import coin.Coin;
 import coin.Constant;
 
@@ -42,8 +44,10 @@ public class PeerList {
 		}
 	}
 	
-	public static ArrayList<Peer> getPeerList() {
-		ArrayList<Peer> peerList = new ArrayList<Peer>();
+	
+	
+	public static HashMap<String, Peer> getPeerList() {
+		HashMap<String, Peer> peerList = new HashMap<String, Peer>();
 		try {
 			FileReader fr = new FileReader(Constant.pathDir+"/peerList.txt");
 			BufferedReader br = new BufferedReader(fr);
@@ -52,7 +56,8 @@ public class PeerList {
 			
 			while((str=br.readLine())!=null) {								
 				JSONObject json = (JSONObject)new JSONParser().parse(str);
-				peerList.add(new Peer((String)json.get("peer_id"),(String)json.get("ip_address"),((Number)json.get("port")).intValue()));
+				
+				peerList.put((String)json.get("peer_id"), new Peer((String)json.get("peer_id"),(String)json.get("ip_address"),((Number)json.get("port")).intValue()));
 			}
 			
 		
@@ -61,6 +66,48 @@ public class PeerList {
 		}
 		return peerList;
 		
+	}
+	
+	public static ArrayList<Peer> getAdminPeerList(){
+		HashMap<String, Peer> peerList = getPeerList();
+		ArrayList<Peer> adminPeerList = new ArrayList<Peer>();
+		
+		for(String NodeID : peerList.keySet()) {
+			if(String.valueOf(NodeID.charAt(0))=="0") {
+				adminPeerList.add(peerList.get(NodeID));
+			}
+			
+		}
+		
+		return adminPeerList;
+	}
+	
+	public static ArrayList<Peer> getPcPeerList(){
+		HashMap<String, Peer> peerList = getPeerList();
+		ArrayList<Peer> PcPeerList = new ArrayList<Peer>();
+		
+		for(String NodeID : peerList.keySet()) {
+			if(String.valueOf(NodeID.charAt(0))=="1") {
+				PcPeerList.add(peerList.get(NodeID));
+			}
+			
+		}
+		
+		return PcPeerList;
+	}
+	
+	public static ArrayList<Peer> getAndroidPeerList(){
+		HashMap<String, Peer> peerList = getPeerList();
+		ArrayList<Peer> androidPeerList = new ArrayList<Peer>();
+		
+		for(String NodeID : peerList.keySet()) {
+			if(String.valueOf(NodeID.charAt(0))=="1") {
+				androidPeerList.add(peerList.get(NodeID));
+			}
+			
+		}
+		
+		return androidPeerList;
 	}
 	
 	public static void storePeerList(Peer peer) {

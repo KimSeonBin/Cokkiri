@@ -117,7 +117,8 @@ public class Connection extends Thread{
 			sendMessage(MsgType.TRANSACTION_MSG);
 			sendMessage(data.replaceFirst(MsgType.TRANSACTION_MSG, ""));//transaction data
 			System.out.println("[Client] TRANSACTION Transfer complete..............." );
-		}
+		}// if MsgType.TRANSACTION_MSG
+		
 		else if(data.contains(MsgType.BLOCK_TRANSFER_MSG)) {
 			System.out.println("[Client] BLOCK Transfer.............................." );
 			sendMessage(MsgType.BLOCK_TRANSFER_MSG);
@@ -131,7 +132,8 @@ public class Connection extends Thread{
 				String blockData = data.replaceFirst(MsgType.BLOCK_TRANSFER_MSG+preBlockHash+" ", "");
 				sendMessage(blockData);
 			}
-		}
+		}// else if MsgType.BLOCK_TRANSFER_MSG
+		
 		else if(data.contains(MsgType.REQUEST_SELL)) {
 			System.out.println("[Client] coin sell to exchange server.............................." );
 			System.out.println("checkkkkkk data : "+data);
@@ -171,7 +173,8 @@ public class Connection extends Thread{
 				ExchangeSellFragment.showFailDialog();
 				return;
 			}
-		}
+		}// else if MsgType.REQUEST_SELL
+		
 		else if(data.contains(MsgType.REQUEST_PURCHASE)) {
 			System.out.println("[Client] coin buy to exchange server.............................." );
 			sendMessage(MsgType.REQUEST_PURCHASE);
@@ -208,6 +211,10 @@ public class Connection extends Thread{
 				ExchangeBuyFragment.showFailDialog();
 				return;
 			}
+		}//else if MsgType.REQUEST_PURCHASE
+		else if(data.contains(MsgType.FULLBLOCK_REQ_MSG)) {
+			sendMessage(MsgType.FULLBLOCK_REQ_MSG);
+			receivedFullBlock(readMessage());
 		}
 	}
 	
@@ -244,6 +251,9 @@ public class Connection extends Thread{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+	}
+	public void receivedFullBlock(String data) {
 		
 	}
 	
