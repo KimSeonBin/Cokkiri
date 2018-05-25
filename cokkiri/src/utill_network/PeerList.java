@@ -28,16 +28,16 @@ public class PeerList {
 		}
 		
 		ArrayList<Peer> peerArray = new ArrayList<Peer>();
-		peerArray.add(new Peer("2", "192.168.10.6", 3333));
+		//peerArray.add(new Peer("2", "192.168.10.6", 3333));
 		//peerArray.add(new Peer("2", "172.17.99.15", 3333));
-		peerArray.add(new Peer("3", "172.17.100.15", 3333));
+		//peerArray.add(new Peer("3", "172.17.100.15", 3333));
 		//peerArray.add(new Peer("1","192.168.25.121",3333)); //서버
 		//peerArray.add(new Peer("1","192.168.51.72",3333)); //서버
-		//peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
+		peerArray.add(new Peer("1000","192.168.10.4",3333));//선빈
 		//peerArray.add(new Peer("1001","192.168.10.5",3333));//슬비
 		//peerArray.add(new Peer("1002","192.168.10.6",3333));//현영
 		//peerArray.add(new Peer("1003","192.168.10.7",3333));//현영미니어처
-
+		peerArray.add(new Peer("2001","192.168.10.2",3333));//슬비android
 		
 		for(Peer peer : peerArray) {
 			PeerList.storePeerList(peer);	
@@ -73,7 +73,7 @@ public class PeerList {
 		ArrayList<Peer> adminPeerList = new ArrayList<Peer>();
 		
 		for(String NodeID : peerList.keySet()) {
-			if(String.valueOf(NodeID.charAt(0))=="0") {
+			if(String.valueOf(NodeID.charAt(0)).equals("0")) {
 				adminPeerList.add(peerList.get(NodeID));
 			}
 			
@@ -87,7 +87,8 @@ public class PeerList {
 		ArrayList<Peer> PcPeerList = new ArrayList<Peer>();
 		
 		for(String NodeID : peerList.keySet()) {
-			if(String.valueOf(NodeID.charAt(0))=="1") {
+			System.out.println("NodeID : "+NodeID);
+			if(String.valueOf(NodeID.charAt(0)).equals("1")) {
 				PcPeerList.add(peerList.get(NodeID));
 			}
 			
@@ -101,7 +102,7 @@ public class PeerList {
 		ArrayList<Peer> androidPeerList = new ArrayList<Peer>();
 		
 		for(String NodeID : peerList.keySet()) {
-			if(String.valueOf(NodeID.charAt(0))=="1") {
+			if(String.valueOf(NodeID.charAt(0)).equals("2")) {
 				androidPeerList.add(peerList.get(NodeID));
 			}
 			

@@ -25,6 +25,9 @@ public class Client {
 		
 
 		peerList = PeerList.getAdminPeerList();
+
+		System.out.println("broadcastToAdmin");
+		System.out.println(peerList);
 		for(Peer peer : peerList) {
 			new Connection(data,peer).start();
 		}
@@ -37,6 +40,8 @@ public class Client {
 	public static void broadcastToPC(String data) {
 		
 		peerList = PeerList.getPcPeerList();
+		System.out.println("broadcastToPC");
+		System.out.println(peerList);
 		for(Peer peer : peerList) {
 			new Connection(data,peer).start();
 		}
@@ -84,7 +89,9 @@ public class Client {
 		TransferBlocks req = new TransferBlocks();
 		req.setIndex(start, end);
 		String data = MsgType.BLOCK_REQ_MSG+req.toReqJSON().toJSONString();
-		broadcastToAdmin(data);
+		System.out.println("requestBlock");
+		sendMsg(data,new Peer("1000","192.168.10.4",3333));
+		//broadcastToAdmin(data);
 
 	}
 	
