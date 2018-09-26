@@ -13,16 +13,16 @@ public class NodeId {
    public static void setNodeId() {
       
       try {
-         //·ÎÄÃ ip Ãëµæ
+         //ï¿½ï¿½ï¿½ï¿½ ip ï¿½ï¿½ï¿½
          InetAddress ip = InetAddress.getLocalHost();
          
-         //³×Æ®¿öÅ© ÀÎÅÍÆäÀÌ½º Ãëµæ
+         //ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½
          NetworkInterface netif = NetworkInterface.getByInetAddress(ip);
          
-         //³×Æ®¿öÅ© ÀÎÅÍÆäÀÌ½º°¡ NULLÀÌ ¾Æ´Ï¸é
+         //ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ NULLï¿½ï¿½ ï¿½Æ´Ï¸ï¿½
          if(netif != null) {
             
-            //¸Æ¾îµå·¹½º Ãëµæ
+            //ï¿½Æ¾ï¿½å·¹ï¿½ï¿½ ï¿½ï¿½ï¿½
             byte[] mac = netif.getHardwareAddress();
             
             

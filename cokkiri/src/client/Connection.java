@@ -86,10 +86,10 @@ public class Connection extends Thread{
 		
 		if(socket.isClosed()) {return;}
 		
-		//server¿¡°Ô Node id¸¦ º¸³½´Ù
+		//serverï¿½ï¿½ï¿½ï¿½ Node idï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		sendMessage(NodeId.getNodeId());
 		
-		//server·ÎºÎÅÍ ±âÁ¸³ëµåÀÎÁö »õ·Î¿î³ëµåÀÎÁö ¸Þ½ÃÁö ¹ÞÀ½
+		//serverï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		serverMsg = readMessage();
 		System.out.println(serverMsg);
 		if(serverMsg == null) {
@@ -98,7 +98,7 @@ public class Connection extends Thread{
 			return;
 		}
 		
-		else if(serverMsg.equals(MsgType.NEWNODE_MSG)) {//»õ·Î¿î ³ëµåÀÌ¸é
+		else if(serverMsg.equals(MsgType.NEWNODE_MSG)) {//ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 			System.out.println("[client] I have to send authentication message");
 			authenticateProcess();
 			
@@ -109,11 +109,11 @@ public class Connection extends Thread{
 			return;
 		}
 		
-		process(data);//¿øÇÏ´Â °úÁ¤ ¼öÇà
+		process(data);//ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		disconnectAll();
 	}	
 		
-	//Å¬¶óÀÌ¾ðÆ®°¡ ¿øÇÏ´Â °úÁ¤À» ¼­¹ö¿¡°Ô º¸³»°í ¼öÇà
+	//Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void process(String data) {
 				
 		if(data.contains(MsgType.TRANSACTION_MSG)) {
@@ -129,7 +129,7 @@ public class Connection extends Thread{
 			String preBlockHash = data.replaceFirst(MsgType.BLOCK_TRANSFER_MSG, "").split(" ")[0];//blockHeader previous blockHash
 			sendMessage(preBlockHash);
 			System.out.println("[Client] BLOCK Transfer complete....................." );
-			//---------------¾ó¸¶µ¿¾È ±â´Ù¸®´Ù ´äÀÌ ¾øÀ¸¸é ¿¬°á ²÷´Â ºÎºÐ Ãß°¡ ¿¹Á¤ ----------------------------//
+			//---------------ï¿½ó¸¶µï¿½ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ----------------------------//
 			//-----------------------------------------------------------------------------//
 			
 			if(readMessage().equals(MsgType.GETDATA_MSG)) {
@@ -227,7 +227,7 @@ public class Connection extends Thread{
 					
 					if(!transferblocks.check()) {
 						System.out.println("transferblocks.check() error!!");
-						//¿À·ù
+						//ï¿½ï¿½ï¿½ï¿½
 					}
 					else {
 						System.out.println("block success");
@@ -294,7 +294,7 @@ public class Connection extends Thread{
 	
 	
 	public void authenticateProcess() {
-		//ÀÎÁõ°úÁ¤¼öÇà
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		ClientUnknownProcess unknown = new ClientUnknownProcess(socket, objectOutputStream, objectInputStream);
 		if(unknown.initProcess()) {
 			System.out.println("[client] finish authentication message");
@@ -333,7 +333,7 @@ public class Connection extends Thread{
 		try {
 			bufferedReader.close();
 			objectInputStream.close();
-			socket.close();//Á¢¼ÓÁ¾·á
+			socket.close();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

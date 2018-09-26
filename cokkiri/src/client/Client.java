@@ -67,8 +67,8 @@ public class Client {
 	}
 	
 	
-	//ÇÔ¼ö ÀÌ¸§ ¹Ù²Ü°ÅÀÓ 
-	//ÇÏ³ªÀÇ peer¿¡°Ô data Àü¼Û
+	//ï¿½Ô¼ï¿½ ï¿½Ì¸ï¿½ ï¿½Ù²Ü°ï¿½ï¿½ï¿½ 
+	//ï¿½Ï³ï¿½ï¿½ï¿½ peerï¿½ï¿½ï¿½ï¿½ data ï¿½ï¿½ï¿½ï¿½
 	public static void sendMsg(String data, Peer peer) {
 		new Connection(data,peer).start();
 	}
