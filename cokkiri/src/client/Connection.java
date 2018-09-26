@@ -86,10 +86,10 @@ public class Connection extends Thread{
 		
 		if(socket.isClosed()) {return;}
 		
-		//server���� Node id�� ������
+		//server에게 Node id를 보낸다
 		sendMessage(NodeId.getNodeId());
 		
-		//server�κ��� ����������� ���ο������� �޽��� ����
+		//server로부터 기존노드인지 새로운노드인지 메시지 받음
 		serverMsg = readMessage();
 		System.out.println(serverMsg);
 		if(serverMsg == null) {
@@ -98,7 +98,7 @@ public class Connection extends Thread{
 			return;
 		}
 		
-		else if(serverMsg.equals(MsgType.NEWNODE_MSG)) {//���ο� ����̸�
+		else if(serverMsg.equals(MsgType.NEWNODE_MSG)) {//새로운 노드이면
 			System.out.println("[client] I have to send authentication message");
 			authenticateProcess();
 			
@@ -109,11 +109,11 @@ public class Connection extends Thread{
 			return;
 		}
 		
-		process(data);//���ϴ� ���� ����
+		process(data);//원하는 과정 수행
 		disconnectAll();
 	}	
 		
-	//Ŭ���̾�Ʈ�� ���ϴ� ������ �������� ������ ����
+	//클라이언트가 원하는 과정을 서버에게 보내고 수행
 	public void process(String data) {
 				
 		if(data.contains(MsgType.TRANSACTION_MSG)) {
@@ -129,7 +129,7 @@ public class Connection extends Thread{
 			String preBlockHash = data.replaceFirst(MsgType.BLOCK_TRANSFER_MSG, "").split(" ")[0];//blockHeader previous blockHash
 			sendMessage(preBlockHash);
 			System.out.println("[Client] BLOCK Transfer complete....................." );
-			//---------------�󸶵��� ��ٸ��� ���� ������ ���� ���� �κ� �߰� ���� ----------------------------//
+			//---------------얼마동안 기다리다 답이 없으면 연결 끊는 부분 추가 예정 ----------------------------//
 			//-----------------------------------------------------------------------------//
 			
 			if(readMessage().equals(MsgType.GETDATA_MSG)) {
@@ -227,7 +227,7 @@ public class Connection extends Thread{
 					
 					if(!transferblocks.check()) {
 						System.out.println("transferblocks.check() error!!");
-						//����
+						//오류
 					}
 					else {
 						System.out.println("block success");
@@ -294,7 +294,7 @@ public class Connection extends Thread{
 	
 	
 	public void authenticateProcess() {
-		//������������
+		//인증과정수행
 		ClientUnknownProcess unknown = new ClientUnknownProcess(socket, objectOutputStream, objectInputStream);
 		if(unknown.initProcess()) {
 			System.out.println("[client] finish authentication message");
@@ -333,7 +333,7 @@ public class Connection extends Thread{
 		try {
 			bufferedReader.close();
 			objectInputStream.close();
-			socket.close();//��������
+			socket.close();//접속종료
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

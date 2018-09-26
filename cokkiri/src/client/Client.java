@@ -67,8 +67,7 @@ public class Client {
 	}
 	
 	
-	//�Լ� �̸� �ٲܰ��� 
-	//�ϳ��� peer���� data ����
+	//peer에게 msg 전송
 	public static void sendMsg(String data, Peer peer) {
 		new Connection(data,peer).start();
 	}
